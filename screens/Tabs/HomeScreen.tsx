@@ -1,12 +1,20 @@
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+    StatusBar, StyleSheet,
+    Text, View,
+    Image,
+} from 'react-native';
+import icons from '../../assets/icons/icons';
 
 
 const HomeScreen = () => {
     return (
         <View style={styles.main}>
             <StatusBar barStyle="dark-content" backgroundColor="white" />
-            <Text>Home Screen</Text>
+            <View>
+                <Image source={icons.profile} />
+
+            </View>
         </View>
     )
 }
@@ -20,6 +28,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex',
-        // backgroundColor: 'white'
+        backgroundColor: 'white'
     }
 })

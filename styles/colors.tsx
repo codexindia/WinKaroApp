@@ -4,4 +4,6 @@ export const colors = {
     inputBg : '#f2f2f2',
     text : '#2F2E41',
     textLight : '#666',
+    textLighter : '#999',
+    gray : '#8a8a8a',
 }

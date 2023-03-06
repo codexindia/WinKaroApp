@@ -53,7 +53,7 @@ const Onboarding = ({ navigation }: any) => {
             <Text style={buttons.full}>{buttonText}</Text>
           </TouchableOpacity>
         }
-        <Text style={styles.bottomText}>
+        <Text style={[styles.bottomText, {color : colors.gray}]}>
           Read <Text style={txt.color}>Terms and Conditions</Text> before using the app.
         </Text>
       </View>

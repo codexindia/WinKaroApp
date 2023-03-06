@@ -6,5 +6,7 @@ const images = {
     // undraw_Mobile_user_re_xta4 : require('./src/undraw_Mobile_user_re_xta4.png'),
     sign_up: require('./src/sign_up.png'),
     log_in: require('./src/log_in.png'),
+    OTP_verification : require('./src/OTP_verification.png'),
+    two_step_verify : require('./src/two_step_verify.jpg'),
 }
 export default images

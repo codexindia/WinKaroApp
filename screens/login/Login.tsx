@@ -14,6 +14,7 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
+import styles from './styles'
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
 
 const Login = ({ navigation }: any) => {
@@ -31,44 +32,56 @@ const Login = ({ navigation }: any) => {
         <View style={styles.inputContainer}>
 
 
-          <Text style={styles.label}>Your Username</Text>
+          <Text style={styles.label}>Mobile Number</Text>
           <View style={styles.singleInputContainer}>
-            <Image source={icons.at} style={[styles.inputImage, { width: 23, height: 23 }]} />
+            <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
             <TextInput
+              placeholderTextColor={colors.textLighter}
               style={styles.input}
-              placeholder="eg. johnDoe"
-              keyboardType="default"
+              placeholder="eg. 9876543210"
+              keyboardType="phone-pad"
+              maxLength={6}
             />
           </View>
 
-          <Text style={styles.label}>Your Password</Text>
+          {/* <Text style={styles.label}>Your Password</Text>
           <View style={styles.singleInputContainer}>
             <Image source={icons.lock_solid} style={[styles.inputImage,]} />
             <TextInput
+              placeholderTextColor={colors.textLighter}
               style={styles.input}
               placeholder="Enter password"
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
             />
-          </View>
+          </View> */}
 
 
 
           <View style={{ marginTop: 20 }}>
-            <ButtonFull title='Log In' cb={() => { navigation.replace('Home') }} />
+            <ButtonFull title='Send OTP' cb={handleLogin} />
           </View>
 
-          <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center' }}>
-            <Text>Don't an account? </Text>
+          <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: colors.textLight }}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.replace('SignUp')}>
+              <Text style={{ color: colors.accent }}>Sign Up</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {/* <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <View>
-              <TouchableOpacity onPress={() => navigation.replace('SignUp')} activeOpacity={0.9}>
-                <Text style={buttons.button}>Sign Up?</Text>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.replace('SignUp')} activeOpacity={0.9}>
+            <Text style={buttons.button}>Sign Up?</Text>
+            </TouchableOpacity>
             </View>
+          </View> */}
+          <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: colors.textLight }}>By Logging in you accept out </Text>
+            <TouchableOpacity onPress={() => navigation.replace('SignUp')}>
+              <Text style={{ color: colors.accent }}>terms and conditions</Text>
+            </TouchableOpacity>
           </View>
 
         </View>
@@ -76,72 +89,13 @@ const Login = ({ navigation }: any) => {
       </ScrollView>
     </SafeAreaView>
   )
+
+  function handleLogin() {
+    // Alert.alert('Login', 'Login button pressed')
+    navigation.navigate('OTP')
+
+  }
 }
 
 export default Login
 
-const styles = StyleSheet.create({
-  topContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    // alignItems: 'center',
-    padding: 20,
-    gap: 5,
-    width: '100%'
-  },
-  topImage: {
-    height: 300,
-    width: '60%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    resizeMode: 'contain',
-    flex: 0.5,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: colors.text,
-    fontFamily: 'Rubik'
-  },
-  description: {
-    fontSize: 15,
-    color: colors.textLight
-
-  },
-  main: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  inputContainer: {
-    padding: 20,
-    width: '100%',
-    gap: 5,
-  },
-  singleInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.inputBg,
-    paddingLeft: 10,
-    borderRadius: 10,
-    width: 'auto',
-  },
-  inputImage: {
-    width: 17,
-    height: 17,
-    resizeMode: 'contain', flex: 0.1, opacity: 0.5
-  },
-  input: {
-    backgroundColor: colors.inputBg,
-    borderRadius: 10,
-    padding: 15,
-    width: 'auto',
-    flex: 0.9
-  },
-  label: {
-    color: colors.textLight,
-    fontSize: 15,
-    // fontWeight: 'bold',
-    marginTop: 7
-  },
-})

@@ -7,6 +7,7 @@ import SignUp from './screens/login/SignUp';
 import Onboarding from './screens/onboarding/Onboarding';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from './screens/Splash';
+import OTP from './screens/login/OTP';
 const Stack = createNativeStackNavigator();
 
 // const Splash = React.lazy(() => import('./screens/Splash'));
@@ -38,6 +39,11 @@ const App = () => {
           name="Home"
           component={Home}
           options={{ title: 'Welcome', headerShown: false }}
+        />
+        <Stack.Screen
+          name="OTP"
+          component={OTP}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
