@@ -82,7 +82,7 @@ const Login = ({ navigation }: any) => {
           </View> */}
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight }}>By Logging in you accept out </Text>
-            <TouchableOpacity onPress={() => navigation.replace('Terms')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
               <Text style={{ color: colors.accent }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>

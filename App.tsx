@@ -5,7 +5,6 @@ import Home from './screens/Home';
 import Login from './screens/login/Login';
 import SignUp from './screens/login/SignUp';
 import Onboarding from './screens/onboarding/Onboarding';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from './screens/Splash';
 import OTP from './screens/login/OTP';
 import TermsAndConditions from './screens/terms/TermsAndConditions';

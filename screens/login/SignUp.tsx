@@ -27,7 +27,7 @@ const SignUp = ({ navigation }: any) => {
       <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <View style={styles.topContainer}>
-          <Image source={images.sign_up} style={[styles.topImage, {height : 200}]} />
+          <Image source={images.sign_up} style={[styles.topImage, { height: 200 }]} />
           <Text style={styles.title}>Sign Up to Win Karo</Text>
           <Text style={styles.description}>Sign Up to Win Karo to watch and win</Text>
         </View>
@@ -110,7 +110,7 @@ const SignUp = ({ navigation }: any) => {
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{color : colors.textLight}}>Already have an account </Text>
+            <Text style={{ color: colors.textLight }}>Already have an account </Text>
             <TouchableOpacity onPress={() => navigation.replace('LogIn')}>
               <Text style={{ color: colors.accent }}>Log In</Text>
             </TouchableOpacity>
@@ -123,9 +123,9 @@ const SignUp = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
           </View> */}
-                    <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight }}>By Signing up in you accept out </Text>
-            <TouchableOpacity onPress={() => navigation.replace('SignUp')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
               <Text style={{ color: colors.accent }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>
