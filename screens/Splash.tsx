@@ -11,7 +11,7 @@ const Splash = ({ navigation }: any) => {
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
       const isOnboarding = await AsyncStorage.getItem('onboarding')
       if (isLoggedIn === 'true') {
-        navigation.navigate('Home')
+        navigation.replace('Home')
       }
       else if (isOnboarding === 'true') {
         navigation.replace('LogIn')

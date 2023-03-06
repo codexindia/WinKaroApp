@@ -9,6 +9,7 @@ import images from '../../assets/images/images'
 import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const OTP = ({ route, navigation }: any) => {
   const { phoneNumber } = route.params
@@ -40,7 +41,7 @@ const OTP = ({ route, navigation }: any) => {
           value={otp?.toString() || ''}
           onChangeText={handelOtpInput}
           maxLength={6}
-          // autoFocus={true}
+        // autoFocus={true}
         />
 
         <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -87,11 +88,14 @@ const OTP = ({ route, navigation }: any) => {
   function submit() {
     setButtonText('Verifying...')
     setIsSubmitting(true)
-    setTimeout(() => {
+    setTimeout(async () => {
       // Reset the button text and isSubmitting
       setButtonText('Verify OTP')
       setIsSubmitting(false)
-      Alert.alert('Wrong OTP', 'Please enter correct OTP')
+      // Alert.alert('Wrong OTP', 'Please enter correct OTP')
+      // set isLoggedIn to true
+      await AsyncStorage.setItem('isLoggedIn', 'true')
+      navigation.replace('Home')
     }, 2000);
     // Alert.alert('Submitting OTP')
   }

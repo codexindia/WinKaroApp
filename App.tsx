@@ -8,6 +8,8 @@ import Onboarding from './screens/onboarding/Onboarding';
 import Splash from './screens/Splash';
 import OTP from './screens/login/OTP';
 import TermsAndConditions from './screens/terms/TermsAndConditions';
+import Notifications from './screens/Notifications';
+import Wallet from './screens/Wallet';
 const Stack = createNativeStackNavigator();
 
 // const Splash = React.lazy(() => import('./screens/Splash'));
@@ -49,6 +51,16 @@ const App = () => {
           name="Terms"
           component={TermsAndConditions}
           options={{ title: 'Terms & Conditions' }}
+        />
+        <Stack.Screen
+          name="Notifications"
+          component={Notifications}
+          options={{ title: 'Notifications' }}
+        />
+        <Stack.Screen
+          name="Wallet"
+          component={Wallet}
+          options={{ title: 'Wallet' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

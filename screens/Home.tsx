@@ -69,8 +69,10 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 						activeOpacity={0.9}
 					>
 						<View style={[styles.item, { opacity: isFocused ? 1 : 0.6 }]}>
-							<Image source={tabIcons[label].icon} style={{ height: 22, width: 22, resizeMode: 'contain' }} />
-							<Text style={{ fontSize: 13, color: colors.text }}>{label}</Text>
+							<Image source={tabIcons[label].icon} style={[{ height: 22, width: 22, resizeMode: 'contain' }, {
+								tintColor: isFocused ? colors.accent : colors.text
+							}]} />
+							<Text style={{ fontSize: 13, color: isFocused ?  colors.accent : colors.text }}>{label}</Text>
 						</View>
 					</TouchableOpacity>
 				);
@@ -80,13 +82,13 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 }
 const Home = () => {
 	return (
-		// <Tab.Navigator tabBar={CustomTabBar}>
-		// 	<Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home', headerShown: false }} />
-		// 	<Tab.Screen name="Offer" component={Offer} />
-		// 	<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', }} />
-		// 	<Tab.Screen name="Profile" component={Profile} />
-		// </Tab.Navigator>
-		<View><Text>Hii</Text></View>
+		<Tab.Navigator tabBar={CustomTabBar}>
+			<Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home', headerShown: false }} />
+			<Tab.Screen name="Offer" component={Offer} />
+			<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', }} />
+			<Tab.Screen name="Profile" component={Profile} />
+		</Tab.Navigator>
+		// <View><Text>Hii</Text></View>
 	)
 }
 
@@ -95,9 +97,9 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		backgroundColor: '#fff',
+		paddingVertical: 5,
 		borderTopWidth: 1,
 		borderTopColor: '#eee',
-		paddingVertical: 5,
 
 		// paddingHorizontal : 20,
 	},
