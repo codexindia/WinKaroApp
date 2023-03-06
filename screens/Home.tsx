@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 const Tab = createBottomTabNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './Tabs/HomeScreen';
+import HomeScreen from './Tabs/Home/HomeScreen';
 import Profile from './Tabs/Profile';
 import ReferEarn from './Tabs/ReferEarn';
 import Offer from './Tabs/Offer';

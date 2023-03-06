@@ -7,9 +7,10 @@ import {
 	TouchableOpacity,
 	ScrollView,
 } from 'react-native';
-import icons from '../../assets/icons/icons';
-import txt from '../../styles/text';
-import { colors } from '../../styles/colors';
+import icons from '../../../assets/icons/icons';
+import txt from '../../../styles/text';
+import { colors } from '../../../styles/colors';
+import Slider from './Slider';
 
 
 
@@ -53,20 +54,8 @@ const HomeScreen = ({ navigation }: any) => {
 					</TouchableOpacity>
 				</View>
 			</View>
-			<ScrollView style={{ backgroundColor: 'white' }}>
-				<View style={styles.main}>
-					<View style={styles.mainBody}>
-						<Text>
-							This is Home Screen
-						</Text>
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-						<Image source={icons.logo} style={{ width: 200, height: 200, resizeMode: 'contain', borderRadius: 200 }} />
-					</View>
-				</View>
+			<ScrollView style={{ backgroundColor: 'white', width: '100%' }}>
+				<Slider />
 			</ScrollView>
 		</SafeAreaView>
 	)
