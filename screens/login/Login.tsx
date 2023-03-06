@@ -1,9 +1,9 @@
 import {
   SafeAreaView,
   StyleSheet, ScrollView,
-  Text, View, Image,
+  Text, View, Image, Button,
   StatusBar, TextInput,
-  TouchableOpacity
+  TouchableOpacity, Modal,
 } from 'react-native'
 import React, { useState } from 'react'
 
@@ -18,7 +18,8 @@ import styles from './styles'
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
 
 const Login = ({ navigation }: any) => {
-  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('')
+  
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView>
@@ -36,11 +37,13 @@ const Login = ({ navigation }: any) => {
           <View style={styles.singleInputContainer}>
             <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
             <TextInput
+              value={phoneNumber}
+              onChangeText={(text) => setPhoneNumber(text)}
               placeholderTextColor={colors.textLighter}
               style={styles.input}
               placeholder="eg. 9876543210"
               keyboardType="phone-pad"
-              maxLength={6}
+              maxLength={10}
             />
           </View>
 
@@ -79,21 +82,41 @@ const Login = ({ navigation }: any) => {
           </View> */}
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight }}>By Logging in you accept out </Text>
-            <TouchableOpacity onPress={() => navigation.replace('SignUp')}>
+            <TouchableOpacity onPress={() => navigation.replace('Terms')}>
               <Text style={{ color: colors.accent }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>
 
         </View>
 
+
       </ScrollView>
     </SafeAreaView>
   )
+  function openModal() {
+
+  }
 
   function handleLogin() {
-    // Alert.alert('Login', 'Login button pressed')
-    navigation.navigate('OTP')
+    // If phone number length is not 10 then show error
+    // Check if phone number is valid
+    if (phoneNumber.length === 0) {
+      Alert.alert('Enter Phone Number', 'Please enter a phone number which you have used to sign up.')
+      return
+    }
 
+    if (phoneNumber.length !== 10) {
+      Alert.alert('Error', 'Please enter a 10 digit phone number.')
+      return
+    }
+
+    if (isNaN(phoneNumber as any)) {
+      Alert.alert('Error', 'Please enter a valid phone number')
+      return
+    }
+    navigation.replace('OTP', {
+      phoneNumber: phoneNumber
+    })
   }
 }
 

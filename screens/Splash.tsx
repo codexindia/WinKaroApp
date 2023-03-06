@@ -19,7 +19,7 @@ const Splash = ({ navigation }: any) => {
       else {
         navigation.replace('Onboarding')
       }
-    }, 1000)
+    }, 0)
   }, []);
   return (
     <View style={styles.main}>

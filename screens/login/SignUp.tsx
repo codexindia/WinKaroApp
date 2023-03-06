@@ -73,7 +73,7 @@ const SignUp = ({ navigation }: any) => {
             <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 20, height: 20 }]} />
             <TextInput
               placeholderTextColor={colors.textLighter}
-
+              maxLength={10}
               style={styles.input}
               placeholder="eg. 987654321"
               keyboardType="phone-pad"

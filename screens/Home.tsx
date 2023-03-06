@@ -80,12 +80,13 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 }
 const Home = () => {
 	return (
-		<Tab.Navigator tabBar={CustomTabBar}>
-			<Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home', headerShown: false }} />
-			<Tab.Screen name="Offer" component={Offer} />
-			<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', }} />
-			<Tab.Screen name="Profile" component={Profile} />
-		</Tab.Navigator>
+		// <Tab.Navigator tabBar={CustomTabBar}>
+		// 	<Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home', headerShown: false }} />
+		// 	<Tab.Screen name="Offer" component={Offer} />
+		// 	<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', }} />
+		// 	<Tab.Screen name="Profile" component={Profile} />
+		// </Tab.Navigator>
+		<View><Text>Hii</Text></View>
 	)
 }
 

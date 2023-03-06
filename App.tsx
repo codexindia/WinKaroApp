@@ -8,6 +8,7 @@ import Onboarding from './screens/onboarding/Onboarding';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from './screens/Splash';
 import OTP from './screens/login/OTP';
+import TermsAndConditions from './screens/terms/TermsAndConditions';
 const Stack = createNativeStackNavigator();
 
 // const Splash = React.lazy(() => import('./screens/Splash'));
@@ -44,6 +45,11 @@ const App = () => {
           name="OTP"
           component={OTP}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Terms"
+          component={TermsAndConditions}
+          options={{ title: 'Terms & Conditions' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

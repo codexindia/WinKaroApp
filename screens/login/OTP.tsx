@@ -10,20 +10,24 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
 
-const OTP = () => {
+const OTP = ({ route, navigation }: any) => {
+  const { phoneNumber } = route.params
+
+
   const [otp, setOtp] = React.useState<number>()
-  let otpStr: any
   const [isValidOtp, setIsValidOtp] = React.useState<boolean>(false)
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
+  const [buttonText, setButtonText] = React.useState<string>('Verify OTP')
+
   useEffect(() => {
-    otpStr = otp?.toString() || ''
-    setIsValidOtp(otpStr.length === 6 ? true : false)
+    setIsValidOtp(otp?.toString().length === 6 ? true : false)
   }, [otp])
 
 
   return (
     <SafeAreaView style={styles.main}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <ScrollView style={{padding : 20}}>
+      <ScrollView style={{ padding: 20 }}>
         <View style={styles.top} >
           <Image source={images.two_step_verify} style={styles.topImage} />
         </View>
@@ -35,19 +39,23 @@ const OTP = () => {
           keyboardType="number-pad"
           value={otp?.toString() || ''}
           onChangeText={handelOtpInput}
+          maxLength={6}
+          // autoFocus={true}
         />
 
         <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: colors.textLight }}>OTP sent to +91 9876543210.</Text>
-          <TouchableOpacity onPress={() => { }}><Text style={{ color: colors.accent }}> Edit Number?</Text></TouchableOpacity>
+          <Text style={{ color: colors.textLight }}>OTP sent to {phoneNumber}.</Text>
+          <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent }}> Edit Number?</Text></TouchableOpacity>
         </View>
 
         <View style={styles.buttonsContainer} >
-          <TouchableOpacity style={[buttons.full, { opacity: isValidOtp ? 1 : 0.5, }]} onPress={handelOtpSubmit} activeOpacity={0.8}
-
-            disabled={isValidOtp ? false : true}
+          <TouchableOpacity
+            style={[buttons.full,
+            { opacity: isValidOtp ? 1 : 0.5, }]}
+            onPress={handelOtpSubmit} activeOpacity={0.8}
+            disabled={isValidOtp && !isSubmitting ? false : true}
           >
-            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white' }}>Verify OTP</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white' }}>{buttonText}</Text>
           </TouchableOpacity>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -64,8 +72,9 @@ const OTP = () => {
   )
   function handelOtpSubmit() {
     // Alert
-    Alert.alert(otp?.toString() || 'No OTP')
-
+    // Alert.alert(otp?.toString() || 'No OTP')
+    // Submit
+    submit()
   }
   function handelOtpInput(text: string) {
     text ? setOtp(parseInt(text)) : setOtp(undefined)
@@ -73,14 +82,18 @@ const OTP = () => {
     if (text.length === 6) {
       submit()
     }
-    // If otp length is more than 6 then remove last character
-    if (text.length > 6) {
-      setOtp(parseInt(text.slice(0, -1)))
-    }
   }
 
   function submit() {
-    Alert.alert('Submitting OTP')
+    setButtonText('Verifying...')
+    setIsSubmitting(true)
+    setTimeout(() => {
+      // Reset the button text and isSubmitting
+      setButtonText('Verify OTP')
+      setIsSubmitting(false)
+      Alert.alert('Wrong OTP', 'Please enter correct OTP')
+    }, 2000);
+    // Alert.alert('Submitting OTP')
   }
 }
 
