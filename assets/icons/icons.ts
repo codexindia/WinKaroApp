@@ -14,5 +14,6 @@ const icons = {
     user_icon: require('./src/user_icon.png'),
     coin_dollar: require('./src/coin_dollar.png'),
     notification_icon: require('./src/notification_icon.png'),
+    time_circle : require('./src/time_circle.png'),
 }
 export default icons

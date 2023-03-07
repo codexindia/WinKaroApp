@@ -1,5 +1,5 @@
 const vars = {
-    borderRadius: '14',
+    borderRadius: 14,
 }
 
 export default vars

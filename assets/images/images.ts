@@ -8,5 +8,6 @@ const images = {
     log_in: require('./src/log_in.png'),
     OTP_verification : require('./src/OTP_verification.png'),
     two_step_verify : require('./src/two_step_verify.jpg'),
+    refer: require('./src/refer.jpg'),
 }
 export default images

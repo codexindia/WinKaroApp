@@ -10,6 +10,7 @@ import OTP from './screens/login/OTP';
 import TermsAndConditions from './screens/terms/TermsAndConditions';
 import Notifications from './screens/Notifications';
 import Wallet from './screens/Wallet';
+import ReferHistory from './screens/Tabs/Refer/ReferHistory';
 const Stack = createNativeStackNavigator();
 
 // const Splash = React.lazy(() => import('./screens/Splash'));
@@ -61,6 +62,11 @@ const App = () => {
           name="Wallet"
           component={Wallet}
           options={{ title: 'Wallet' }}
+        />
+        <Stack.Screen
+          name="ReferHistory"
+          component={ReferHistory}
+          options={{ title: 'Refer History' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
