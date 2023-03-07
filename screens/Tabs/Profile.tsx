@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, Linking
 
 } from 'react-native'
 import React from 'react'
@@ -40,17 +40,19 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'Term & condition',
       icon: icons.terms_and_conditions,
-      onPress: () => {navigation.navigate('Terms')}
+      onPress: () => { navigation.navigate('Terms') }
     },
     {
       title: 'Rate us',
       icon: icons.favorite,
-      onPress: () => { }
+      onPress: () => { Linking.openURL('https://play.google.com/store/apps/details?id=com.earnmoneyapp') }
     },
     {
       title: 'About us',
       icon: icons.information_desk,
-      onPress: () => { }
+      onPress: () => {
+        Linking.openURL('https://play.google.com/store/apps/details?id=com.earnmoneyapp')
+      }
     },
     {
       title: 'Log out',
