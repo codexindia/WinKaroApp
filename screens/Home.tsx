@@ -86,7 +86,7 @@ const Home = () => {
 			<Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home', headerShown: false }} />
 			<Tab.Screen name="Offer" component={Offer} options={{ headerShown: false }} />
 			<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', headerShown: false }} />
-			<Tab.Screen name="Profile" component={Profile} />
+			<Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 		</Tab.Navigator>
 		// <View><Text>Hii</Text></View>
 	)

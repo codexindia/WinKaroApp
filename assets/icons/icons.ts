@@ -15,5 +15,17 @@ const icons = {
     coin_dollar: require('./src/coin_dollar.png'),
     notification_icon: require('./src/notification_icon.png'),
     time_circle : require('./src/time_circle.png'),
+    back : require('./src/back.png'),
+    cash : require('./src/cash.png'),
+    promotion : require('./src/promotion.png'),
+    refer_ic : require('./src/refer_ic.png'),
+    policy : require('./src/policy.png'),
+    terms_and_conditions : require('./src/terms_and_conditions.png'),
+    favorite : require('./src/favorite.png'),
+    information_desk : require('./src/information_desk.png'),
+    logout : require('./src/logout.png'),
+    coins : require('./src/coins.png'),
+    // batch_processing : require('./src/batch_processing.png'),
+    task_list : require('./src/task_list.png'),
 }
 export default icons

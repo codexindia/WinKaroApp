@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 5,
     paddingVertical: 20,
-    // backgroundColor: colors.accentLight,
+    backgroundColor: colors.accentLight,
     borderRadius: vars.borderRadius,
   },
   counterValue: {

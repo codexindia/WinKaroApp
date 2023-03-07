@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 12,
 		width: '100%',
 		borderBottomWidth: 1,
-		borderBottomColor: '#eee',
+		borderBottomColor: '#f5f5f5',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		display: 'flex',

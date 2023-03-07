@@ -11,6 +11,7 @@ import TermsAndConditions from './screens/terms/TermsAndConditions';
 import Notifications from './screens/Notifications';
 import Wallet from './screens/Wallet';
 import ReferHistory from './screens/Tabs/Refer/ReferHistory';
+import PrivacyPolicy from './screens/terms/PrivacyPolicy';
 const Stack = createNativeStackNavigator();
 
 // const Splash = React.lazy(() => import('./screens/Splash'));
@@ -52,6 +53,11 @@ const App = () => {
           name="Terms"
           component={TermsAndConditions}
           options={{ title: 'Terms & Conditions' }}
+        />
+        <Stack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+          options={{ title: 'Privacy Policy' }}
         />
         <Stack.Screen
           name="Notifications"
