@@ -1,6 +1,8 @@
 import {
   StyleSheet, Text, View
-  , SafeAreaView, ScrollView, Image, TouchableOpacity, BackHandler
+  , SafeAreaView, ScrollView, Image,
+  TouchableOpacity, BackHandler,
+  Clipboard, Share
 } from 'react-native'
 import React from 'react'
 import { colors } from '../../../styles/colors'
@@ -14,6 +16,7 @@ import vars from '../../../styles/var'
 
 const ReferEarn = ({ navigation }: any) => {
   const { width } = useWindowDimensions()
+  const [copiedText, setCopiedText] = React.useState('Copy')
   return (
     <View style={{ height: '100%', backgroundColor: 'lime' }}>
       <View style={styles.top}>
@@ -21,7 +24,7 @@ const ReferEarn = ({ navigation }: any) => {
           <Text style={{ fontSize: 20, color: colors.text, fontWeight: 'bold' }}>Refer and Earn</Text>
         </View>
         <View style={[styles.flexRow, { gap: 20 }]}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => {navigation.navigate('ReferHistory') }}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('ReferHistory') }}>
             <View>
               <Image source={icons.time_circle} style={[styles.topImage, { width: 20, height: 20, opacity: 0.9 }]} />
             </View>
@@ -55,18 +58,26 @@ const ReferEarn = ({ navigation }: any) => {
 
 
         <View style={{ width: '100%' }}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => { Alert.alert('Copied', 'Now share this code to you friend') }}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => { copyToClipboard('sample text 123') }}>
             <View style={styles.clickToCopy}>
               <Text style={{ color: colors.accent, fontSize: 16 }}>Refer code : F483df</Text>
-              <Text style={{ color: colors.accent, fontSize: 16, fontWeight: 'bold' }}>Copy </Text>
+              <Text style={{ color: colors.accent, fontSize: 16, fontWeight: 'bold' }}>{copiedText}</Text>
             </View>
           </TouchableOpacity>
-          <ButtonFull title="Refer a Friend" cb={() => { Alert.alert('Refer this to your friend') }} />
+          <ButtonFull title="Refer a Friend" cb={() => { shareText('Refereed to my friend') }} />
         </View>
 
       </View>
     </View>
   )
+
+  function copyToClipboard(text: string) {
+    setCopiedText('Copied')
+    setTimeout(() => {
+      setCopiedText('Copy')
+    }, 10000);
+    Clipboard.setString(text);
+  }
 }
 
 export default ReferEarn
@@ -153,3 +164,23 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 })
+
+
+
+async function shareText(text: string) {
+  try {
+    const result = await Share.share({
+      message:
+        text,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {// shared with activity type of result.activityType
+      } else {// shared
+      }
+    }
+    else if (result.action === Share.dismissedAction) {// dismissed
+    }
+  } catch (error: any) {
+    Alert.alert('Error!', error.message);
+  }
+};

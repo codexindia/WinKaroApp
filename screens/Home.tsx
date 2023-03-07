@@ -88,7 +88,6 @@ const Home = () => {
 			<Tab.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer & Earn', headerShown: false }} />
 			<Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 		</Tab.Navigator>
-		// <View><Text>Hii</Text></View>
 	)
 }
 
@@ -100,8 +99,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 5,
 		borderTopWidth: 1,
 		borderTopColor: '#eee',
-
-		// paddingHorizontal : 20,
 	},
 	tabItem: {
 		flex: 1,

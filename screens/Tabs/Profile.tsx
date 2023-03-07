@@ -75,8 +75,6 @@ const Profile = ({ navigation }: any) => {
       backgroundColor: 'white', flex: 1,
     }}>
       <ScrollView>
-
-
         <View style={[styles.flexRow, { paddingVertical: 10, paddingHorizontal: 20, gap: 20, paddingTop: 20, }]}>
           <View >
             <Image source={icons.user_icon} style={{
@@ -120,7 +118,7 @@ const Profile = ({ navigation }: any) => {
         <View>
 
 
-          <View style={{ marginTop: 0, gap: 1, paddingBottom: 50 }}>
+          <View style={{ marginTop: 0, gap: 1, paddingBottom: 20 }}>
             {
               options.map((item, index) => {
                 return (
