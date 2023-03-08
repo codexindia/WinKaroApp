@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
   ,
   otpInput: {
     backgroundColor: colors.inputBg,
+    color: colors.text,
     padding: 15,
     textAlign: 'center',
     width: '80%',
