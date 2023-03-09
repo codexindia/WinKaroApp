@@ -4,37 +4,26 @@ import icons from '../assets/icons/icons';
 
 const Loading = () => {
 
-	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: 'center',
-				alignItems: 'center',
-				backgroundColor: '#fff',
-			}}
-		>
-			<View
-				style={{
-					borderRadius: 100,
-					borderWidth: 1,
-					borderColor: '#f5f5f5',
-				}}>
-
-				<View
-					style={{
-						width: 70,
-						aspectRatio: 1,
-						borderRadius: 100,
-						borderBottomColor: "#999",
-						borderBottomWidth: 2,
-					}}
-				>
-					<Image source={icons.loading} style={{ width: 70, height: 70, borderRadius: 100 }} />
-
-				</View>
-			</View>
-		</View>
-	)
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+      }}
+    >
+      <View>
+        <View>
+          <Image source={icons.loading}
+            style={{
+              width: 80, height: 80, resizeMode: 'contain',
+              borderRadius: 100, opacity: 0.5
+            }} />
+        </View>
+      </View>
+    </View>
+  )
 };
 
 export default Loading;
