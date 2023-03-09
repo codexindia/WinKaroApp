@@ -27,5 +27,6 @@ const icons = {
     coins : require('./src/coins.png'),
     // batch_processing : require('./src/batch_processing.png'),
     task_list : require('./src/task_list.png'),
+    loading : require('./src/loading.gif'),
 }
 export default icons

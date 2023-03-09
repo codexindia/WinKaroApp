@@ -20,12 +20,12 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'Withdraw',
       icon: icons.cash,
-      onPress: () => { }
+      onPress: () => { navigation.navigate('Wallet') }
     },
     {
       title: 'Promotion',
       icon: icons.promotion,
-      onPress: () => { }
+      onPress: () => { navigation.navigate('Promotions') }
     },
     {
       title: 'Refer & Earn',
@@ -75,17 +75,27 @@ const Profile = ({ navigation }: any) => {
       backgroundColor: 'white', flex: 1,
     }}>
       <ScrollView>
-        <View style={[styles.flexRow, { paddingVertical: 10, paddingHorizontal: 20, gap: 20, paddingTop: 20, }]}>
-          <View >
-            <Image source={icons.user_icon} style={{
-              height: 70,
-              width: 70,
-            }} />
+        <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
+          <View style={[styles.flexRow, { gap: 20 }]}>
+            <View>
+              <Image source={icons.user_icon} style={{
+                height: 70,
+                width: 70,
+              }} />
+            </View>
+            <View>
+              <Text style={[styles.fullName]}>User Name</Text>
+              <Text style={[styles.userName]}>@userName</Text>
+            </View>
           </View>
-          <View>
-            <Text style={[styles.fullName]}>User Name</Text>
-            <Text style={[styles.userName]}>@userName</Text>
-          </View>
+          <TouchableOpacity onPress={() => { Alert.alert('Upload a picture') }} activeOpacity={0.8}>
+            <Text style={
+              {
+                textAlign: 'center', color: colors.accent,
+                fontWeight: 'bold', backgroundColor: colors.accentLight,
+                padding: 8, borderRadius: 10, paddingHorizontal: 17
+              }}>{"Change Pic"}</Text>
+          </TouchableOpacity>
         </View>
         <View style={[styles.detailsContainer]}>
           <View style={[styles.details]}>

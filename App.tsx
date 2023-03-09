@@ -9,11 +9,14 @@ import Splash from './screens/Splash';
 import OTP from './screens/login/OTP';
 import TermsAndConditions from './screens/terms/TermsAndConditions';
 import Notifications from './screens/Notifications';
-import Wallet from './screens/Wallet';
 import ReferHistory from './screens/Tabs/Refer/ReferHistory';
 import PrivacyPolicy from './screens/terms/PrivacyPolicy';
 import About from './screens/terms/About';
 import Test from './components/Test';
+import Wallet from './screens/wallet/Wallet';
+import Promotions from './screens/Tabs/others/Promotion';
+
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -30,6 +33,8 @@ const App = () => {
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{ title: 'Privacy Policy' }} />
         <Stack.Screen name="Notifications" component={Notifications} options={{ title: 'Notifications' }} />
         <Stack.Screen name="Wallet" component={Wallet} options={{ title: 'Wallet' }} />
+        <Stack.Screen name="Promotions" component={Promotions} options={{ title: 'Promotions' }} />
+
         <Stack.Screen name="ReferHistory" component={ReferHistory} options={{ title: 'Refer History' }} />
         <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} />
         <Stack.Screen name="Test" component={Test} options={{ title: 'Test' }} />
