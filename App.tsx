@@ -15,6 +15,7 @@ import About from './screens/terms/About';
 import Test from './components/Test';
 import Wallet from './screens/wallet/Wallet';
 import Promotions from './screens/Tabs/others/Promotion';
+import Withdraw from './screens/wallet/Withdraw';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,8 +34,9 @@ const App = () => {
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{ title: 'Privacy Policy' }} />
         <Stack.Screen name="Notifications" component={Notifications} options={{ title: 'Notifications' }} />
         <Stack.Screen name="Wallet" component={Wallet} options={{ title: 'Wallet' }} />
-        <Stack.Screen name="Promotions" component={Promotions} options={{ title: 'Promotions' }} />
+        <Stack.Screen name="Withdraw" component={Withdraw} options={{ title: 'Withdraw' }} />
 
+        <Stack.Screen name="Promotions" component={Promotions} options={{ title: 'Promotions' }} />
         <Stack.Screen name="ReferHistory" component={ReferHistory} options={{ title: 'Refer History' }} />
         <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} />
         <Stack.Screen name="Test" component={Test} options={{ title: 'Test' }} />
