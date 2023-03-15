@@ -10,5 +10,7 @@ const images = {
     two_step_verify : require('./src/two_step_verify.jpg'),
     refer: require('./src/refer.jpg'),
     wallet : require('./src/wallet.png'),
+    withdraw : require('./src/withdraw.png'),
+
 }
 export default images

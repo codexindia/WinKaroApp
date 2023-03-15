@@ -15,6 +15,7 @@ import About from './screens/terms/About';
 import Test from './components/Test';
 import Wallet from './screens/wallet/Wallet';
 import Promotions from './screens/Tabs/others/Promotion';
+import Withdraw from './screens/wallet/Withdraw';
 
 
 const Stack = createNativeStackNavigator();

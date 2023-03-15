@@ -18,7 +18,7 @@ const Loading = () => {
           <Image source={icons.loading}
             style={{
               width: 80, height: 80, resizeMode: 'contain',
-              borderRadius: 100, opacity: 0.5
+              borderRadius: 100, opacity: 0.7
             }} />
         </View>
       </View>

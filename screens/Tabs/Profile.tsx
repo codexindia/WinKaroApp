@@ -20,7 +20,7 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'Withdraw',
       icon: icons.cash,
-      onPress: () => { navigation.navigate('Wallet') }
+      onPress: () => { navigation.navigate('Withdraw') }
     },
     {
       title: 'Promotion',
