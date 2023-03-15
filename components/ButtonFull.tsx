@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import buttons from '../styles/buttons'
 
-const ButtonFull = ({ title, cb }: any) => {
+const ButtonFull = ({ title, cb, styles }: any) => {
     return (
         <TouchableOpacity style={buttons.full} onPress={cb} activeOpacity={0.8}>
-            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white' }}>{title || 'Sample Button'}</Text>
+            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white' }]}>{title || 'Sample Button'}</Text>
         </TouchableOpacity>
     )
 }
