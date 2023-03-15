@@ -13,7 +13,7 @@ const WithdrawHistory = ({ data }: any) => {
             alignItems: 'center', justifyContent: 'space-between',
             borderBottomColor: '#eee', borderWidth: 1, paddingBottom: 15, paddingTop: 15,
             borderColor: '#00000000'
-          }}>
+          }} key={index}>
             <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
               <View>
                 <Image source={icons.coins} style={{
