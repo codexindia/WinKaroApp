@@ -22,7 +22,7 @@ function Radio({ data, updater, selectedValue }: any) {
   return (
     <View style={{
       flexDirection: 'row',
-      gap: 20
+      gap: 15
     }}>
       {
         data.map((item: any, index: any) => {
@@ -36,7 +36,8 @@ function Radio({ data, updater, selectedValue }: any) {
                 gap: 10,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                padding: 10
               }}>
                 <View style={[{
                   height: 21,
@@ -77,7 +78,7 @@ function inINR(amount: number) {
 const Wallet = () => {
   const [selectedValue, setSelectedValue] = React.useState("wallet");
   const [balance, setBalance] = React.useState(157000);
-  const [accTypePlaceholder, setAccTypePlaceholder] = useState('Paytm Wallet')
+  // const [accTypePlaceholder, setAccTypePlaceholder] = useState('Your Paytm Wallet Number')
 
   return (
     <ScrollView style={{
@@ -85,11 +86,11 @@ const Wallet = () => {
     }}>
       {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: colors.text, marginTop : 20, marginBottom : 20 }}>Wallet and Withdraw</Text> */}
       <Text style={{ color: colors.text, fontSize: 16, marginTop: 10 }}>Your Balance</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 5 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, marginTop: 5 }}>
         <Image source={icons.coins} style={{ width: 30, aspectRatio: 1, }} />
         <Text style={{ fontSize: 30, fontWeight: 'bold', color: colors.text }}>{balance} (₹ {inINR(balance)})</Text>
       </View>
-      <View style={{ width: '100%' }}>
+      <View style={{ width: '100%', gap: 20 }}>
         <View style={{ width: '100%', }}>
           <Image source={images.wallet} style={{
             width: '100%', height: 250,
@@ -100,7 +101,7 @@ const Wallet = () => {
         <Text style={{ marginTop: 20, color: colors.text, fontSize: 14 }}><Text style={{ fontWeight: 'bold', }}>Note : </Text>The UPI or Paytm wallet of your first withdraw will be bounded to this account. You would not be able to bind another UPI to this account.</Text>
       </View>
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 30 }}>
         <Text style={[styles.label]}>Select Account Type</Text>
         <Radio data={data} updater={setSelectedValue} selectedValue={selectedValue} />
         <View style={{ marginTop: 15, gap: 15 }}>
@@ -112,14 +113,14 @@ const Wallet = () => {
               // onChangeText={(text) => setPhoneNumber(text)}
               placeholderTextColor={colors.textLighter}
               style={input.textInput}
-              placeholder="Your Paytm Wallet Number"
+              placeholder={selectedValue === 'wallet' ? 'Your Paytm Wallet Number' : 'Your UPI ID'}
               keyboardType="phone-pad"
               maxLength={10}
             />
           </View>
           {/* <Text style={[styles.label]}>Enter Amount</Text> */}
           <View style={input.singleInputContainer}>
-            <Image source={icons.mobile_solid} style={[input.inputImage, { width: 23, height: 23 }]} />
+            <Image source={icons.money} style={[input.inputImage, { width: 21, height: 21 }]} />
             <TextInput
               // value={phoneNumber}
               // onChangeText={(text) => setPhoneNumber(text)}
@@ -135,14 +136,14 @@ const Wallet = () => {
       </View>
 
 
-      <View style={{ marginTop: 50, marginBottom : 50 }}>
+      <View style={{ marginTop: 50, marginBottom: 50 }}>
         <View style={{
           width: '100%',
           display: 'flex', flexDirection: 'row',
           justifyContent: 'space-between', alignItems: 'center'
         }}>
           <Text style={{
-            fontSize: 20, color: colors.text, marginBottom : 10, fontWeight:'bold'
+            fontSize: 20, color: colors.text, marginBottom: 10, fontWeight: 'bold'
           }}>Withdraw History</Text>
           {/* <TouchableOpacity>
             <Text style={{ color: colors.accent, fontWeight: 'bold' }}>View All</Text>
@@ -150,9 +151,9 @@ const Wallet = () => {
         </View>
 
         <WithdrawHistory data={[
-          { amount: 73, status: 'pending', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref : '98FT65GF4758' },
-          { amount: 50, status: 'success', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref : '98YPO8ME4595'},
-          { amount: 17, status: 'failed', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref : '9Y8SD4H26F5G' }
+          { amount: 73, status: 'pending', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98FT65GF4758' },
+          { amount: 50, status: 'success', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98YPO8ME4595' },
+          { amount: 17, status: 'failed', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '9Y8SD4H26F5G' }
         ]} />
 
       </View>

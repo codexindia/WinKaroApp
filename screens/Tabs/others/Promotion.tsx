@@ -1,15 +1,59 @@
-import { StyleSheet, Text, View, Modal, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Modal, Alert, TouchableOpacity, Image, ScrollView, Button, Linking } from 'react-native'
 import React from 'react'
+import images from '../../../assets/images/images'
+import { colors } from '../../../styles/colors'
+import ButtonFull from '../../../components/ButtonFull'
+
+const email = 'helloWorld@gmail.com'
 
 const Promotion = () => {
   const [modalVisible, setModalVisible] = React.useState(false)
+
   return (
-    <View style={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-      <TouchableOpacity onPress={() => {
+    <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: 'white' }}>
+      <View style={{ width: '100%', padding: 20, }}>
+        <Image source={images.refer} style={{
+          width: '100%',
+          height: 200, marginTop: 20,
+          resizeMode: 'contain',
+        }} />
+      </View>
+      <Text style={{ fontSize: 25, textAlign: 'center', color: colors.text }}>Contact us for promotion</Text>
+      <View style={{
+        paddingHorizontal: 30,
+      }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={styles.emailText}>Send us email : </Text>
+          {/* <TouchableOpacity > */}
+            <Text selectable={true} style={[styles.emailText, { color: colors.accent }]}>{email}</Text>
+          {/* </TouchableOpacity> */}
+          <Text style={styles.emailText}> for promotion</Text>
+        </View>
+      </View>
+
+      <View style={{ padding: 20 }}>
+        <ButtonFull title='Send Email' cb={sendEmail} />
+      </View>
+    </View>
+  )
+}
+
+export default Promotion
+
+function sendEmail() {
+  Linking.openURL(`mailto:${email}`)
+}
+
+
+const styles = StyleSheet.create({
+  emailText: {
+    fontSize: 16, color: colors.gray,
+  }
+})
+
+
+
+{/* <TouchableOpacity onPress={() => {
         setModalVisible(true)
         // Alert.alert('Modal has been closed')
       }}>
@@ -42,11 +86,4 @@ const Promotion = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
-  )
-}
-
-export default Promotion
-
-const styles = StyleSheet.create({})
+      </Modal> */}

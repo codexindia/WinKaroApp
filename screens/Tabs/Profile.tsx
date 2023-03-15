@@ -111,11 +111,13 @@ const Profile = ({ navigation }: any) => {
 
         <View style={[styles.flexRow, styles.balanceContainer]}>
           <View style={[styles.balanceBox]}>
-            <View style={[styles.flexRow, { gap: 7 }]}>
-              <Image source={icons.coins} style={styles.balanceImage} />
-              <Text style={[styles.balance]}>2456</Text>
-            </View>
-            <Text style={[styles.balanceType]}>Wallet</Text>
+            <TouchableOpacity activeOpacity={0.7} onPress={()=>navigation.navigate('Wallet')}>
+              <View style={[styles.flexRow, { gap: 7 }]}>
+                <Image source={icons.coins} style={styles.balanceImage} />
+                <Text style={[styles.balance]}>2456</Text>
+              </View>
+              <Text style={[styles.balanceType]}>Wallet</Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.balanceBox]}>
             <View style={[styles.flexRow, { gap: 7 }]}>
