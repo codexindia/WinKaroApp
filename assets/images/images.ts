@@ -11,6 +11,7 @@ const images = {
     refer: require('./src/refer.jpg'),
     wallet : require('./src/wallet.png'),
     withdraw : require('./src/withdraw.png'),
+    banner : require('./src/banner.jpg'),
 
 }
 export default images
