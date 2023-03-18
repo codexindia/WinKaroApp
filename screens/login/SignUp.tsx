@@ -6,7 +6,7 @@ import {
 import DeviceInfo from 'react-native-device-info'
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
 import { Alert } from 'react-native'
-import { API_URL } from '../../api'
+import { API_URL } from '../../appData'
 import icons from '../../assets/icons/icons'
 import images from '../../assets/images/images'
 import ButtonFull from '../../components/ButtonFull'

@@ -1,31 +1,88 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StatusBar, StyleSheet, Text, View, BackHandler } from 'react-native';
+import { API_URL } from '../appData';
 import icons from '../assets/icons/icons';
+import Loading from '../components/Loading';
 import { colors } from '../styles/colors';
+import { networkError } from './lib';
 // import { AsyncStorage } from 'react-native';
-const Splash = ({ navigation }: any) => {
 
+async function storeUserData(res: any) {
+  const userData = {
+    name: res.data.name,
+    email: res.data.email,
+    phone: res.data.phone,
+    refer_code: res.data.refer_code,
+  }
+  await AsyncStorage.setItem('userData', JSON.stringify(userData))
+  console.log('User data is stored in AsyncStorage')
+}
+
+async function unexpectedLoggedOut(navigation: any) {
+  Alert.alert('Error', 'Unexpectedly logged out from the app. Please login again.')
+  await AsyncStorage.removeItem('isLoggedIn')
+  navigation.replace('LogIn')
+}
+
+
+
+
+const Splash = ({ navigation }: any) => {
+  async function mainProcess() {
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+    const isOnboarding = await AsyncStorage.getItem('onboarding')
+    if (isLoggedIn === 'true') {
+      const token = await AsyncStorage.getItem('token')
+      const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+
+      try {
+        const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
+        const res = await fetched.json()
+
+        console.log(res)
+
+        if (res.status === true || res.status === 'true') {
+          await storeUserData(res)
+          navigation.replace('Home')
+        }
+        else {
+          // Show error message
+          await unexpectedLoggedOut(navigation)
+        }
+      }
+      catch (err) {
+        Alert.alert("Network Error", "Please check your internet connection and try again");
+      }
+    }
+    else if (isOnboarding === 'true') {
+      navigation.replace('LogIn')
+    }
+    else {
+      navigation.replace('Onboarding')
+    }
+  }
   useEffect(() => {
     setTimeout(async () => {
-      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-      const isOnboarding = await AsyncStorage.getItem('onboarding')
-      if (isLoggedIn === 'true') {
-        navigation.replace('Home')
-      }
-      else if (isOnboarding === 'true') {
-        navigation.replace('LogIn')
-      }
-      else {
-        navigation.replace('Onboarding')
-      }
+      mainProcess()
     }, 0)
   }, []);
   return (
     <View style={styles.main}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View style={styles.center}>
-        <Image source={icons.logo} style={styles.logo} />
+        <View>
+          <Image source={icons.logo} style={styles.logo} />
+        </View>
+        {/* <View style={{
+          width: '100%', marginTop: 50, backgroundColor: 'red',
+        }}>
+          <Loading />
+        </View> */}
+        <Text style={{
+          color: colors.gray, marginTop: 15
+        }}>Loading...</Text>
+
         {/* <Text style={{ fontSize: 30, fontWeight: 'bold', color: colors.text, marginTop: 20 }}>Win Karo</Text> */}
       </View>
     </View>
@@ -39,19 +96,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'flex',
     backgroundColor: 'white',
-    // backgroundColor: colors.accent
   },
   center: {
-    display: 'flex',
+    // display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   logo: {
-    flex: 0.5,
+    // flex: 0.5,
     width: 200,
     height: 200,
     borderRadius: 100,
+    resizeMode: 'contain',
   }
 })

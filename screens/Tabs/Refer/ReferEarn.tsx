@@ -12,11 +12,23 @@ import { useWindowDimensions } from 'react-native'
 import ButtonFull from '../../../components/ButtonFull'
 import { Alert } from 'react-native'
 import vars from '../../../styles/var'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { UserData } from '../../types'
+import { playStoreLink } from '../../../appData'
 
 
 const ReferEarn = ({ navigation }: any) => {
   const { width } = useWindowDimensions()
   const [copiedText, setCopiedText] = React.useState('Copy')
+  const [referCode, setReferCode] = React.useState('')
+
+  React.useEffect(() => {
+    setTimeout(async () => {
+      const data: UserData = JSON.parse(await AsyncStorage.getItem('userData') as string)
+      setReferCode(data.refer_code)
+    }, 0);
+  }, [])
+
   return (
     <View style={{ height: '100%', backgroundColor: 'lime' }}>
       <View style={styles.top}>
@@ -58,13 +70,17 @@ const ReferEarn = ({ navigation }: any) => {
 
 
         <View style={{ width: '100%' }}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => { copyToClipboard('sample text 123') }}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => { copyToClipboard(referCode) }}>
             <View style={styles.clickToCopy}>
-              <Text style={{ color: colors.accent, fontSize: 16 }}>Refer code : F483df</Text>
+              <Text style={{ color: colors.accent, fontSize: 16 }}>Refer code : {referCode}</Text>
               <Text style={{ color: colors.accent, fontSize: 16, fontWeight: 'bold' }}>{copiedText}</Text>
             </View>
           </TouchableOpacity>
-          <ButtonFull title="Refer a Friend" cb={() => { shareText('Refereed to my friend') }} />
+          <ButtonFull title="Refer a Friend" cb={() => {
+            shareText(
+              `Check out Win Karo App on the Google Play Store using this link: ${playStoreLink}. Use my referral code ${referCode} for a special bonus when you sign up. Enjoy!`
+            )
+          }} />
         </View>
 
       </View>

@@ -15,7 +15,7 @@ import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
-import { API_URL } from '../../api'
+import { API_URL } from '../../appData'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'

@@ -1,20 +1,26 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import {
-	StatusBar, StyleSheet,
-	Text, View, SafeAreaView,
-	Image,
-	Touchable,
-	TouchableOpacity,
-	ScrollView,
+	Image, SafeAreaView, ScrollView, StatusBar, StyleSheet,
+	Text, TouchableOpacity, View
 } from 'react-native';
 import icons from '../../../assets/icons/icons';
-import txt from '../../../styles/text';
 import { colors } from '../../../styles/colors';
+import { UserData } from '../../types';
 import Slider from './Slider';
 
 
 
 const HomeScreen = ({ navigation }: any) => {
+	const [name, setName] = useState('')
+
+	setTimeout(async () => {
+		const userData = await AsyncStorage.getItem('userData')
+		let data: UserData = JSON.parse(userData as string)
+		setName(data.name.split(' ')[0])
+	}, 0);
+
+
 	return (
 		<SafeAreaView>
 			<StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -24,7 +30,7 @@ const HomeScreen = ({ navigation }: any) => {
 				>
 					<View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15 }}>
 						<Image source={icons.user_icon} style={styles.topImage} />
-						<Text style={{ fontSize: 20, color: colors.text, fontWeight: 'bold' }}>User Name</Text>
+						<Text style={{ fontSize: 20, color: colors.text, fontWeight: 'bold' }}>{name}</Text>
 					</View>
 				</TouchableOpacity>
 				<View style={[styles.flexRow, { gap: 20 }]}>

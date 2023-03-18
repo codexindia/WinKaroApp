@@ -10,7 +10,7 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { API_URL } from '../../api'
+import { API_URL } from '../../appData'
 import DeviceInfo from 'react-native-device-info'
 
 

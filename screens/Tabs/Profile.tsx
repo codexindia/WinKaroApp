@@ -6,12 +6,13 @@ import {
   ScrollView, Linking, Alert
 
 } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import images from '../../assets/images/images'
 import icons from '../../assets/icons/icons'
 import { colors } from '../../styles/colors'
 import vars from '../../styles/var'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { UserData } from '../types'
 
 
 
@@ -78,13 +79,28 @@ const Profile = ({ navigation }: any) => {
       }
     },
   ]
+
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  useEffect(() => {
+    setTimeout(async () => {
+      const userData = await AsyncStorage.getItem('userData')
+      let data: UserData = JSON.parse(userData as string)
+      setName(data.name)
+      setEmail(data.email)
+      setPhone(data.phone)
+    }, 0);
+  }, [])
+
   return (
     <SafeAreaView style={{
       backgroundColor: 'white', flex: 1,
     }}>
       <ScrollView>
         <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
-          <View style={[styles.flexRow, { gap: 20 }]}>
+          <View style={[styles.flexRow, { gap: 15 }]}>
             <View>
               <Image source={icons.user_icon} style={{
                 height: 70,
@@ -92,8 +108,8 @@ const Profile = ({ navigation }: any) => {
               }} />
             </View>
             <View>
-              <Text style={[styles.fullName]}>User Name</Text>
-              <Text style={[styles.userName]}>@userName</Text>
+              <Text style={[styles.fullName]}>{name}</Text>
+              {/* <Text style={[styles.userName]}>@userName</Text> */}
             </View>
           </View>
           <TouchableOpacity onPress={() => { Alert.alert('Upload a picture') }} activeOpacity={0.8}>
@@ -108,11 +124,11 @@ const Profile = ({ navigation }: any) => {
         <View style={[styles.detailsContainer]}>
           <View style={[styles.details]}>
             <Image source={icons.mobile_solid} style={styles.detailsImage} />
-            <Text style={[styles.detailsText]}>+91 987654321</Text>
+            <Text style={[styles.detailsText]}>+91 {phone}</Text>
           </View>
           <View style={[styles.details]}>
             <Image source={icons.at} style={styles.detailsImage} />
-            <Text style={[styles.detailsText]}>abcdefgh@gmail.com</Text>
+            <Text style={[styles.detailsText]}>{email}</Text>
           </View>
         </View>
 

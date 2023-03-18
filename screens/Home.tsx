@@ -1,14 +1,13 @@
-import React from 'react'
-import { Image, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-const Tab = createBottomTabNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './Tabs/Home/HomeScreen';
-import Profile from './Tabs/Profile';
-import ReferEarn from './Tabs/Refer/ReferEarn';
-import Offer from './Tabs/Offer';
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import icons from '../assets/icons/icons';
 import { colors } from '../styles/colors';
-import OTP from './login/OTP';
+import HomeScreen from './Tabs/Home/HomeScreen';
+import Offer from './Tabs/Offer';
+import Profile from './Tabs/Profile';
+import ReferEarn from './Tabs/Refer/ReferEarn';
+const Tab = createBottomTabNavigator();
 
 const tabIcons: any = {
 	'Home': {
