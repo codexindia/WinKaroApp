@@ -10,7 +10,7 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { API_URL } from '../../var'
+import { API_URL } from '../../api'
 
 const OTP = ({ route, navigation }: any) => {
   const { phone, signUp } = route.params
@@ -19,7 +19,6 @@ const OTP = ({ route, navigation }: any) => {
   const [isValidOtp, setIsValidOtp] = React.useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
   const [buttonText, setButtonText] = React.useState<string>('Verify OTP')
-
 
   useEffect(() => {
     setIsValidOtp(otp.length === 6)
@@ -91,23 +90,24 @@ const OTP = ({ route, navigation }: any) => {
     const formData = new FormData()
     formData.append('phone', phone)
     formData.append('otp', lastOtp)
-    console.log(lastOtp)
+    console.log(lastOtp, phone)
 
     fetch(API_URL.verify_otp, {
       method: 'POST',
       body: formData
     }).then(res => res.json()).then(async res => {
+      console.log(res)
       if (res.status === true || res.status === 'true') {
         // Store the auth token in async storage and navigate to home screen
-        await AsyncStorage.setItem('auth', res.auth)
+        await AsyncStorage.setItem('token', res.token)
         await AsyncStorage.setItem('isLoggedIn', 'true')
         navigation.replace('Home')
+        console.log('Navigate to home')
       }
       else {
         setButtonText('Verify OTP')
         setIsSubmitting(false)
         Alert.alert('Wrong OTP', res.message)
-        // Alert.alert('Wrong OTP', 'Please enter correct OTP')
       }
     }).catch(err => {
       console.log(err)
@@ -115,8 +115,6 @@ const OTP = ({ route, navigation }: any) => {
       setIsSubmitting(false)
       Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
     })
-
-
 
 
     // setTimeout(async () => {

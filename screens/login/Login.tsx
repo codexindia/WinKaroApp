@@ -15,7 +15,7 @@ import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
-import { API_URL } from '../../var'
+import { API_URL } from '../../api'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
@@ -132,15 +132,15 @@ const Login = ({ navigation }: any) => {
       method: 'POST',
       body: formData
     }).then((res) => res.json()).then((res) => {
-      if (res.status !== 'true') {
+      console.log(res)
+      if (res.status === true || res.status === 'true') {
+        navigation.replace('OTP', { phone: phoneNumber })
+      } else {
         Alert.alert('Error', res.message)
         setIsSendingOTP(false)
         setIsSendingOTPText('Send OTP')
         return
-      } else if (res.status === 'true') {
-        navigation.replace('OTP', { phone: phoneNumber })
       }
-      console.log(res)
     }).catch((err) => {
       console.log(err)
       setIsSendingOTP(false)

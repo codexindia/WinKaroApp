@@ -11,6 +11,7 @@ import images from '../../assets/images/images'
 import icons from '../../assets/icons/icons'
 import { colors } from '../../styles/colors'
 import vars from '../../styles/var'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -64,7 +65,14 @@ const Profile = ({ navigation }: any) => {
           },
           {
             text: 'Log Out',
-            onPress: () => { },
+            onPress: async () => {
+              // Delete the token and redirect to home screen
+              // delete isLoggedIn from async storage
+              // console.log(await AsyncStorage.getItem('token'))
+              await AsyncStorage.removeItem('token')
+              await AsyncStorage.removeItem('isLoggedIn')
+              navigation.replace('LogIn')
+            },
             style: 'destructive'
           }])
       }
@@ -111,7 +119,7 @@ const Profile = ({ navigation }: any) => {
 
         <View style={[styles.flexRow, styles.balanceContainer]}>
           <View style={[styles.balanceBox]}>
-            <TouchableOpacity activeOpacity={0.7} onPress={()=>navigation.navigate('Wallet')}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Wallet')}>
               <View style={[styles.flexRow, { gap: 7 }]}>
                 <Image source={icons.coins} style={styles.balanceImage} />
                 <Text style={[styles.balance]}>2456</Text>

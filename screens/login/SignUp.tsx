@@ -1,23 +1,17 @@
+import React, { useEffect, useState } from 'react'
 import {
-  SafeAreaView,
-  StyleSheet, ScrollView,
-  Text, View, Image,
-  StatusBar, TextInput,
-  TouchableOpacity
+  Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput,
+  TouchableOpacity, View
 } from 'react-native'
-import React, {
-  useState, useEffect
-} from 'react'
 import DeviceInfo from 'react-native-device-info'
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
+import { Alert } from 'react-native'
+import { API_URL } from '../../api'
 import icons from '../../assets/icons/icons'
 import images from '../../assets/images/images'
-import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
-import { Alert } from 'react-native'
-import buttons from '../../styles/buttons'
+import { colors } from '../../styles/colors'
 import styles from './styles'
-import { API_URL } from '../../var'
 
 const SignUp = ({ navigation }: any) => {
   let [deviceName, setDeviceName] = useState('')
