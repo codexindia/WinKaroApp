@@ -11,10 +11,12 @@ import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../api'
+import DeviceInfo from 'react-native-device-info'
+
 
 const OTP = ({ route, navigation }: any) => {
   const { phone, signUp } = route.params
-
+  let [deviceName, setDeviceName] = React.useState<string>('')
   const [otp, setOtp] = React.useState<string>('')
   const [isValidOtp, setIsValidOtp] = React.useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
@@ -23,7 +25,9 @@ const OTP = ({ route, navigation }: any) => {
   useEffect(() => {
     setIsValidOtp(otp.length === 6)
   }, [otp])
-
+  useEffect(() => {
+    DeviceInfo.getDeviceName().then(name => { setDeviceName(name) });
+  }, [])
 
   return (
     <SafeAreaView style={styles.main}>
@@ -90,6 +94,7 @@ const OTP = ({ route, navigation }: any) => {
     const formData = new FormData()
     formData.append('phone', phone)
     formData.append('otp', lastOtp)
+    formData.append('device_name', deviceName)
     console.log(lastOtp, phone)
 
     fetch(API_URL.verify_otp, {
@@ -115,6 +120,7 @@ const OTP = ({ route, navigation }: any) => {
       setIsSubmitting(false)
       Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
     })
+
 
 
     // setTimeout(async () => {

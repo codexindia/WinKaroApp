@@ -47,7 +47,6 @@ const SignUp = ({ navigation }: any) => {
     formData.append('phone', mobileNumber)
     formData.append('device_name', deviceName)
     formData.append('refer_code', referCode)
-    formData.append('device_name', deviceName)
 
     fetch(API_URL.register, {
       method: 'POST',
