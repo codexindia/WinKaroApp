@@ -10,18 +10,19 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import buttons from '../../styles/buttons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { API_URL } from '../../var'
 
 const OTP = ({ route, navigation }: any) => {
-  const { phoneNumber } = route.params
+  const { phone, signUp } = route.params
 
-
-  const [otp, setOtp] = React.useState<number>()
+  const [otp, setOtp] = React.useState<string>('')
   const [isValidOtp, setIsValidOtp] = React.useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
   const [buttonText, setButtonText] = React.useState<string>('Verify OTP')
 
+
   useEffect(() => {
-    setIsValidOtp(otp?.toString().length === 6 ? true : false)
+    setIsValidOtp(otp.length === 6)
   }, [otp])
 
 
@@ -38,15 +39,17 @@ const OTP = ({ route, navigation }: any) => {
           placeholderTextColor={colors.textLighter}
           placeholder="Enter OTP"
           keyboardType="number-pad"
-          value={otp?.toString() || ''}
+          value={otp}
           onChangeText={handelOtpInput}
           maxLength={6}
         // autoFocus={true}
         />
 
         <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: colors.textLight }}>OTP sent to {phoneNumber}.</Text>
-          <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent }}> Edit Number?</Text></TouchableOpacity>
+          <Text style={{ color: colors.textLight }}>OTP sent to {phone}.</Text>
+          {!signUp &&
+            <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent }}> Edit Number?</Text></TouchableOpacity>
+          }
         </View>
 
         <View style={styles.buttonsContainer} >
@@ -72,31 +75,61 @@ const OTP = ({ route, navigation }: any) => {
     </SafeAreaView>
   )
   function handelOtpSubmit() {
-    // Alert
-    // Alert.alert(otp?.toString() || 'No OTP')
-    // Submit
     submit()
   }
   function handelOtpInput(text: string) {
-    text ? setOtp(parseInt(text)) : setOtp(undefined)
-    // If OTP length is 6 then submit
+    setOtp(text)
     if (text.length === 6) {
-      submit()
+      submit(text)
     }
   }
 
-  function submit() {
+  async function submit(lastOtp = otp) {
     setButtonText('Verifying...')
     setIsSubmitting(true)
-    setTimeout(async () => {
-      // Reset the button text and isSubmitting
+    // Create a form data
+    const formData = new FormData()
+    formData.append('phone', phone)
+    formData.append('otp', lastOtp)
+    console.log(lastOtp)
+
+    fetch(API_URL.verify_otp, {
+      method: 'POST',
+      body: formData
+    }).then(res => res.json()).then(async res => {
+      if (res.status === true || res.status === 'true') {
+        // Store the auth token in async storage and navigate to home screen
+        await AsyncStorage.setItem('auth', res.auth)
+        await AsyncStorage.setItem('isLoggedIn', 'true')
+        navigation.replace('Home')
+      }
+      else {
+        setButtonText('Verify OTP')
+        setIsSubmitting(false)
+        Alert.alert('Wrong OTP', res.message)
+        // Alert.alert('Wrong OTP', 'Please enter correct OTP')
+      }
+    }).catch(err => {
+      console.log(err)
       setButtonText('Verify OTP')
       setIsSubmitting(false)
-      // Alert.alert('Wrong OTP', 'Please enter correct OTP')
-      // set isLoggedIn to true
-      await AsyncStorage.setItem('isLoggedIn', 'true')
-      navigation.replace('Home')
-    }, 2000);
+      Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
+    })
+
+
+
+
+    // setTimeout(async () => {
+
+
+    //   // Reset the button text and isSubmitting
+    //   setButtonText('Verify OTP')
+    //   setIsSubmitting(false)
+    //   // Alert.alert('Wrong OTP', 'Please enter correct OTP')
+    //   // set isLoggedIn to true
+    //   await AsyncStorage.setItem('isLoggedIn', 'true')
+    //   navigation.replace('Home')
+    // }, 2000);
     // Alert.alert('Submitting OTP')
   }
 }

@@ -15,11 +15,16 @@ import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
+import { API_URL } from '../../var'
+
+
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
 
 const Login = ({ navigation }: any) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('')
-  
+  const [isSendingOTP, setIsSendingOTP] = useState<boolean>(false)
+  const [isSendingOTPText, setIsSendingOTPText] = useState<string>('Send OTP')
+
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView>
@@ -63,7 +68,7 @@ const Login = ({ navigation }: any) => {
 
 
           <View style={{ marginTop: 20 }}>
-            <ButtonFull title='Send OTP' cb={handleLogin} />
+            <ButtonFull title={isSendingOTPText} cb={handleLogin} disabled={isSendingOTP} />
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -114,8 +119,33 @@ const Login = ({ navigation }: any) => {
       Alert.alert('Error', 'Please enter a valid phone number')
       return
     }
-    navigation.replace('OTP', {
-      phoneNumber: phoneNumber
+
+    // Send OTP
+    setIsSendingOTP(true)
+    setIsSendingOTPText('Sending OTP...')
+    // Send OTP to phone number
+    // create a form data object
+    const formData = new FormData()
+    formData.append('phone', phoneNumber)
+    // Send OTP
+    fetch(API_URL.login, {
+      method: 'POST',
+      body: formData
+    }).then((res) => res.json()).then((res) => {
+      if (res.status !== 'true') {
+        Alert.alert('Error', res.message)
+        setIsSendingOTP(false)
+        setIsSendingOTPText('Send OTP')
+        return
+      } else if (res.status === 'true') {
+        navigation.replace('OTP', { phone: phoneNumber })
+      }
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+      setIsSendingOTP(false)
+      setIsSendingOTPText('Send OTP')
+      Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
     })
   }
 }

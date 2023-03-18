@@ -6,9 +6,9 @@ import {
   TouchableOpacity
 } from 'react-native'
 import React, {
-  useState
+  useState, useEffect
 } from 'react'
-
+import DeviceInfo from 'react-native-device-info'
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
 import icons from '../../assets/icons/icons'
 import images from '../../assets/images/images'
@@ -17,10 +17,70 @@ import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
+import { API_URL } from '../../var'
 
 const SignUp = ({ navigation }: any) => {
+  let [deviceName, setDeviceName] = useState('')
+  let [mobileNumber, setMobileNumber] = useState('')
+  let [email, setEmail] = useState('')
+  let [name, setName] = useState('')
+  let [referCode, setReferCode] = useState('')
+  let [isCreatingAccount, setIsCreatingAccount] = useState(false)
+  let [buttonText, setButtonText] = useState('Create Account')
 
-  const [password, setPassword] = useState('');
+  useEffect(() => {
+    DeviceInfo.getDeviceName().then(name => { setDeviceName(name) });
+  }, [])
+
+  function createAccount() {
+    // Check if all fields are filled except refer code
+    if (!name || name.length < 3)
+      return Alert.alert('Warning!', 'Please enter your name (min 3 characters)')
+    if (!email)
+      return Alert.alert('Warning!', 'Please enter your email')
+    if (!mobileNumber)
+      return Alert.alert('Warning!', 'Please enter your mobile number')
+    if (mobileNumber.length != 10)
+      return Alert.alert('Warning!', 'Please enter a valid mobile number')
+
+    setIsCreatingAccount(true)
+    setButtonText('Creating Account...')
+    // Create account
+    // Crate a form data
+    let formData = new FormData()
+    formData.append('name', name)
+    formData.append('email', email)
+    formData.append('phone', mobileNumber)
+    formData.append('device_name', deviceName)
+    formData.append('refer_code', referCode)
+    formData.append('device_name', deviceName)
+
+    fetch(API_URL.register, {
+      method: 'POST',
+      body: formData
+    }).then(res => res.json()).then(res => {
+      console.log(res)
+      setIsCreatingAccount(false)
+      if (res.status == true || res.status == 'true') {
+        // Navigate to Verify OTP screen
+        navigation.replace('OTP', {
+          phone: mobileNumber,
+          signUp: true
+        })
+      } else {
+        Alert.alert('Error', res.message)
+        setIsCreatingAccount(false)
+        setButtonText('Create Account')
+      }
+    }).catch(err => {
+      console.log(err)
+      setIsCreatingAccount(false)
+      setButtonText('Create Account')
+      Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
+    })
+  }
+
+
 
   return (
     <SafeAreaView style={styles.main}>
@@ -41,10 +101,11 @@ const SignUp = ({ navigation }: any) => {
               style={styles.input}
               placeholder="eg. John Doe"
               keyboardType="default"
+              onChangeText={(text) => setName(text)}
             />
           </View>
 
-          <Text style={styles.label}>Your Username</Text>
+          {/* <Text style={styles.label}>Your Username</Text>
           <View style={styles.singleInputContainer}>
             <Image source={icons.at} style={[styles.inputImage, { width: 23, height: 23 }]} />
             <TextInput
@@ -54,14 +115,14 @@ const SignUp = ({ navigation }: any) => {
               placeholder="eg. johnDoe"
               keyboardType="default"
             />
-          </View>
+          </View> */}
 
           <Text style={styles.label}>Your Email</Text>
           <View style={styles.singleInputContainer}>
             <Image source={icons.message} style={[styles.inputImage]} />
             <TextInput
               placeholderTextColor={colors.textLighter}
-
+              onChangeText={(text) => setEmail(text)}
               style={styles.input}
               placeholder="eg. johnDoe@gmail.com"
               keyboardType="email-address"
@@ -77,6 +138,7 @@ const SignUp = ({ navigation }: any) => {
               style={styles.input}
               placeholder="eg. 987654321"
               keyboardType="phone-pad"
+              onChangeText={(text) => setMobileNumber(text)}
             />
           </View>
           {/* <Text style={styles.label}>Your Password</Text>
@@ -97,7 +159,7 @@ const SignUp = ({ navigation }: any) => {
             <Image source={icons.export} style={[styles.inputImage, { width: 20, height: 20 }]} />
             <TextInput
               placeholderTextColor={colors.textLighter}
-
+              onChangeText={(text) => setReferCode(text)}
               style={styles.input}
               placeholder="eg. FD5K24"
               keyboardType="default"
@@ -106,7 +168,7 @@ const SignUp = ({ navigation }: any) => {
 
 
           <View style={{ marginTop: 20 }}>
-            <ButtonFull title='Create Account' cb={() => { }} />
+            <ButtonFull title={buttonText} cb={createAccount} disabled={isCreatingAccount} />
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -115,22 +177,12 @@ const SignUp = ({ navigation }: any) => {
               <Text style={{ color: colors.accent }}>Log In</Text>
             </TouchableOpacity>
           </View>
-
-          {/* <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <View>
-              <TouchableOpacity onPress={() => navigation.replace('LogIn')} activeOpacity={0.8}>
-                <Text style={buttons.button}>Log In?</Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight }}>By Signing up in you accept out </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
               <Text style={{ color: colors.accent }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>
-
-
         </View>
 
       </ScrollView>
@@ -139,69 +191,3 @@ const SignUp = ({ navigation }: any) => {
 }
 
 export default SignUp
-
-// const styles = StyleSheet.create({
-//   topContainer: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     // alignItems: 'center',
-//     padding: 20,
-//     gap: 5,
-//     width: '100%'
-//   },
-//   topImage: {
-//     height: 250,
-//     width: '80%',
-//     marginLeft: 'auto',
-//     marginRight: 'auto',
-//     resizeMode: 'contain',
-//     flex: 0.5,
-//   },
-//   title: {
-//     fontSize: 30,
-//     fontWeight: 'bold',
-//     color: colors.text,
-//     fontFamily: 'Rubik'
-//   },
-//   description: {
-//     fontSize: 15,
-//     color: colors.textLight
-
-//   },
-//   main: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//   },
-//   inputContainer: {
-//     padding: 20,
-//     width: '100%',
-//     gap: 5,
-//   },
-//   singleInputContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     backgroundColor: colors.inputBg,
-//     paddingLeft: 10,
-//     borderRadius: 10,
-//     width: 'auto',
-//   },
-//   inputImage: {
-//     width: 17,
-//     height: 17,
-//     resizeMode: 'contain', flex: 0.1, opacity: 0.5
-//   },
-//   input: {
-//     backgroundColor: colors.inputBg,
-//     borderRadius: 10,
-//     padding: 15,
-//     width: 'auto',
-//     flex: 0.9
-//   },
-//   label: {
-//     color: colors.textLight,
-//     fontSize: 15,
-//     // fontWeight: 'bold',
-//     marginTop: 7
-//   },
-// })
