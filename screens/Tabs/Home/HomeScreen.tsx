@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }: any) => {
 
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex : 1 }}>
 			<StatusBar barStyle="dark-content" backgroundColor="white" />
 			<View style={styles.top}>
 				<TouchableOpacity activeOpacity={0.8}
@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }: any) => {
 						}]}>
 							<Image source={icons.coin_dollar} style={[styles.topImage, { width: 20, height: 20 }]} />
 							<Text style={{
-								fontSize: 15, fontFamily:fonts.medium,
+								fontSize: 15, fontFamily: fonts.medium,
 								color: colors.text,
 							}}>1200</Text>
 						</View>
@@ -63,13 +63,107 @@ const HomeScreen = ({ navigation }: any) => {
 			</View>
 			<ScrollView style={{ backgroundColor: 'white', width: '100%' }}>
 				<Slider />
+				<Tasks />
 			</ScrollView>
 		</SafeAreaView>
 	)
 }
 
+function Tasks() {
+	const tasks = [
+		{
+			name: 'Youtube Tasks',
+			icons: icons.youtube,
+			callback: () => console.log('Youtube')
+
+		},
+		{
+			name: 'Yt Short Tasks',
+			icons: icons.youtube_shorts,
+			callback: () => console.log('Yt Short')
+		},
+		{
+			name: 'Instagram Tasks',
+			icons: icons.insta,
+			callback: () => console.log('Instagram')
+		},
+		{
+			name: 'App install Tasks',
+			icons: icons.download,
+			callback: () => console.log('App'),
+			background: '#fff'
+		},
+		{
+			name: 'Watch and Earn',
+			icons: icons.watch_and_earn,
+			callback: () => console.log('App')
+		},
+		{
+			name: 'Spin and \nEarn',
+			icons: icons.spin_and_earn,
+			callback: () => console.log('App')
+		},
+	]
+	return (
+		<View>
+			<Text style={{ paddingLeft: 25, paddingBottom: 10, fontSize: 18, fontFamily: fonts.bold, color: colors.text }}>Explore tasks</Text>
+			<View style={taskStyles.container}>
+				{
+					tasks.map((task, index) => {
+						return (
+							<View key={index} style={{ width: '30%' }}>
+								<TouchableOpacity activeOpacity={0.8} onPress={task.callback}>
+									<View style={taskStyles.task}>
+										<Image source={task.icons} style={[taskStyles.image, { backgroundColor: task.background ? task.background : '#fff' }]} />
+										<Text style={taskStyles.taskName}>{task.name}</Text>
+									</View>
+								</TouchableOpacity>
+							</View>
+						)
+					})
+				}
+			</View>
+		</View>
+	)
+}
 
 export default HomeScreen;
+
+const taskStyles = StyleSheet.create({
+	container: {
+		width: '100%',
+		paddingHorizontal: 20,
+		backgroundColor: 'white',
+		display: 'flex',
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		// alignItems: 'center',
+	},
+	task: {
+		backgroundColor: '#f5f5f5',
+		marginTop: 15,
+		borderRadius: 20,
+		padding: 15,
+		// backgroundColor: 'red',
+	},
+	image: {
+		// tintColor: 'red',
+		width: 70,
+		height: 70,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		resizeMode: 'contain',
+		borderRadius: 15,
+		backgroundColor: 'white',
+	},
+	taskName: {
+		textAlign: 'center',
+		marginTop: 10, fontFamily: fonts.medium,
+		color: colors.text,
+		fontSize: 13
+	}
+})
 
 const styles = StyleSheet.create({
 	mainBody: {

@@ -29,6 +29,13 @@ const icons = {
     task_list : require('./src/task_list.png'),
     loading : require('./src/loading.gif'),
     money : require('./src/money.png'),
+    youtube : require('./src/youtube.png'),
+    youtube_shorts : require('./src/youtube_shorts.png'),
+    playStore : require('./src/playStore.jpg'),
+    insta : require('./src/insta.jpeg'),
+    watch_and_earn : require('./src/watch_and_earn.jpeg'),
+    spin_and_earn : require('./src/spin_and_earn.jpeg'),
+    download : require('./src/download.webp'),
     
 }
 export default icons

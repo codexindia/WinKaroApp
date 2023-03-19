@@ -81,7 +81,7 @@ const Splash = ({ navigation }: any) => {
         </View> */}
         <Text style={{
           color: colors.gray, marginTop: 15
-        }}>Loading...</Text>
+        }}>Connecting...</Text>
 
         {/* <Text style={{ fontSize: 30, fontWeight: 'bold', color: colors.text, marginTop: 20 }}>Win Karo</Text> */}
       </View>

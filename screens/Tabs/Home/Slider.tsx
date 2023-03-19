@@ -27,7 +27,7 @@ const Slider = () => {
 	}), []
 
 	return (
-		<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15, paddingBottom: 50 }}>
+		<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15, paddingBottom: 20 }}>
 			<ScrollView
 				horizontal
 				pagingEnabled
