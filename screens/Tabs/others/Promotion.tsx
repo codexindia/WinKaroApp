@@ -3,6 +3,7 @@ import React from 'react'
 import images from '../../../assets/images/images'
 import { colors } from '../../../styles/colors'
 import ButtonFull from '../../../components/ButtonFull'
+import { fonts } from '../../../styles/fonts'
 
 const email = 'helloWorld@gmail.com'
 
@@ -18,14 +19,14 @@ const Promotion = () => {
           resizeMode: 'contain',
         }} />
       </View>
-      <Text style={{ fontSize: 25, textAlign: 'center', color: colors.text }}>Contact us for promotion</Text>
+      <Text style={{ fontSize: 25, textAlign: 'center', color: colors.text, fontFamily: fonts.medium }}>Contact us for promotion</Text>
       <View style={{
         paddingHorizontal: 30,
       }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.emailText}>Send us email : </Text>
           {/* <TouchableOpacity > */}
-            <Text selectable={true} style={[styles.emailText, { color: colors.accent }]}>{email}</Text>
+          <Text selectable={true} style={[styles.emailText, { color: colors.accent }]}>{email}</Text>
           {/* </TouchableOpacity> */}
           <Text style={styles.emailText}> for promotion</Text>
         </View>
@@ -47,7 +48,7 @@ function sendEmail() {
 
 const styles = StyleSheet.create({
   emailText: {
-    fontSize: 16, color: colors.gray,
+    fontSize: 15, color: colors.gray, fontFamily: fonts.regular
   }
 })
 

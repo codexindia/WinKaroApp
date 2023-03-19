@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import icons from '../../assets/icons/icons'
 import { colors } from '../../styles/colors'
+import { fonts } from '../../styles/fonts'
 
 const WithdrawHistory = ({ data }: any) => {
   return (
@@ -22,22 +23,22 @@ const WithdrawHistory = ({ data }: any) => {
               </View>
               <View>
                 <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 23, color: colors.text, fontWeight: 'bold' }}>₹ {item.amount}</Text>
+                  <Text style={{ fontSize: 23, color: colors.text, fontFamily: fonts.semiBold }}>₹ {item.amount}</Text>
                   <Text
                     style={{
-                      textTransform: 'capitalize',
+                      textTransform: 'capitalize', fontFamily: fonts.medium,
                       color: getStatusColor(item.status)
                     }}
                   >{item.status}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                  <Text style={{ color: colors.gray, fontSize: 13 }}>to {item.to}</Text>
-                  <Text style={{ fontSize: 12, color: colors.gray, opacity: 0.8 }}>{item.ref || ''}</Text>
+                  <Text style={{ color: colors.gray, fontSize: 13, fontFamily: fonts.regular }}>to {item.to}</Text>
+                  <Text style={{ fontSize: 12, color: colors.gray, opacity: 0.8, fontFamily: fonts.regular }}>{item.ref || ''}</Text>
                 </View>
               </View>
             </View>
             <View>
-              <Text style={{ color: colors.gray, fontSize: 13, textAlign: 'right' }}>{item.date}</Text>
+              <Text style={{ color: colors.gray, fontSize: 13, textAlign: 'right', fontFamily: fonts.regular }}>{item.date}</Text>
             </View>
           </View>
         })

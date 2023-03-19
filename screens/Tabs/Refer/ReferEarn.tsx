@@ -15,6 +15,7 @@ import vars from '../../../styles/var'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserData } from '../../types'
 import { playStoreLink } from '../../../appData'
+import { fonts } from '../../../styles/fonts'
 
 
 const ReferEarn = ({ navigation }: any) => {
@@ -33,7 +34,7 @@ const ReferEarn = ({ navigation }: any) => {
     <View style={{ height: '100%', backgroundColor: 'lime' }}>
       <View style={styles.top}>
         <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15, paddingVertical: 5 }}>
-          <Text style={{ fontSize: 20, color: colors.text, fontWeight: 'bold' }}>Refer and Earn</Text>
+          <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.bold }}>Refer and Earn</Text>
         </View>
         <View style={[styles.flexRow, { gap: 20 }]}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('ReferHistory') }}>
@@ -65,15 +66,15 @@ const ReferEarn = ({ navigation }: any) => {
           </View>
         </View>
         <View style={{ paddingHorizontal: 20 }}>
-          <Text style={{ color: colors.text, fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>Get	200 coins per refer when your friend completes 10 YouTube task continuously.</Text>
+          <Text style={{ color: colors.text, fontSize: 16, fontFamily: fonts.semiBold, textAlign: 'center' }}>Get	200 coins per refer when your friend completes 10 YouTube task continuously.</Text>
         </View>
 
 
         <View style={{ width: '100%' }}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => { copyToClipboard(referCode) }}>
             <View style={styles.clickToCopy}>
-              <Text style={{ color: colors.accent, fontSize: 16 }}>Refer code : {referCode}</Text>
-              <Text style={{ color: colors.accent, fontSize: 16, fontWeight: 'bold' }}>{copiedText}</Text>
+              <Text style={{ color: colors.accent, fontSize: 16, fontFamily: fonts.medium, }}>Refer code : {referCode}</Text>
+              <Text style={{ color: colors.accent, fontSize: 16, fontFamily: fonts.medium }}>{copiedText}</Text>
             </View>
           </TouchableOpacity>
           <ButtonFull title="Refer a Friend" cb={() => {
@@ -120,13 +121,14 @@ const styles = StyleSheet.create({
   },
   counterValue: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.bold,
     color: colors.text,
   },
   counterName: {
     fontSize: 13,
     color: colors.text,
     opacity: 0.8,
+    fontFamily: fonts.regular,
   },
   clickToCopy: {
     width: '100%', marginBottom: 10,

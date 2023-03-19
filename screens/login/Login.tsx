@@ -16,6 +16,7 @@ import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
 import { API_URL } from '../../appData'
+import { fonts } from '../../styles/fonts'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
@@ -72,9 +73,9 @@ const Login = ({ navigation }: any) => {
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight }}>Don't have an account? </Text>
+            <Text style={{ color: colors.textLight, fontFamily : fonts.regular }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.replace('SignUp')}>
-              <Text style={{ color: colors.accent }}>Sign Up</Text>
+              <Text style={{ color: colors.accent, fontFamily : fonts.medium }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
 
@@ -86,9 +87,9 @@ const Login = ({ navigation }: any) => {
             </View>
           </View> */}
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight }}>By Logging in you accept out </Text>
+            <Text style={{ color: colors.textLight, fontFamily : fonts.regular }}>By Logging in you accept out </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
-              <Text style={{ color: colors.accent }}>terms and conditions</Text>
+              <Text style={{ color: colors.accent, fontFamily : fonts.medium }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>
 

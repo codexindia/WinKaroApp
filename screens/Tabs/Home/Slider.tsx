@@ -42,7 +42,7 @@ const Slider = () => {
 				{
 					scrollImages.map((image, index) => {
 						return <TouchableOpacity key={index} activeOpacity={0.95}>
-							<Image source={{ uri: image }} style={[styles.bannerImage, { width: width, height, marginHorizontal: 15, backgroundColor: colors.inputBg }]} />
+							<Image source={images.banner} style={[styles.bannerImage, { width: width, height, marginHorizontal: 15, backgroundColor: colors.inputBg }]} />
 						</TouchableOpacity>
 					})
 				}

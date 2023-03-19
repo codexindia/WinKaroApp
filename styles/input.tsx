@@ -2,6 +2,7 @@
 
 import { StyleSheet } from "react-native"
 import { colors } from "./colors"
+import { fonts } from "./fonts"
 
 const input = StyleSheet.create({
     textInput: {
@@ -10,7 +11,8 @@ const input = StyleSheet.create({
         padding: 15,
         width: 'auto',
         flex: 0.9,
-        color: colors.text
+        color: colors.text,
+        fontFamily:fonts.medium
     },
     singleInputContainer: {
         flexDirection: 'row',

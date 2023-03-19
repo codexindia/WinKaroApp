@@ -7,6 +7,7 @@ import icons from '../../assets/icons/icons'
 import input from '../../styles/input'
 import ButtonFull from '../../components/ButtonFull'
 import WithdrawHistory from './WithdrawHistory'
+import { fonts } from '../../styles/fonts'
 const data = [
   {
     name: 'Paytm Wallet',
@@ -60,7 +61,7 @@ function Radio({ data, updater, selectedValue }: any) {
                       : null
                   }
                 </View>
-                <Text style={{ color: colors.text, fontSize: 16, fontWeight: '500' }}
+                <Text style={{ color: colors.text, fontSize: 16, fontFamily: fonts.medium }}
                 >{item.name}</Text>
               </View>
             </TouchableOpacity>
@@ -85,10 +86,10 @@ const Wallet = () => {
       paddingHorizontal: 20, paddingBottom: 100, paddingTop: 0, width: '100%', backgroundColor: 'white',
     }}>
       {/* <Text style={{ fontSize: 20, fontWeight: 'bold', color: colors.text, marginTop : 20, marginBottom : 20 }}>Wallet and Withdraw</Text> */}
-      <Text style={{ color: colors.text, fontSize: 16, marginTop: 10 }}>Your Balance</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, marginTop: 5 }}>
+      <Text style={{ color: colors.text, fontSize: 16, marginTop: 10, marginBottom: 5, fontFamily: fonts.medium }}>Your Balance</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 5 }}>
         <Image source={icons.coins} style={{ width: 30, aspectRatio: 1, }} />
-        <Text style={{ fontSize: 30, fontWeight: 'bold', color: colors.text }}>{balance} (₹ {inINR(balance)})</Text>
+        <Text style={{ fontSize: 30, fontFamily: fonts.semiBold, color: colors.text }}>{balance} (₹ {inINR(balance)})</Text>
       </View>
       <View style={{ width: '100%', gap: 20 }}>
         <View style={{ width: '100%', }}>
@@ -98,7 +99,7 @@ const Wallet = () => {
             marginLeft: 'auto', marginRight: 'auto'
           }} />
         </View>
-        <Text style={{ marginTop: 20, color: colors.text, fontSize: 14 }}><Text style={{ fontWeight: 'bold', }}>Note : </Text>The UPI or Paytm wallet of your first withdraw will be bounded to this account. You would not be able to bind another UPI to this account.</Text>
+        <Text style={{ marginTop: 20, color: colors.text, fontSize: 13.5, fontFamily: fonts.regular, }}><Text style={{ fontWeight: 'bold', }}>Note : </Text>The UPI or Paytm wallet of your first withdraw will be bounded to this account. You would not be able to bind another UPI to this account.</Text>
       </View>
 
       <View style={{ marginTop: 30 }}>
@@ -143,7 +144,7 @@ const Wallet = () => {
           justifyContent: 'space-between', alignItems: 'center'
         }}>
           <Text style={{
-            fontSize: 20, color: colors.text, marginBottom: 10, fontWeight: 'bold'
+            fontSize: 20, color: colors.text, marginBottom: 10, fontFamily:fonts.bold
           }}>Withdraw History</Text>
           {/* <TouchableOpacity>
             <Text style={{ color: colors.accent, fontWeight: 'bold' }}>View All</Text>
@@ -167,6 +168,7 @@ const styles = StyleSheet.create({
   label: {
     color: colors.gray,
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
+    fontFamily:fonts.regular
   }
 })

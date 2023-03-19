@@ -3,6 +3,7 @@ import React, { useRef } from 'react'
 import { Animated, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import buttons from '../../styles/buttons'
 import { colors } from '../../styles/colors'
+import { fonts } from '../../styles/fonts'
 import txt from '../../styles/text'
 import data from './onboardingData'
 import Paginator from './Paginator'
@@ -50,11 +51,11 @@ const Onboarding = ({ navigation }: any) => {
       <View style={styles.bottom}>
         {
           <TouchableOpacity style={styles.touchable} onPress={scrollTo} activeOpacity={0.8}>
-            <Text style={buttons.full}>{buttonText}</Text>
+            <Text style={[buttons.full, { fontFamily: fonts.medium }]}>{buttonText}</Text>
           </TouchableOpacity>
         }
-        <Text style={[styles.bottomText, {color : colors.gray}]}>
-          Read <Text style={txt.color}>Terms and Conditions</Text> before using the app.
+        <Text style={[styles.bottomText, { color: colors.gray, fontFamily: fonts.regular }]}>
+          Read <Text style={[txt.color]}>Terms and Conditions</Text> before using the app.
         </Text>
       </View>
     </SafeAreaView>
@@ -69,8 +70,8 @@ function BoardingItem({ item }: { item: any }) {
       <Text></Text>
       <Image source={item.image} style={styles.image} />
       <View style={{ flex: 0.3, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={[styles.title, { fontFamily: fonts.semiBold }]}>{item.title}</Text>
+        <Text style={[styles.description, {fontFamily : fonts.regular}]}>{item.description}</Text>
       </View>
     </View>
   )
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 35,
-    fontWeight: 'bold',
     color: colors.text,
   },
   description: {

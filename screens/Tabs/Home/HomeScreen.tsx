@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import icons from '../../../assets/icons/icons';
 import { colors } from '../../../styles/colors';
+import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
 
@@ -30,7 +31,7 @@ const HomeScreen = ({ navigation }: any) => {
 				>
 					<View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15 }}>
 						<Image source={icons.user_icon} style={styles.topImage} />
-						<Text style={{ fontSize: 20, color: colors.text, fontWeight: 'bold' }}>{name}</Text>
+						<Text style={{ fontSize: 19, color: colors.text, fontFamily: fonts.semiBold }}>{name}</Text>
 					</View>
 				</TouchableOpacity>
 				<View style={[styles.flexRow, { gap: 20 }]}>
@@ -45,7 +46,7 @@ const HomeScreen = ({ navigation }: any) => {
 						}]}>
 							<Image source={icons.coin_dollar} style={[styles.topImage, { width: 20, height: 20 }]} />
 							<Text style={{
-								fontSize: 16,
+								fontSize: 15, fontFamily:fonts.medium,
 								color: colors.text,
 							}}>1200</Text>
 						</View>
@@ -97,13 +98,13 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingBottom: 12,
 		width: '100%',
-		// borderBottomWidth: 1,
-		// borderBottomColor: '#f5f5f5',
+		borderBottomWidth: 1,
+		borderBottomColor: '#f5f5f5',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		display: 'flex',
 		flexDirection: 'row',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	topImage: {
 		height: 40,

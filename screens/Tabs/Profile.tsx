@@ -13,6 +13,7 @@ import { colors } from '../../styles/colors'
 import vars from '../../styles/var'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserData } from '../types'
+import { fonts } from '../../styles/fonts'
 
 
 
@@ -116,8 +117,8 @@ const Profile = ({ navigation }: any) => {
             <Text style={
               {
                 textAlign: 'center', color: colors.accent,
-                fontWeight: 'bold', backgroundColor: colors.accentLight,
-                padding: 8, borderRadius: 10, paddingHorizontal: 17
+                fontFamily: fonts.medium, backgroundColor: colors.accentLight,
+                padding: 8, borderRadius: 10, paddingHorizontal: 17, fontSize: 13
               }}>{"Change Pic"}</Text>
           </TouchableOpacity>
         </View>
@@ -174,9 +175,9 @@ const Profile = ({ navigation }: any) => {
                           resizeMode: 'contain',
                         }} />
                         <Text style={[{
-                          fontSize: 16,
+                          fontSize: 15,
                           color: colors.text,
-                          fontWeight: '500',
+                          fontFamily : fonts.medium
                         }]}>{item.title}</Text>
                       </View>
                       <Image source={icons.back} style={{
@@ -210,10 +211,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     opacity: 0.7,
+    marginTop : 5,
+    fontFamily : fonts.regular
   },
   balance: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 23,
+    fontFamily: fonts.semiBold,
     color: colors.text,
   },
   balanceBox: {
@@ -253,8 +256,9 @@ const styles = StyleSheet.create({
     tintColor: colors.gray,
   },
   detailsText: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.text,
+    fontFamily: fonts.medium
   },
   flexRow: {
     display: 'flex',
@@ -263,8 +267,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   fullName: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 19,
+    fontFamily: fonts.bold,
     color: colors.text,
   },
   userName: {

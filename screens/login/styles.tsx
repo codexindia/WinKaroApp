@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { colors } from '../../styles/colors'
+import { fonts } from '../../styles/fonts'
 
 const styles = StyleSheet.create({
     topContainer: {
@@ -20,13 +21,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        fontWeight: 'bold',
         color: colors.text,
-        fontFamily: 'Rubik'
+        fontFamily: fonts.bold
     },
     description: {
         fontSize: 15,
-        color: colors.textLight
+        color: colors.textLight,
+        fontFamily: fonts.regular
     },
     main: {
         flex: 1,
@@ -54,15 +55,17 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: colors.inputBg,
         borderRadius: 10,
+        fontSize: 15,
         padding: 15,
         width: 'auto',
         flex: 0.9,
-        color: colors.text
+        color: colors.text,
+        fontFamily: fonts.medium
     },
     label: {
         color: colors.textLight,
         fontSize: 15,
-        // fontWeight: 'bold',
+        fontFamily: fonts.regular,
         marginTop: 7
     },
 })

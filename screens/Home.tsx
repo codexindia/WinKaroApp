@@ -71,7 +71,7 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 							<Image source={tabIcons[label].icon} style={[{ height: 22, width: 22, resizeMode: 'contain' }, {
 								tintColor: isFocused ? colors.accent : colors.text
 							}]} />
-							<Text style={{ fontSize: 13, color: isFocused ? colors.accent : colors.text }}>{label}</Text>
+							<Text style={{ fontSize: 11, color: isFocused ? colors.accent : colors.text, fontFamily: 'Rubik-Medium', marginTop: 2 }}>{label}</Text>
 						</View>
 					</TouchableOpacity>
 				);
@@ -79,6 +79,7 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 		</View>
 	);
 }
+
 const Home = () => {
 	return (
 		<Tab.Navigator tabBar={CustomTabBar}>

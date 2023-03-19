@@ -12,6 +12,7 @@ import buttons from '../../styles/buttons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../appData'
 import DeviceInfo from 'react-native-device-info'
+import { fonts } from '../../styles/fonts'
 
 
 const OTP = ({ route, navigation }: any) => {
@@ -49,9 +50,9 @@ const OTP = ({ route, navigation }: any) => {
         />
 
         <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: colors.textLight }}>OTP sent to {phone}.</Text>
+          <Text style={{ color: colors.textLight, fontFamily:fonts.regular }}>OTP sent to {phone}.</Text>
           {!signUp &&
-            <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent }}> Edit Number?</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent, fontFamily:fonts.medium }}> Edit Number?</Text></TouchableOpacity>
           }
         </View>
 
@@ -62,12 +63,12 @@ const OTP = ({ route, navigation }: any) => {
             onPress={handelOtpSubmit} activeOpacity={0.8}
             disabled={isValidOtp && !isSubmitting ? false : true}
           >
-            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white' }}>{buttonText}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily:fonts.medium }}>{buttonText}</Text>
           </TouchableOpacity>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight }}>Didn't receive OTP?</Text>
-            <TouchableOpacity onPress={() => { }}><Text style={{ color: colors.accent }}> Resend OTP</Text></TouchableOpacity>
+            <Text style={{ color: colors.textLight, fontFamily:fonts.regular }}>Didn't receive OTP?</Text>
+            <TouchableOpacity onPress={() => { }}><Text style={{ color: colors.accent, fontFamily:fonts.medium }}> Resend OTP</Text></TouchableOpacity>
           </View>
         </View>
 
@@ -106,8 +107,8 @@ const OTP = ({ route, navigation }: any) => {
         // Store the auth token in async storage and navigate to home screen
         await AsyncStorage.setItem('token', res.token)
         await AsyncStorage.setItem('isLoggedIn', 'true')
-        navigation.replace('Home')
-        console.log('Navigate to home')
+        navigation.replace('Splash')
+        console.log('Navigate to Splash Screen to load necessary data')
       }
       else {
         setButtonText('Verify OTP')
@@ -120,21 +121,6 @@ const OTP = ({ route, navigation }: any) => {
       setIsSubmitting(false)
       Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
     })
-
-
-
-    // setTimeout(async () => {
-
-
-    //   // Reset the button text and isSubmitting
-    //   setButtonText('Verify OTP')
-    //   setIsSubmitting(false)
-    //   // Alert.alert('Wrong OTP', 'Please enter correct OTP')
-    //   // set isLoggedIn to true
-    //   await AsyncStorage.setItem('isLoggedIn', 'true')
-    //   navigation.replace('Home')
-    // }, 2000);
-    // Alert.alert('Submitting OTP')
   }
 }
 
@@ -163,7 +149,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily:fonts.bold,
     color: colors.text,
     textAlign: 'center',
     marginTop: 30,
@@ -172,6 +158,7 @@ const styles = StyleSheet.create({
   otpInput: {
     backgroundColor: colors.inputBg,
     color: colors.text,
+    fontFamily:fonts.medium,
     padding: 15,
     textAlign: 'center',
     width: '80%',

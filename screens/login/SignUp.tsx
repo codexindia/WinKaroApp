@@ -12,6 +12,7 @@ import images from '../../assets/images/images'
 import ButtonFull from '../../components/ButtonFull'
 import { colors } from '../../styles/colors'
 import styles from './styles'
+import { fonts } from '../../styles/fonts'
 
 const SignUp = ({ navigation }: any) => {
   let [deviceName, setDeviceName] = useState('')
@@ -165,15 +166,15 @@ const SignUp = ({ navigation }: any) => {
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight }}>Already have an account </Text>
+            <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>Already have an account </Text>
             <TouchableOpacity onPress={() => navigation.replace('LogIn')}>
-              <Text style={{ color: colors.accent }}>Log In</Text>
+              <Text style={{ color: colors.accent, fontFamily: fonts.medium }}>Log In</Text>
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight }}>By Signing up in you accept out </Text>
+            <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>By Signing up in you accept our </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
-              <Text style={{ color: colors.accent }}>terms and conditions</Text>
+              <Text style={{ color: colors.accent, fontFamily: fonts.medium }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>
         </View>

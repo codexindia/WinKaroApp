@@ -11,7 +11,7 @@ export const buttons = StyleSheet.create({
         borderRadius: 14,
         alignSelf: 'stretch',
         textAlign: 'center',
-        fontSize: 17,
+        fontSize: 16,
         letterSpacing: 0.5,
     },
     button: {
@@ -27,6 +27,7 @@ export const buttons = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontSize: 20,
+        fontFamily : 'Rubik-SemiBold'
     },
 })
 
