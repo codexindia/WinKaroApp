@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../appData'
 import DeviceInfo from 'react-native-device-info'
 import { fonts } from '../../styles/fonts'
+import CustomModal from '../../components/CustomModal'
 
 
 const OTP = ({ route, navigation }: any) => {
@@ -22,6 +23,7 @@ const OTP = ({ route, navigation }: any) => {
   const [isValidOtp, setIsValidOtp] = React.useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
   const [buttonText, setButtonText] = React.useState<string>('Verify OTP')
+  const [modals, setModals] = React.useState<any>([])
 
   useEffect(() => {
     setIsValidOtp(otp.length === 6)
@@ -32,6 +34,7 @@ const OTP = ({ route, navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.main}>
+      <CustomModal modals={modals} updater={setModals} />
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <ScrollView style={{ padding: 20 }}>
         <View style={styles.top} >
@@ -50,9 +53,9 @@ const OTP = ({ route, navigation }: any) => {
         />
 
         <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: colors.textLight, fontFamily:fonts.regular }}>OTP sent to {phone}.</Text>
+          <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>OTP sent to {phone}.</Text>
           {!signUp &&
-            <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent, fontFamily:fonts.medium }}> Edit Number?</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => { navigation.replace('LogIn') }}><Text style={{ color: colors.accent, fontFamily: fonts.medium }}> Edit Number?</Text></TouchableOpacity>
           }
         </View>
 
@@ -63,12 +66,12 @@ const OTP = ({ route, navigation }: any) => {
             onPress={handelOtpSubmit} activeOpacity={0.8}
             disabled={isValidOtp && !isSubmitting ? false : true}
           >
-            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily:fonts.medium }}>{buttonText}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium }}>{buttonText}</Text>
           </TouchableOpacity>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: colors.textLight, fontFamily:fonts.regular }}>Didn't receive OTP?</Text>
-            <TouchableOpacity onPress={() => { }}><Text style={{ color: colors.accent, fontFamily:fonts.medium }}> Resend OTP</Text></TouchableOpacity>
+            <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>Didn't receive OTP?</Text>
+            <TouchableOpacity onPress={() => { }}><Text style={{ color: colors.accent, fontFamily: fonts.medium }}> Resend OTP</Text></TouchableOpacity>
           </View>
         </View>
 
@@ -113,13 +116,13 @@ const OTP = ({ route, navigation }: any) => {
       else {
         setButtonText('Verify OTP')
         setIsSubmitting(false)
-        Alert.alert('Wrong OTP', res.message)
+        setModals([{ title: 'Wrong OTP', description: res.message }])
       }
     }).catch(err => {
       console.log(err)
       setButtonText('Verify OTP')
       setIsSubmitting(false)
-      Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
+      setModals([{ title: 'Network Error', description: 'Something went wrong. Please Check your internet connection and try again.' }])
     })
   }
 }
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontFamily:fonts.bold,
+    fontFamily: fonts.bold,
     color: colors.text,
     textAlign: 'center',
     marginTop: 30,
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
   otpInput: {
     backgroundColor: colors.inputBg,
     color: colors.text,
-    fontFamily:fonts.medium,
+    fontFamily: fonts.medium,
     padding: 15,
     textAlign: 'center',
     width: '80%',

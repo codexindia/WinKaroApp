@@ -5,14 +5,16 @@ import {
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
-import { Alert } from 'react-native'
 import { API_URL } from '../../appData'
 import icons from '../../assets/icons/icons'
 import images from '../../assets/images/images'
 import ButtonFull from '../../components/ButtonFull'
+import CustomModal from '../../components/CustomModal'
 import { colors } from '../../styles/colors'
-import styles from './styles'
 import { fonts } from '../../styles/fonts'
+import styles from './styles'
+
+
 
 const SignUp = ({ navigation }: any) => {
   let [deviceName, setDeviceName] = useState('')
@@ -22,6 +24,7 @@ const SignUp = ({ navigation }: any) => {
   let [referCode, setReferCode] = useState('')
   let [isCreatingAccount, setIsCreatingAccount] = useState(false)
   let [buttonText, setButtonText] = useState('Create Account')
+  let [modalAlert, setModalAlert] = useState<any>([])
 
   useEffect(() => {
     DeviceInfo.getDeviceName().then(name => { setDeviceName(name) });
@@ -30,13 +33,13 @@ const SignUp = ({ navigation }: any) => {
   function createAccount() {
     // Check if all fields are filled except refer code
     if (!name || name.length < 3)
-      return Alert.alert('Warning!', 'Please enter your name (min 3 characters)')
+      return setModalAlert([{ title: 'Warning', description: 'lease enter your name (min 3 characters)', }])
     if (!email)
-      return Alert.alert('Warning!', 'Please enter your email')
+      return setModalAlert([{ title: 'Warning', description: 'Please enter your email', }])
     if (!mobileNumber)
-      return Alert.alert('Warning!', 'Please enter your mobile number')
+      return setModalAlert([{ title: 'Warning', description: 'Please enter your mobile number', }])
     if (mobileNumber.length != 10)
-      return Alert.alert('Warning!', 'Please enter a valid mobile number')
+      return setModalAlert([{ title: 'Warning', description: 'Please enter a valid mobile number', }])
 
     setIsCreatingAccount(true)
     setButtonText('Creating Account...')
@@ -62,7 +65,7 @@ const SignUp = ({ navigation }: any) => {
           signUp: true
         })
       } else {
-        Alert.alert('Error', res.message)
+        setModalAlert([{ title: 'Error', description: res.message, }])
         setIsCreatingAccount(false)
         setButtonText('Create Account')
       }
@@ -70,7 +73,7 @@ const SignUp = ({ navigation }: any) => {
       console.log(err)
       setIsCreatingAccount(false)
       setButtonText('Create Account')
-      Alert.alert('Network Error', 'Something went wrong. Please Check your internet connection and try again.')
+      setModalAlert([{ title: 'Network Error', description: 'Something went wrong. Please Check your internet connection and try again.', }])
     })
   }
 
@@ -78,6 +81,7 @@ const SignUp = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.main}>
+      <CustomModal modals={modalAlert} updater={setModalAlert} />
       <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <View style={styles.topContainer}>

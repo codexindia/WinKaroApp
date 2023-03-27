@@ -1,19 +1,13 @@
-import {
-  StyleSheet, Text, View,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  ScrollView, Linking, Alert
-
-} from 'react-native'
-import React, { useState, useEffect } from 'react'
-import images from '../../assets/images/images'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useEffect, useState } from 'react'
+import { Alert, Image, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import icons from '../../assets/icons/icons'
 import { colors } from '../../styles/colors'
-import vars from '../../styles/var'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UserData } from '../types'
 import { fonts } from '../../styles/fonts'
+import { UserData } from '../types'
+import CustomModal from '../../components/CustomModal'
+
+
 
 
 
@@ -59,28 +53,24 @@ const Profile = ({ navigation }: any) => {
       title: 'Log out',
       icon: icons.logout,
       onPress: () => {
-        Alert.alert('Log out?', 'Are you sure you want to log out?', [
-          {
-            text: 'No',
-            onPress: () => { },
-            style: 'cancel'
-          },
-          {
-            text: 'Log Out',
-            onPress: async () => {
-              // Delete the token and redirect to home screen
-              // delete isLoggedIn from async storage
-              // console.log(await AsyncStorage.getItem('token'))
-              await AsyncStorage.removeItem('token')
-              await AsyncStorage.removeItem('isLoggedIn')
-              navigation.replace('LogIn')
+        setModalAlert([{
+          title: "Log Out", description: "Are you sure you want to log out?", type: "success", active: true,
+          buttons: [
+            { text: "No" },
+            {
+              text: "Yes", positive: true, onPress: async () => {
+                await AsyncStorage.removeItem('token')
+                await AsyncStorage.removeItem('isLoggedIn')
+                navigation.replace('LogIn')
+              },
             },
-            style: 'destructive'
-          }])
+          ]
+        }])
       }
     },
   ]
 
+  const [modalAlert, setModalAlert] = useState<any>([])
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -100,6 +90,7 @@ const Profile = ({ navigation }: any) => {
       backgroundColor: 'white', flex: 1,
     }}>
       <ScrollView>
+        <CustomModal modals={modalAlert} updater={setModalAlert} />
         <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
           <View style={[styles.flexRow, { gap: 15 }]}>
             <View>
@@ -177,7 +168,7 @@ const Profile = ({ navigation }: any) => {
                         <Text style={[{
                           fontSize: 15,
                           color: colors.text,
-                          fontFamily : fonts.medium
+                          fontFamily: fonts.medium
                         }]}>{item.title}</Text>
                       </View>
                       <Image source={icons.back} style={{
@@ -211,8 +202,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     opacity: 0.7,
-    marginTop : 5,
-    fontFamily : fonts.regular
+    marginTop: 5,
+    fontFamily: fonts.regular
   },
   balance: {
     fontSize: 23,
