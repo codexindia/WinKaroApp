@@ -37,6 +37,7 @@ const icons = {
     spin_and_earn : require('./src/spin_and_earn.jpeg'),
     download : require('./src/download.webp'),
     youtube_icon : require('./src/youtube_icon.png'),
+    back_bold : require('./src/back_bold.png'),
     
 }
 export default icons

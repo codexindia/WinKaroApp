@@ -1,87 +1,68 @@
-import React, { useState } from 'react';
-import {
-    Alert, Modal, StyleSheet, Text, Pressable,
-    useWindowDimensions,
-    View
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, Easing, StatusBar, Text, View } from 'react-native';
+import { colors } from '../styles/colors';
+import { fonts } from '../styles/fonts';
 
-const Test = () => {
-    const { width } = useWindowDimensions();
 
-    const [modalVisible, setModalVisible] = useState(false);
-    return (
-        <View style={styles.centeredView}>
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                    <View style={[styles.modalView, { width: width * 0.8 }]}>
-                        <Text style={styles.modalText}>Hello World!</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-            <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable>
-        </View>
-    );
+// You can then use your `FadeInView` in place of a `View` in your components:
+export default ({ navigation }: any) => {
+	const [size, setSize] = useState(new Animated.ValueXY({ x: 15, y: 15 }));
+	const [bottom, setBottom] = useState(new Animated.Value(0));
+	const [isActive, setIsActive] = useState(false);
+	const { height } = Dimensions.get('window');
+
+	useEffect(() => {
+		setTimeout(() => {
+			sizeAnimation()
+			Animated.timing(bottom, {
+				toValue: (height / 2) - 100,
+				duration: 500,
+				useNativeDriver: false,
+			}).start();
+		}, 1500);
+		topAnimation()
+		setTimeout(() => {
+			setIsActive(true)
+		}, 2000);
+	}, [])
+
+	function topAnimation() {
+		Animated.timing(bottom, {
+			toValue: height / 2,
+			duration: 1500,
+			useNativeDriver: false,
+			// Add bouncing effect
+			easing: Easing.bounce,
+		}).start();
+	}
+
+	function sizeAnimation() {
+		Animated.timing(size, {
+			toValue: { x: 200, y: 200 },
+			duration: 500,
+			useNativeDriver: false,
+			// Add bouncing effect
+			// easing: Easing.bounce,
+		}).start();
+	}
+
+
+	return (
+		<View style={{
+			backgroundColor: 'white', flex: 1, justifyContent: "flex-start", alignItems: "center"
+		}}>
+			<StatusBar backgroundColor="white" barStyle="dark-content" />
+			<Animated.View style={{}}>
+				<Animated.View style={{
+					height: size.x, width: size.y, backgroundColor: colors.accent, borderRadius: 100,
+					top: bottom, display: 'flex', justifyContent: 'center', alignItems: 'center'
+				}}
+				>
+					<Text style={{
+						color: 'white', fontSize: 60, fontFamily: fonts.semiBold, opacity: isActive ? 1 : 0
+					}}>WK</Text>
+				</Animated.View>
+			</Animated.View>
+		</View>
+	)
 };
-
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 14,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-});
-
-export default Test;

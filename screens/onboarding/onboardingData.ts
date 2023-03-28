@@ -2,22 +2,22 @@ import images from "../../assets/images/images"
 
 const data = [
     {
-        title: 'Welcome to the app',
-        description: 'This is a description of the first screen. You can add more text here to make it longer',
+        title: 'Welcome to Win Karo Application',
+        description: 'You can earn coins by completing simple tasks and referring your friends. Withdraw real money to your bank account.',
         image: images.man_phone,
-        key : 1
+        key: 1
     },
     {
-        title: 'Second screen',
-        description: 'This is a description of the second screen',
-        image: images.man_phone,
-        key : 2
+        title: 'Easy Withdraw',
+        description: 'The easiest way to withdraw your earned money. Just enter your bank account details and you are ready to go.',
+        image: images.girl,
+        key: 2
     },
     {
-        title: 'Third screen',
-        description: 'This is a description of the third screen',
-        image: images.man_phone,
-        key : 3
+        title: 'There are lot of tasks and offers',
+        description: 'Get started by clicking on the button below. And start earning money.',
+        image: images.offers,
+        key: 3
     }
 ]
 
