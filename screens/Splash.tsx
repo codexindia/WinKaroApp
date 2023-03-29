@@ -153,9 +153,6 @@ const Splash = ({ navigation }: any) => {
             opacity: isActive ? 1 : 0, display: 'flex', justifyContent: 'center', alignItems: 'center',
           }}>
             <Text style={{ color: 'white', fontSize: 100, fontFamily: fonts.semiBold, }}>WK</Text>
-            <Text style={{
-              color: 'white', fontSize: 25, fontFamily: fonts.medium,
-            }}>Win Karo</Text>
           </View>
         </Animated.View>
       </Animated.View>
@@ -164,25 +161,3 @@ const Splash = ({ navigation }: any) => {
 }
 
 export default Splash
-
-// const styles = StyleSheet.create({
-//   main: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'white',
-//   },
-//   center: {
-//     // display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     width: '100%'
-//   },
-//   logo: {
-//     // flex: 0.5,
-//     width: 200,
-//     height: 200,
-//     borderRadius: 100,
-//     resizeMode: 'contain',
-//   }
-// })

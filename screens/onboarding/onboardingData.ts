@@ -16,7 +16,7 @@ const data = [
     {
         title: 'There are lot of tasks and offers',
         description: 'Get started by clicking on the button below. And start earning money.',
-        image: images.offers,
+        image: images.girl_2,
         key: 3
     }
 ]

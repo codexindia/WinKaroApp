@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   image: {
-    flex: 0.4,
+    flex: 0.5,
     resizeMode: 'contain',
   },
   boardingItem: {
