@@ -62,7 +62,7 @@ const Onboarding = ({ navigation }: any) => {
           }
         }}>
           <View style={{
-            backgroundColor: colors.accentLight, padding: 13, paddingHorizontal: 25, borderRadius: 100,
+            backgroundColor: colors.accentLight, padding: 13, paddingHorizontal: 25, borderRadius: 100, opacity: currentIndex === 0 ? 0 : 1
           }}>
             <Text style={{
               fontFamily: fonts.medium, color: colors.accent, fontSize: 16
@@ -81,7 +81,7 @@ const Onboarding = ({ navigation }: any) => {
               fontFamily: fonts.medium, fontSize: 16
             }}>{buttonText}</Text>
             <Image source={icons.back_bold} style={{
-              width: 16, height: 16, resizeMode: 'contain', tintColor: 'white',
+              width: 16, height: 16, resizeMode: 'contain', tintColor: 'white', marginLeft: 5
             }} />
           </View>
         </TouchableOpacity>
@@ -92,7 +92,7 @@ const Onboarding = ({ navigation }: any) => {
       <View style={[styles.bottom, { width: '100%' }]}>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 5 }}>
           <Text style={[styles.bottomText, { color: colors.gray, fontFamily: fonts.regular }]}>Read </Text>
-          <TouchableOpacity><Text style={[txt.color, styles.bottomText, { fontFamily: fonts.medium }]}>Terms and Conditions</Text></TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Terms')}><Text style={[txt.color, styles.bottomText, { fontFamily: fonts.medium }]}>Terms and Conditions</Text></TouchableOpacity>
           <Text style={[styles.bottomText, { color: colors.gray, fontFamily: fonts.regular }]}> before using the app.</Text>
         </View>
       </View>

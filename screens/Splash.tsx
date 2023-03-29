@@ -63,7 +63,7 @@ const Splash = ({ navigation }: any) => {
   }
   useEffect(() => {
     setTimeout(async () => {
-      mainProcess()
+      mainProcess() 
     }, 3000)
   }, []);
   const [modals, setModals] = React.useState<any>([])
@@ -87,27 +87,40 @@ const Splash = ({ navigation }: any) => {
   // )
   // Animation takes total 4 seconds
   const [size] = useState(new Animated.ValueXY({ x: 15, y: 15 }));
-  const [bottom] = useState(new Animated.Value(0));
+  const [top] = useState(new Animated.Value(0));
+  const [borderRadius] = useState(new Animated.Value(1000));
   const [isActive, setIsActive] = useState(false);
-  const { height } = Dimensions.get('window');
+  const { height, width } = Dimensions.get('window');
+  const [statusBarColor, setStatusBarColor] = useState('white')
 
   useEffect(() => {
+    topAnimation()
+
     setTimeout(() => {
       sizeAnimation()
-      Animated.timing(bottom, {
-        toValue: (height / 2) - 100,
-        duration: 500,
+      Animated.timing(top, {
+        toValue: 0,
+        duration: 700,
         useNativeDriver: false,
       }).start();
     }, 1500);
-    topAnimation()
+
+    setTimeout(() => {
+      Animated.timing(borderRadius, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: false,
+      }).start();
+    }, 1600);
+
     setTimeout(() => {
       setIsActive(true)
+      setStatusBarColor(colors.accent)
     }, 2000);
   }, [])
 
   function topAnimation() {
-    Animated.timing(bottom, {
+    Animated.timing(top, {
       toValue: height / 2,
       duration: 1500,
       useNativeDriver: false,
@@ -117,29 +130,33 @@ const Splash = ({ navigation }: any) => {
   }
   function sizeAnimation() {
     Animated.timing(size, {
-      toValue: { x: 200, y: 200 },
-      duration: 500,
+      toValue: { x: height, y: height },
+      duration: 700,
       useNativeDriver: false,
-      // Add bouncing effect
-      // easing: Easing.bounce,
     }).start();
   }
   return (
     <View style={{
       backgroundColor: 'white', flex: 1, justifyContent: "flex-start", alignItems: "center"
     }}>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <StatusBar backgroundColor={statusBarColor} barStyle={statusBarColor === colors.accent ? "light-content" : "dark-content"} />
       <CustomModal modals={modals} updater={setModals} />
 
       <Animated.View style={{}}>
         <Animated.View style={{
-          height: size.x, width: size.y, backgroundColor: colors.accent, borderRadius: 100,
-          top: bottom, display: 'flex', justifyContent: 'center', alignItems: 'center'
+          height: size.x, width: size.y, backgroundColor: colors.accent, borderRadius: borderRadius,
+          top: top, display: 'flex', justifyContent: 'center', alignItems: 'center'
         }}
         >
-          <Text style={{
-            color: 'white', fontSize: 60, fontFamily: fonts.semiBold, opacity: isActive ? 1 : 0
-          }}>WK</Text>
+
+          <View style={{
+            opacity: isActive ? 1 : 0, display: 'flex', justifyContent: 'center', alignItems: 'center',
+          }}>
+            <Text style={{ color: 'white', fontSize: 100, fontFamily: fonts.semiBold, }}>WK</Text>
+            <Text style={{
+              color: 'white', fontSize: 25, fontFamily: fonts.medium,
+            }}>Win Karo</Text>
+          </View>
         </Animated.View>
       </Animated.View>
     </View>
