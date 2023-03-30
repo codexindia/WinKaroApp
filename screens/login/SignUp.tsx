@@ -84,13 +84,13 @@ const SignUp = ({ navigation }: any) => {
       <CustomModal modals={modalAlert} updater={setModalAlert} />
       <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-        <View style={styles.topContainer}>
-          <Image source={images.sign_up} style={[styles.topImage, { height: 200 }]} />
+        <View style={[styles.topContainer, {paddingBottom : 10}]}>
+          <Image source={images.sign_up} style={[styles.topImage, { height: 150 }]} />
           <Text style={styles.title}>Sign Up to Win Karo</Text>
           <Text style={styles.description}>Sign Up to Win Karo to watch and win</Text>
         </View>
 
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer,]}>
           <Text style={styles.label}>Your Name</Text>
           <View style={styles.singleInputContainer}>
             <Image source={icons.profile} style={styles.inputImage} />

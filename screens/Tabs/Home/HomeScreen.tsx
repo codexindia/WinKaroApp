@@ -63,18 +63,18 @@ const HomeScreen = ({ navigation }: any) => {
 			</View>
 			<ScrollView style={{ backgroundColor: 'white', width: '100%' }}>
 				<Slider />
-				<Tasks />
+				<Tasks navigation={navigation}/>
 			</ScrollView>
 		</SafeAreaView>
 	)
 }
 
-function Tasks() {
+function Tasks({navigation}:any) {
 	const tasks = [
 		{
 			name: 'Youtube Tasks',
 			icons: icons.youtube,
-			callback: () => console.log('Youtube')
+			callback: () => {navigation.navigate('YouTubeTask')}
 
 		},
 		{

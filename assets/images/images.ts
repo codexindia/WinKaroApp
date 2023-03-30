@@ -14,7 +14,8 @@ const images = {
     offers: require('./src/offers.webp'),
     // smartphone: require('./src/smartphone.jpg'),
     girl: require('./src/girl.jpg'),
-    girl_2 : require('./src/girl_2.jpg')
+    girl_2 : require('./src/girl_2.jpg'),
+    gaming : require('./src/gaming.jpg'),
     // offer : require('./src/offer.jpg'),
 }
 export default images

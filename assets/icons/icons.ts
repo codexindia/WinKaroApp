@@ -38,6 +38,10 @@ const icons = {
     download : require('./src/download.webp'),
     youtube_icon : require('./src/youtube_icon.png'),
     back_bold : require('./src/back_bold.png'),
+    swipe_up_finger : require('./src/swipe_up_finger.png'),
+    copy : require('./src/copy.png'),
+    countdown : require('./src/countdown.png'),
+    video : require('./src/video.png'),
     
 }
 export default icons

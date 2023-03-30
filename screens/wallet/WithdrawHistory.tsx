@@ -6,14 +6,16 @@ import { fonts } from '../../styles/fonts'
 
 const WithdrawHistory = ({ data }: any) => {
   return (
-    <View style={{}}>
+    <View style={{
+      gap : 10
+    }}>
       {
         data.map((item: any, index: number) => {
           return <View style={{
             display: 'flex', flexDirection: 'row',
             alignItems: 'center', justifyContent: 'space-between',
-            borderBottomColor: '#eee', borderWidth: 1, paddingBottom: 15, paddingTop: 15,
-            borderColor: '#00000000'
+            borderBottomColor: '#eee', borderWidth: 1, padding : 20,
+            borderColor: '#00000000', backgroundColor : colors.inputBg, borderRadius : 20,
           }} key={index}>
             <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
               <View>
@@ -23,7 +25,7 @@ const WithdrawHistory = ({ data }: any) => {
               </View>
               <View>
                 <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 23, color: colors.text, fontFamily: fonts.semiBold }}>₹ {item.amount}</Text>
+                  <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.semiBold }}>₹ {item.amount}</Text>
                   <Text
                     style={{
                       textTransform: 'capitalize', fontFamily: fonts.medium,
