@@ -6,7 +6,7 @@ import images from '../../assets/images/images'
 import { Touchable } from 'react-native'
 import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
-import VideoPlayer from 'react-native-video-player'
+import Video from 'react-native-video'
 /*[{
   "resource": "/workspaces/win-karo/screens/Tasks/YouTubeTask.tsx",
   "owner": "typescript",
@@ -70,10 +70,16 @@ export default function YouTubeTask() {
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
       >
-        <VideoPlayer
-          autoplay={true}
-          defaultMuted={true}
-          video={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
+        <Video
+          controls={true}
+          paused={true}
+          // Add thumbnail
+          allowsExternalPlayback
+          source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }}
+          style={{
+            width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
+            marginTop: 20, borderRadius: 10, backgroundColor: 'black'
+          }}
         />
         {
           titles.map((title, index) => {
