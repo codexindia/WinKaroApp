@@ -6,7 +6,19 @@ import images from '../../assets/images/images'
 import { Touchable } from 'react-native'
 import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
-
+import VideoPlayer from 'react-native-video-player'
+/*[{
+  "resource": "/workspaces/win-karo/screens/Tasks/YouTubeTask.tsx",
+  "owner": "typescript",
+  "code": "7016",
+  "severity": 8,
+  "message": "Could not find a declaration file for module 'react-native-video-player'. '/workspaces/win-karo/node_modules/react-native-video-player/index.js' implicitly has an 'any' type.\n  Try `npm i --save-dev @types/react-native-video-player` if it exists or add a new declaration (.d.ts) file containing `declare module 'react-native-video-player';`",
+  "source": "ts",
+  "startLineNumber": 9,
+  "startColumn": 25,
+  "endLineNumber": 9,
+  "endColumn": 52
+}]*/
 export default function YouTubeTask() {
   const { height, width } = Dimensions.get('window')
   const [bottomSwipeIcon] = useState(new Animated.Value(0))
@@ -58,6 +70,11 @@ export default function YouTubeTask() {
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
       >
+        <VideoPlayer
+          autoplay={true}
+          defaultMuted={true}
+          video={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
+        />
         {
           titles.map((title, index) => {
             return <View style={{
