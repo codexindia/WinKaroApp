@@ -150,13 +150,11 @@ export default function YouTubeTask() {
                   <View style={{
                     flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'
                   }}>
-                    <TouchableOpacity style={[buttons.full, { backgroundColor: 'orangered', width: width * 2 / 3 - 25 }]} activeOpacity={0.8} >
-                      <Image source={icons.record} style={{
-                        width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white'
-                      }} />
+                    <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25 }]} activeOpacity={0.8} >
+                      <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
                       <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[buttons.full, { width: width / 3 - 25 }]} activeOpacity={0.8} >
+                    <TouchableOpacity style={[buttons.full, { backgroundColor: 'limegreen', width: width / 3 - 25 }]} activeOpacity={0.8} >
                       <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Go</Text>
                     </TouchableOpacity>
                   </View>
@@ -190,35 +188,39 @@ export default function YouTubeTask() {
 }
 function TaskAmount() {
   return <View style={{
-    width: '100%', flexDirection: 'row', justifyContent: 'space-between',
+    width: '100%', 
     paddingHorizontal: 20, gap: 15,
     //  position: 'absolute', top: 70
   }}>
     <View style={{
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
-      // backgroundColor: '#f5f5f5',
-      padding: 10, paddingHorizontal: 20,
-      // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
+      backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5',flexDirection: 'row', justifyContent: 'space-between',
     }}>
-      <Image source={icons.coins} style={{
-        width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain',
-      }} />
-      <Text style={{
-        fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
-      }}>2000</Text>
-    </View>
-    <View style={{
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
-      // backgroundColor: '#f5f5f5',
-      padding: 10, paddingHorizontal: 20,
-      // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
-    }}>
-      <Image source={icons.countdown} style={{
-        width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain',
-      }} />
-      <Text style={{
-        fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
-      }}>10:15:22</Text>
+      <View style={{
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
+        // backgroundColor: '#f5f5f5',
+        padding: 10, paddingHorizontal: 20,
+        // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
+      }}>
+        <Image source={icons.coins} style={{
+          width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain',
+        }} />
+        <Text style={{
+          fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
+        }}>2000</Text>
+      </View>
+      <View style={{
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
+        // backgroundColor: '#f5f5f5',
+        padding: 10, paddingHorizontal: 20,
+        // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
+      }}>
+        <Image source={icons.countdown} style={{
+          width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain',
+        }} />
+        <Text style={{
+          fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
+        }}>10:15:22</Text>
+      </View>
     </View>
 
 
