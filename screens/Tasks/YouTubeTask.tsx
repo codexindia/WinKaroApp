@@ -1,4 +1,7 @@
-import { Animated, Dimensions, Easing, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Animated, Dimensions, Easing, Image, Modal,
+  ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fonts } from '../../styles/fonts'
 import { colors } from '../../styles/colors'
@@ -7,6 +10,7 @@ import { Touchable } from 'react-native'
 import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
 import Video from 'react-native-video'
+import buttons from '../../styles/buttons'
 /*[{
   "resource": "/workspaces/win-karo/screens/Tasks/YouTubeTask.tsx",
   "owner": "typescript",
@@ -23,7 +27,8 @@ export default function YouTubeTask() {
   const { height, width } = Dimensions.get('window')
   const [bottomSwipeIcon] = useState(new Animated.Value(0))
   const [topSwipeIcon] = useState(new Animated.Value(10))
-  const [modalVisible, setModalVisible] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
   let titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4',]
   let taskLen = titles.length
@@ -48,7 +53,7 @@ export default function YouTubeTask() {
         visible={modalVisible}
       >
         <View style={{
-          flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.15  )',
+          flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.15)',
         }}>
           <View style={{
             backgroundColor: 'white', padding: 25, borderRadius: 25, gap: 30,
@@ -70,17 +75,6 @@ export default function YouTubeTask() {
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
       >
-        <Video
-          controls={true}
-          paused={true}
-          // Add thumbnail
-          allowsExternalPlayback
-          source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }}
-          style={{
-            width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
-            marginTop: 20, borderRadius: 10, backgroundColor: 'black'
-          }}
-        />
         {
           titles.map((title, index) => {
             return <View style={{
@@ -104,40 +98,76 @@ export default function YouTubeTask() {
                     flexDirection: 'row', width: width - 50, alignItems: 'center',
                     justifyContent: 'space-between', marginTop: 15, gap: 10
                   }}>
-                    <View style={{}}>
+                    <View style={{
+                      // backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10,
+                      padding: 10, paddingTop: 0, paddingBottom: 0,
+                      width: width - 100
+                    }}>
                       <Text style={{
-                        fontSize: 16, fontFamily: fonts.medium, color: colors.text, width: width - 100,
+                        fontSize: 16, fontFamily: fonts.medium, color: colors.text,
                       }}>
                         The Gaming Strategy That Will Make You a Better Player | The Art of Gaming
                       </Text>
+                      <Text style={{ color: colors.text, fontFamily: fonts.regular, marginTop: 10 }}>Publisher : <Text style={{ fontFamily: fonts.medium, color: colors.accent }}>SamplePublisher</Text></Text>
                     </View>
-                    <TouchableOpacity>
-                      <Image source={icons.copy} style={{
-                        width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain',
-                      }} />
-                    </TouchableOpacity>
+                    <View style={{
+                      backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10, padding: 10,
+                    }}>
+                      <TouchableOpacity >
+                        <Image source={icons.copy} style={{
+                          width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain',
+                        }} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <Text style={{ color: colors.text, fontFamily: fonts.regular, marginTop: 10 }}>Publisher : <Text style={{ fontFamily: fonts.medium, color: colors.accent }}>SamplePublisher</Text></Text>
                 </View>
               </View>
-
               <TaskAmount />
 
 
-              <TaskRules />
+              <View style={{
+                padding: 20, gap: 5, backgroundColor: '#fafafa', borderColor: '#e5e5e5', borderWidth: 0.5,
+                borderRadius: 20,
+                width: width - 40, alignSelf: 'center', marginBottom: 20
+              }}>
+                <Text style={{
+                  fontSize: 16, fontFamily: fonts.medium, color: colors.text,
+                }}>Don't Know how to complete this process?</Text>
+                <Text style={{
+                  fontSize: 14, fontFamily: fonts.regular, color: colors.text,
+                }}>Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
+                </Text>
+                <View>
+                  <WatchTutorial />
+                </View>
+              </View>
+
+
 
               <View style={{ width: '100%' }}>
 
                 <View style={{ paddingHorizontal: 20, marginTop: 10, width: '100%', gap: 15 }}>
-                  <ButtonFull title="Start Recording" onPress={() => { }} />
+                  <View style={{
+                    flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'
+                  }}>
+                    <TouchableOpacity style={[buttons.full, { backgroundColor: 'orangered', width: width * 2 / 3 - 25 }]} activeOpacity={0.8} >
+                      <Image source={icons.record} style={{
+                        width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white'
+                      }} />
+                      <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[buttons.full, { width: width / 3 - 25 }]} activeOpacity={0.8} >
+                      <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Go</Text>
+                    </TouchableOpacity>
+                  </View>
                   <TouchableOpacity activeOpacity={0.8}>
                     <View style={{
                       flexDirection: 'row', alignItems: 'center', gap: 20,
                       backgroundColor: '#fafafa', borderRadius: 15,
-                      borderWidth: 0.5, borderColor: '#dadada'
+                      borderWidth: 0.5, borderColor: '#e5e5e5'
                     }}>
-                      <View style={{ padding: 12, borderRightWidth: 0.5, borderColor: '#dadada', }}>
-                        <Image source={icons.video} style={{
+                      <View style={{ padding: 12, borderRightWidth: 0.5, borderColor: '#e5e5e5', }}>
+                        <Image source={icons.video_file} style={{
                           width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain',
                         }} />
                       </View>
@@ -160,13 +190,15 @@ export default function YouTubeTask() {
 }
 function TaskAmount() {
   return <View style={{
-    width: '100%', flexDirection: 'row', justifyContent: 'flex-start',
-    paddingHorizontal: 20, gap: 30,
+    width: '100%', flexDirection: 'row', justifyContent: 'space-between',
+    paddingHorizontal: 20, gap: 15,
     //  position: 'absolute', top: 70
   }}>
     <View style={{
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 10,
-      backgroundColor: '#fff', padding: 10, borderTopRightRadius: 10, borderBottomRightRadius: 10
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
+      // backgroundColor: '#f5f5f5',
+      padding: 10, paddingHorizontal: 20,
+      // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
     }}>
       <Image source={icons.coins} style={{
         width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain',
@@ -176,8 +208,10 @@ function TaskAmount() {
       }}>2000</Text>
     </View>
     <View style={{
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 10,
-      backgroundColor: '#fff', padding: 10, paddingHorizontal: 10, paddingLeft: 7, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
+      // backgroundColor: '#f5f5f5',
+      padding: 10, paddingHorizontal: 20,
+      // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
     }}>
       <Image source={icons.countdown} style={{
         width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain',
@@ -191,37 +225,23 @@ function TaskAmount() {
 
   </View>
 }
-function TaskRules() {
-  return <View style={{ padding: 20, gap: 5 }}>
-    <View style={{
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 5,
-    }}>
-      <Text style={{ fontSize: 18, fontFamily: fonts.medium, color: colors.text }}> Get Money Steps </Text>
-      <WatchTutorial />
-    </View>
-    <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
-    <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
-    <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
-    <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
-    <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
-    <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
-    {/* <Text style={styles.stepsStyle}>7. Video's Screen Recording b. Like Screenshot c. Comment Screenshot d. Valid Paytm Number</Text> */}
-  </View>
-}
 
 function WatchTutorial() {
   return <TouchableOpacity activeOpacity={0.7}>
     <View style={{
-      flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10,
-      backgroundColor: '#ff000011', padding: 10,
-      borderRadius: 15, paddingHorizontal: 15
+      flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10,
     }}>
-      <Image source={icons.youtube_icon} style={{
-        width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain',
-      }}></Image>
-      <Text style={{
-        color: 'red', fontFamily: fonts.medium, fontSize: 14,
-      }}>Watch Tutorial</Text>
+      <View style={{
+        flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10,
+        backgroundColor: colors.accentLight, padding: 15, borderRadius: 15, width: 'auto', paddingHorizontal: 20
+      }}>
+        <Image source={icons.video} style={{
+          width: 22, height: 22, alignSelf: 'center', resizeMode: 'contain',
+        }}></Image>
+        <Text style={{
+          color: colors.accent, fontFamily: fonts.medium, fontSize: 14,
+        }}>Watch Tutorial</Text>
+      </View>
     </View>
   </TouchableOpacity>
 }
@@ -241,8 +261,3 @@ function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
   </View>
 }
 
-const styles = StyleSheet.create({
-  stepsStyle: {
-    fontSize: 14, fontFamily: fonts.regular, color: colors.text, paddingLeft: 10
-  }
-})

@@ -42,6 +42,9 @@ const icons = {
     copy : require('./src/copy.png'),
     countdown : require('./src/countdown.png'),
     video : require('./src/video.png'),
+    check : require('./src/check.png'),
+    record : require('./src/record.png'),
+    video_file : require('./src/video_file.png'),
     
 }
 export default icons

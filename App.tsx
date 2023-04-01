@@ -15,6 +15,7 @@ import Test from './components/Test';
 import Wallet from './screens/wallet/Wallet';
 import Promotions from './screens/Tabs/others/Promotion';
 import YouTubeTask from './screens/Tasks/YouTubeTask';
+import YoutubeTaskTutorial from './screens/Tasks/YoutubeTaskTutorial';
 
 
 const Stack = createNativeStackNavigator();
@@ -23,7 +24,7 @@ const App = () => {
   return (
     <NavigationContainer >
       <Stack.Navigator>
-        <Stack.Screen name="Splash" component={YouTubeTask} options={{ headerShown: false }} />
+        <Stack.Screen name="Splash" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="LogIn" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
@@ -39,6 +40,7 @@ const App = () => {
         <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} />
         <Stack.Screen name="Test" component={Test} options={{ title: 'Test' }} />
         <Stack.Screen name="YouTubeTask" component={YouTubeTask} options={{ title: 'YouTube Task', headerShown : false }} />
+        <Stack.Screen name="YouTubeTaskTutorial" component={YoutubeTaskTutorial} options={{ title: 'YouTube Task', headerShown : false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

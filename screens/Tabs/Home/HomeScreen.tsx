@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Image, SafeAreaView, ScrollView, StatusBar, StyleSheet,
 	Text, TouchableOpacity, View
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }: any) => {
 
 
 	return (
-		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex : 1 }}>
+		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex: 1 }}>
 			<StatusBar barStyle="dark-content" backgroundColor="white" />
 			<View style={styles.top}>
 				<TouchableOpacity activeOpacity={0.8}
@@ -63,19 +63,35 @@ const HomeScreen = ({ navigation }: any) => {
 			</View>
 			<ScrollView style={{ backgroundColor: 'white', width: '100%' }}>
 				<Slider />
-				<Tasks navigation={navigation}/>
+				<Tasks navigation={navigation} />
 			</ScrollView>
 		</SafeAreaView>
 	)
 }
 
-function Tasks({navigation}:any) {
+function Tasks({ navigation }: any) {
+	const [dontShowYoutubeTaskTutorial, setDontShowYoutubeTaskTutorial] = useState(false)
+
+	useEffect(() => {
+		AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((data) => {
+			if (data === 'true') {
+				setDontShowYoutubeTaskTutorial(true)
+			}
+		})
+	}, [])
+
+
 	const tasks = [
 		{
 			name: 'Youtube Tasks',
 			icons: icons.youtube,
-			callback: () => {navigation.navigate('YouTubeTask')}
-
+			callback: () => {
+				if (!dontShowYoutubeTaskTutorial) {
+					navigation.navigate('YouTubeTaskTutorial')
+					return
+				}
+				navigation.navigate('YouTubeTask')
+			}
 		},
 		{
 			name: 'Yt Short Tasks',

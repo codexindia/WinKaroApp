@@ -13,6 +13,11 @@ export const buttons = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
         letterSpacing: 0.5,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10,
     },
     button: {
         backgroundColor: colors.text,

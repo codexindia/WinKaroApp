@@ -3,10 +3,12 @@ import React from 'react'
 import buttons from '../styles/buttons'
 import { fonts } from '../styles/fonts'
 
-const ButtonFull = ({ title, cb, styles, disabled }: any) => {
+const ButtonFull = ({ title, cb, styles, disabled, textStyles }: any) => {
+    if (!styles) styles = {}
+    if (!textStyles) textStyles = {}
     return (
-        <TouchableOpacity style={buttons.full} onPress={cb} activeOpacity={0.8} disabled={disabled}>
-            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily : fonts.medium }]}>{title || 'Sample Button'}</Text>
+        <TouchableOpacity style={[buttons.full, styles]} onPress={cb} activeOpacity={0.8} disabled={disabled}>
+            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium }, textStyles]}>{title || 'Sample Button'}</Text>
         </TouchableOpacity>
     )
 }
