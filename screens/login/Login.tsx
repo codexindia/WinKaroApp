@@ -18,6 +18,7 @@ import styles from './styles'
 import { API_URL } from '../../appData'
 import { fonts } from '../../styles/fonts'
 import CustomModal from '../../components/CustomModal'
+import { getDefaultHeader } from '../methods'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
@@ -133,7 +134,8 @@ const Login = ({ navigation }: any) => {
     // Send OTP
     fetch(API_URL.login, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: getDefaultHeader(false)
     }).then((res) => res.json()).then((res) => {
       console.log(res)
       if (res.status === true || res.status === 'true') {

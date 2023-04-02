@@ -74,6 +74,7 @@ function Tasks({ navigation }: any) {
 
 	useEffect(() => {
 		AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((data) => {
+			console.log(data)
 			if (data === 'true') {
 				setDontShowYoutubeTaskTutorial(true)
 			}
@@ -88,9 +89,9 @@ function Tasks({ navigation }: any) {
 			callback: () => {
 				if (!dontShowYoutubeTaskTutorial) {
 					navigation.navigate('YouTubeTaskTutorial')
-					return
+				} else {
+					navigation.navigate('YouTubeTask')
 				}
-				navigation.navigate('YouTubeTask')
 			}
 		},
 		{
@@ -117,7 +118,7 @@ function Tasks({ navigation }: any) {
 		{
 			name: 'Spin and \nEarn',
 			icons: icons.spin_and_earn,
-			callback: () => console.log('App')
+			callback: () => navigation.navigate('Spin')
 		},
 	]
 	return (

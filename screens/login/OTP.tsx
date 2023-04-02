@@ -14,6 +14,7 @@ import { API_URL } from '../../appData'
 import DeviceInfo from 'react-native-device-info'
 import { fonts } from '../../styles/fonts'
 import CustomModal from '../../components/CustomModal'
+import { getDefaultHeader } from '../methods'
 
 
 const OTP = ({ route, navigation }: any) => {
@@ -103,7 +104,8 @@ const OTP = ({ route, navigation }: any) => {
 
     fetch(API_URL.verify_otp, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers : getDefaultHeader(false)
     }).then(res => res.json()).then(async res => {
       console.log(res)
       if (res.status === true || res.status === 'true') {

@@ -13,6 +13,7 @@ import CustomModal from '../../components/CustomModal'
 import { colors } from '../../styles/colors'
 import { fonts } from '../../styles/fonts'
 import styles from './styles'
+import { getDefaultHeader } from '../methods'
 
 
 
@@ -54,7 +55,8 @@ const SignUp = ({ navigation }: any) => {
 
     fetch(API_URL.register, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers : getDefaultHeader(false)
     }).then(res => res.json()).then(res => {
       console.log(res)
       setIsCreatingAccount(false)

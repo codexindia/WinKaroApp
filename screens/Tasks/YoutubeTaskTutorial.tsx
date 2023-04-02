@@ -2,7 +2,7 @@ import {
    Dimensions, StatusBar, StyleSheet,
    Text, View, Image, TouchableOpacity, Alert
 } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { fonts } from '../../styles/fonts'
 import Video from 'react-native-video'
 import { colors } from '../../styles/colors'
@@ -32,6 +32,12 @@ function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?
 const YoutubeTaskTutorial = ({ navigation }: any) => {
    const { width, height } = Dimensions.get('window')
    const [dontShowAgainChecked, setDontShowAgainChecked] = React.useState(false)
+
+   useEffect(() => {
+      AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((value) => {
+         setDontShowAgainChecked(value === 'true')
+      })
+   }, [])
 
 
    return (
@@ -76,14 +82,9 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
             </TouchableOpacity>
 
             <ButtonFull title="View Available Tasks" cb={() => {
-               if (dontShowAgainChecked) {
-                  AsyncStorage.setItem('dontShowYoutubeTaskTutorial', 'true').then(() => {
-                     console.log('Dont show youtube task tutorial value set to true')
-                     navigation.replace('YouTubeTask')
-                  })
-               } else {
+               AsyncStorage.setItem('dontShowYoutubeTaskTutorial', dontShowAgainChecked.toString()).then(() => {
                   navigation.navigate('YouTubeTask')
-               }
+               })
             }} />
 
          </View>

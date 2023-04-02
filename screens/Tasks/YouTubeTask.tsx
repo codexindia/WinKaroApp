@@ -23,7 +23,7 @@ import buttons from '../../styles/buttons'
   "endLineNumber": 9,
   "endColumn": 52
 }]*/
-export default function YouTubeTask() {
+export default function YouTubeTask({navigation} : any) {
   const { height, width } = Dimensions.get('window')
   const [bottomSwipeIcon] = useState(new Animated.Value(0))
   const [topSwipeIcon] = useState(new Animated.Value(10))
@@ -138,7 +138,7 @@ export default function YouTubeTask() {
                 }}>Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
                 </Text>
                 <View>
-                  <WatchTutorial />
+                  <WatchTutorial navigation={navigation}/>
                 </View>
               </View>
 
@@ -228,8 +228,10 @@ function TaskAmount() {
   </View>
 }
 
-function WatchTutorial() {
-  return <TouchableOpacity activeOpacity={0.7}>
+function WatchTutorial({navigation} : any) {
+  return <TouchableOpacity activeOpacity={0.7} onPress={()=>{
+    navigation.navigate('YouTubeTaskTutorial')
+  }}>
     <View style={{
       flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10,
     }}>

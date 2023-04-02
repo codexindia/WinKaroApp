@@ -5,6 +5,7 @@ import { API_URL } from '../appData';
 import { colors } from '../styles/colors';
 import { fonts } from '../styles/fonts';
 import CustomModal from '../components/CustomModal';
+import { getDefaultHeader } from './methods';
 // import { AsyncStorage } from 'react-native';
 
 async function storeUserData(res: any) {
@@ -25,8 +26,6 @@ async function unexpectedLoggedOut(navigation: any, setModals: Function) {
 }
 
 
-
-
 const Splash = ({ navigation }: any) => {
 
   async function mainProcess() {
@@ -34,7 +33,7 @@ const Splash = ({ navigation }: any) => {
     const isOnboarding = await AsyncStorage.getItem('onboarding')
     if (isLoggedIn === 'true') {
       const token = await AsyncStorage.getItem('token')
-      const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+      const headers = getDefaultHeader(token as string)
       try {
         const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
         const res = await fetched.json()
@@ -63,7 +62,7 @@ const Splash = ({ navigation }: any) => {
   }
   useEffect(() => {
     setTimeout(async () => {
-      mainProcess() 
+      mainProcess()
     }, 3000)
   }, []);
   const [modals, setModals] = React.useState<any>([])
