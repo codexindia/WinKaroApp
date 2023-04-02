@@ -16,6 +16,7 @@ const images = {
     girl: require('./src/girl.jpg'),
     girl_2 : require('./src/girl_2.jpg'),
     gaming : require('./src/gaming.jpg'),
+    spinWheel : require('./src/spinWheel.jpg'),
     // offer : require('./src/offer.jpg'),
 }
 export default images
