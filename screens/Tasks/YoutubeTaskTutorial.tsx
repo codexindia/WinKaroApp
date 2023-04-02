@@ -9,6 +9,7 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import RecordScreen, { RecordingStartResponse } from 'react-native-record-screen';
 
 
 function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?: Function }) {
@@ -57,7 +58,51 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
                }}
             />
          </View>
-
+         <Text style={{
+            fontSize: 25, fontWeight: 'bold', color: 'black'
+         }}>English Dictionary</Text>
+         <TouchableOpacity style={{
+            backgroundColor: 'black', padding: 10, borderRadius: 5,
+            marginTop: 20
+         }} onPress={() => {
+            RecordScreen.startRecording({mic: false}).catch(err => {
+               console.log(err)
+            }).then(res => {
+               if (res == "permission_error") {
+                  console.log(res)
+               }
+            })
+         }}>
+            <Text style={{
+               color: 'white', fontSize: 20
+            }}>Start Recording</Text>
+         </TouchableOpacity>
+         <TouchableOpacity style={{
+            backgroundColor: 'black', padding: 10, borderRadius: 5,
+            marginTop: 20
+         }} onPress={() => {
+            RecordScreen.stopRecording().then(res => {
+               const url: any = res.result.outputURL
+               Alert.alert(url)
+               console.log(url)
+            }).catch(err => {
+               console.log(err)
+            }).then(res => {
+               console.log(res)
+            }
+            )
+         }}>
+            <Text style={{
+               color: 'white', fontSize: 20
+            }}>Stop Recording</Text>
+         </TouchableOpacity>
+         <TouchableOpacity onPress={() => {
+            RecordScreen.clean().then(res => {
+               console.log(res)
+            })
+         }}>
+            <Text>Clean</Text>
+         </TouchableOpacity>
          <TaskRules />
          <View style={{
             padding: 20, width: '100%', gap: 10, paddingBottom: 15
