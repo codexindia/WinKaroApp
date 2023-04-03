@@ -45,6 +45,7 @@ const icons = {
     check : require('./src/check.png'),
     record : require('./src/record.png'),
     video_file : require('./src/video_file.png'),
+    pin : require('./src/pin.png'),
     
 }
 export default icons

@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { Animated, Dimensions, Easing, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, Easing, StatusBar, Text, View } from 'react-native';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { API_URL } from '../appData';
+import CustomModal from '../components/CustomModal';
 import { colors } from '../styles/colors';
 import { fonts } from '../styles/fonts';
-import CustomModal from '../components/CustomModal';
 import { getDefaultHeader } from './methods';
+
 // import { AsyncStorage } from 'react-native';
 
 async function storeUserData(res: any) {
@@ -43,6 +45,8 @@ const Splash = ({ navigation }: any) => {
         if (res.status === true || res.status === 'true') {
           await storeUserData(res)
           navigation.replace('Home')
+          // Set navigation bar color to white
+          await changeNavigationBarColor('white', true);
         }
         else {
           // Show error message
@@ -54,9 +58,13 @@ const Splash = ({ navigation }: any) => {
       }
     }
     else if (isOnboarding === 'true') {
+      // Set navigation bar color to white
+      await changeNavigationBarColor('white', true);
       navigation.replace('LogIn')
     }
     else {
+      // Set navigation bar color to white
+      await changeNavigationBarColor('white', true);
       navigation.replace('Onboarding')
     }
   }
@@ -112,9 +120,10 @@ const Splash = ({ navigation }: any) => {
       }).start();
     }, 1600);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsActive(true)
       setStatusBarColor(colors.accent)
+      await changeNavigationBarColor(colors.accent, true);
     }, 2000);
   }, [])
 
