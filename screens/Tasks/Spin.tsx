@@ -1,5 +1,5 @@
-import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect } from 'react'
+import { Alert, Animated, Dimensions, Easing, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import images from '../../assets/images/images'
 import { fonts } from '../../styles/fonts'
 import ButtonFull from '../../components/ButtonFull'
@@ -15,6 +15,43 @@ export default function Spin({ navigation }: any) {
   const imageWidth = width * (4 / 5)
   const extraWidth = width * (1 / 5)
   const deg = 360 / spinArr.length
+  const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
+
+  const [rotate, setRotate] = useState(rotateValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  }))
+
+  useEffect(() => {
+
+
+  }, [])
+
+
+
+
+  function spinWheel() {
+    const random = Math.floor(Math.random() * spinArr.length)
+    const result = spinArr[random]
+    const randomDeg = random * deg
+    // Alert.alert('You won', `${result} coins`)
+
+    rotateValue.setValue(0)
+    Animated.timing(rotateValue, {
+      toValue: 1,
+      duration: 5000,
+      useNativeDriver: true,
+      easing: Easing.elastic(2),
+    }).start()
+
+    setRotate(rotateValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg',
+        `${360 * 2 + randomDeg}deg`
+      ]
+    }))
+  }
+
 
   useEffect(() => {
     setTimeout(async () => {
@@ -48,60 +85,68 @@ export default function Spin({ navigation }: any) {
             justifyContent: 'center', alignItems: 'center',
           }} />
         </View>
-        <Image source={images.spinWheel} style={{
-          zIndex: 10, marginLeft: 'auto', marginRight: 'auto',
-          width: imageWidth, height: imageWidth, borderRadius: (imageWidth) / 2, borderWidth: 2,
-          borderColor: 'white', transform: [{ rotate: '10deg' }]
-        }} />
-        <View style={{
-          position: 'absolute', top: 0,
-          //  left: imageWidth / 2 - (width - imageWidth) / 2,
-          left: extraWidth / 2,
-          width: imageWidth, height: imageWidth,
-          borderRadius: (imageWidth) / 2,
-          justifyContent: 'center', alignItems: 'center', zIndex: 20, transform: [{ rotate: '-90deg' }]
+
+
+        <Animated.View style={{
+          transform: [{ rotate: rotate }],
         }}>
-          {
-            spinArr.map((item, index) => {
-              return (
-                <View style={{
-                  position: 'absolute',
-                  top: (imageWidth / 2) - 25,
-                  left: (imageWidth / 2) - 10,
-                  width: 20, height: 20,
-                  transform: [
-                    { rotate: `${index * deg}deg` },
-                    { translateX: (imageWidth / 2 - 25) - 20 },
-                    { rotate: `${-index * deg}deg` },
-                  ]
-                }}>
+
+          <Image source={images.spinWheel} style={{
+            zIndex: 10, marginLeft: 'auto', marginRight: 'auto',
+            width: imageWidth, height: imageWidth, borderRadius: (imageWidth) / 2, borderWidth: 2,
+            borderColor: 'white', transform: [{ rotate: '10deg' }]
+          }} />
+          <View style={{
+            position: 'absolute', top: 0,
+            //  left: imageWidth / 2 - (width - imageWidth) / 2,
+            left: extraWidth / 2,
+            width: imageWidth, height: imageWidth,
+            borderRadius: (imageWidth) / 2,
+            justifyContent: 'center', alignItems: 'center', zIndex: 20, transform: [{ rotate: '-90deg' }]
+          }}>
+            {
+              spinArr.map((item, index) => {
+                return (
                   <View style={{
-                    flexDirection: 'column', alignItems: 'center', gap: 5,
+                    position: 'absolute',
+                    top: (imageWidth / 2) - 25,
+                    left: (imageWidth / 2) - 10,
+                    width: 20, height: 20,
                     transform: [
-                      { rotate: `${index * deg + 90}deg` }
+                      { rotate: `${index * deg}deg` },
+                      { translateX: (imageWidth / 2 - 25) - 20 },
+                      { rotate: `${-index * deg}deg` },
                     ]
-                  }}>
-                    <Text style={{
-                      fontSize: 20, fontFamily: fonts.semiBold, color: index % 2 == 0 ? 'black' : 'white',
-                      // Make the text no wrap
-                    }}>{item}</Text>
-                    <Image source={icons.coin_dollar} style={{
-                      width: 20, height: 20,
+                  }}
+                    key={index}
+                  >
+                    <View style={{
+                      flexDirection: 'column', alignItems: 'center', gap: 5,
                       transform: [
                         { rotate: `${index * deg + 90}deg` }
                       ]
-                    }} />
+                    }}>
+                      <Text style={{
+                        fontSize: 20, fontFamily: fonts.semiBold, color: index % 2 == 0 ? 'black' : 'white',
+                        // Make the text no wrap
+                      }}>{item}</Text>
+                      <Image source={icons.coin_dollar} style={{
+                        width: 20, height: 20,
+                        transform: [
+                          { rotate: `${index * deg + 90}deg` }
+                        ]
+                      }} />
+                    </View>
                   </View>
-                </View>
-              )
-            })
-          }
-
-        </View>
+                )
+              })
+            }
+          </View>
+        </Animated.View>
 
       </View>
       <View style={{ padding: 20, width: width }}>
-        <ButtonFull title="Test your Luck" onPress={() => { }} />
+        <ButtonFull title="Test your Luck" cb={() => spinWheel()} />
       </View>
     </View >
   )
