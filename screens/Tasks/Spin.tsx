@@ -39,8 +39,8 @@ export default function Spin({ navigation }: any) {
     rotateValue.setValue(0)
     Animated.timing(rotateValue, {
       toValue: 1,
-      duration: 5000,
-      useNativeDriver: true,
+      duration: 7000,
+      useNativeDriver: false,
       easing: Easing.elastic(2),
     }).start()
 
