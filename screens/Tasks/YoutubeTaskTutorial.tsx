@@ -1,5 +1,5 @@
 import {
-   Dimensions, StatusBar, StyleSheet,
+   Dimensions, StatusBar, StyleSheet, ScrollView,
    Text, View, Image, TouchableOpacity, Alert
 } from 'react-native'
 import React, { useEffect } from 'react'
@@ -42,7 +42,7 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
 
 
    return (
-      <View style={{
+      <ScrollView style={{
          height: height, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
          backgroundColor: 'white',
       }}>
@@ -135,7 +135,7 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
             }} />
 
          </View>
-      </View>
+      </ScrollView>
    )
 }
 
