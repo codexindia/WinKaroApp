@@ -70,15 +70,9 @@ const HomeScreen = ({ navigation }: any) => {
 }
 
 function Tasks({ navigation }: any) {
-	const [dontShowYoutubeTaskTutorial, setDontShowYoutubeTaskTutorial] = useState(false)
 
 	useEffect(() => {
-		AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((data) => {
-			console.log(data)
-			if (data === 'true') {
-				setDontShowYoutubeTaskTutorial(true)
-			}
-		})
+
 	}, [])
 
 
@@ -87,11 +81,13 @@ function Tasks({ navigation }: any) {
 			name: 'Youtube Tasks',
 			icons: icons.youtube,
 			callback: () => {
-				if (!dontShowYoutubeTaskTutorial) {
-					navigation.navigate('YouTubeTaskTutorial')
-				} else {
-					navigation.navigate('YouTubeTask')
-				}
+				AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((data) => {
+					if (data === 'true') {
+						navigation.navigate('YouTubeTask')
+					} else {
+						navigation.navigate('YouTubeTaskTutorial')
+					}
+				})
 			}
 		},
 		{

@@ -54,7 +54,7 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
             <Video
                controls={true}
                // paused={true}
-               source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }}
+               source={{ uri: "http://commondatastorage.goreplaceogleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }}
                style={{
                   // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
                   width: width, height: (width) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
@@ -128,7 +128,7 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
 
             <ButtonFull title="View Available Tasks" cb={() => {
                AsyncStorage.setItem('dontShowYoutubeTaskTutorial', dontShowAgainChecked.toString()).then(() => {
-                  navigation.navigate('YouTubeTask')
+                  navigation.replace('YouTubeTask')
                })
             }} />
 
