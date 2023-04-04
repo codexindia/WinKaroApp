@@ -9,11 +9,20 @@ import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
+import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
+
 
 
 
 const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
+
+	useEffect(() => {
+		setTimeout(async () => {
+			await changeNavigationBarColor('#ffffff', true);
+		}, 0);
+	}, [])
+
 
 	setTimeout(async () => {
 		const userData = await AsyncStorage.getItem('userData')
@@ -85,7 +94,7 @@ function Tasks({ navigation }: any) {
 					if (data === 'true') {
 						navigation.navigate('YouTubeTask')
 					} else {
-						navigation.navigate('YouTubeTaskTutorial' , {
+						navigation.navigate('YouTubeTaskTutorial', {
 							isFromHome: true
 						})
 					}

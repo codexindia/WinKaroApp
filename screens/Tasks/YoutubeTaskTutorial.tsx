@@ -43,7 +43,9 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
 
    return (
       <ScrollView style={{
-         height: height, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+         height: height, width: '100%', display: 'flex',
+         // justifyContent: 'space-between',
+         // alignItems: 'center',
          backgroundColor: 'white',
       }}>
          <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -165,6 +167,6 @@ export default YoutubeTaskTutorial
 
 const styles = StyleSheet.create({
    stepsStyle: {
-      fontSize: 17, fontFamily: fonts.regular, color: colors.text, paddingLeft: 10, marginTop: 10
+      fontSize: 16, fontFamily: fonts.regular, color: colors.text, paddingLeft: 10, marginTop: 10
    }
 })

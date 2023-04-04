@@ -1,4 +1,7 @@
-import { Alert, Animated, Dimensions, Easing, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Alert, Animated, Dimensions, Easing, Image, StatusBar,
+  StyleSheet, Text, TouchableOpacity, View, BackHandler
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import images from '../../assets/images/images'
 import { fonts } from '../../styles/fonts'
@@ -23,11 +26,12 @@ export default function Spin({ navigation }: any) {
   }))
 
   useEffect(() => {
-
-
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.navigate('Home')
+      changeNavigationBarColor('#ffffff', true);
+      return true
+    })
   }, [])
-
-
 
 
   function spinWheel() {
