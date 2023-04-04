@@ -64,7 +64,7 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
                }}
             />
          </View>
-         <Text style={{
+         {/* <Text style={{
             fontSize: 25, fontWeight: 'bold', color: 'black'
          }}>English Dictionary</Text>
          <TouchableOpacity style={{
@@ -108,7 +108,7 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
             })
          }}>
             <Text>Clean</Text>
-         </TouchableOpacity>
+         </TouchableOpacity> */}
          <TaskRules />
          <View style={{
             padding: 20, width: '100%', gap: 10, paddingBottom: 15
