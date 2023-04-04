@@ -5,7 +5,7 @@ import {
   StatusBar, TextInput,
   TouchableOpacity, Modal,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
 import icons from '../../assets/icons/icons'
@@ -19,6 +19,7 @@ import { API_URL } from '../../appData'
 import { fonts } from '../../styles/fonts'
 import CustomModal from '../../components/CustomModal'
 import { getDefaultHeader } from '../methods'
+import DeviceInfo from 'react-native-device-info'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
@@ -28,6 +29,14 @@ const Login = ({ navigation }: any) => {
   const [isSendingOTP, setIsSendingOTP] = useState<boolean>(false)
   const [isSendingOTPText, setIsSendingOTPText] = useState<string>('Send OTP')
   const [modals, setModals] = useState<any>([])
+  let [deviceId, setDeviceId] = useState('')
+
+  useEffect(() => {
+    DeviceInfo.getUniqueId().then(id => {
+      setDeviceId(id)
+    })
+  }, [])
+
   return (
     <SafeAreaView style={styles.main}>
       <CustomModal modals={modals} updater={setModals} />
@@ -131,6 +140,7 @@ const Login = ({ navigation }: any) => {
     // create a form data object
     const formData = new FormData()
     formData.append('phone', phoneNumber)
+    formData.append('device_id', deviceId)
     // Send OTP
     fetch(API_URL.login, {
       method: 'POST',

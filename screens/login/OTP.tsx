@@ -4,7 +4,7 @@ import {
   ScrollView, Image, TextInput,
   Alert, TouchableOpacity
 } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import images from '../../assets/images/images'
 import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
@@ -25,12 +25,18 @@ const OTP = ({ route, navigation }: any) => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false)
   const [buttonText, setButtonText] = React.useState<string>('Verify OTP')
   const [modals, setModals] = React.useState<any>([])
+  let [deviceId, setDeviceId] = useState('')
+
 
   useEffect(() => {
     setIsValidOtp(otp.length === 6)
   }, [otp])
+
   useEffect(() => {
     DeviceInfo.getDeviceName().then(name => { setDeviceName(name) });
+    DeviceInfo.getUniqueId().then(id => {
+      setDeviceId(id)
+    })
   }, [])
 
   return (
@@ -100,12 +106,13 @@ const OTP = ({ route, navigation }: any) => {
     formData.append('phone', phone)
     formData.append('otp', lastOtp)
     formData.append('device_name', deviceName)
+    formData.append('device_id', deviceId)
     console.log(lastOtp, phone)
 
     fetch(API_URL.verify_otp, {
       method: 'POST',
       body: formData,
-      headers : getDefaultHeader(false)
+      headers: getDefaultHeader(false)
     }).then(res => res.json()).then(async res => {
       console.log(res)
       if (res.status === true || res.status === 'true') {

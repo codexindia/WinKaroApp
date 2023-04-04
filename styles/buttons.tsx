@@ -6,7 +6,7 @@ import { colors } from './colors'
 export const buttons = StyleSheet.create({
     full: {
         backgroundColor: colors.accent,
-        padding: 20,
+        padding: 19,
         color: '#fff',
         borderRadius: 14,
         alignSelf: 'stretch',

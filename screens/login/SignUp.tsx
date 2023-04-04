@@ -14,11 +14,12 @@ import { colors } from '../../styles/colors'
 import { fonts } from '../../styles/fonts'
 import styles from './styles'
 import { getDefaultHeader } from '../methods'
+import { Alert } from 'react-native'
 
 
 
 const SignUp = ({ navigation }: any) => {
-  let [deviceName, setDeviceName] = useState('')
+  let [deviceId, setDeviceId] = useState('')
   let [mobileNumber, setMobileNumber] = useState('')
   let [email, setEmail] = useState('')
   let [name, setName] = useState('')
@@ -28,7 +29,9 @@ const SignUp = ({ navigation }: any) => {
   let [modalAlert, setModalAlert] = useState<any>([])
 
   useEffect(() => {
-    DeviceInfo.getDeviceName().then(name => { setDeviceName(name) });
+    DeviceInfo.getUniqueId().then(id => {
+      setDeviceId(id)
+    })
   }, [])
 
   function createAccount() {
@@ -50,13 +53,13 @@ const SignUp = ({ navigation }: any) => {
     formData.append('name', name)
     formData.append('email', email)
     formData.append('phone', mobileNumber)
-    formData.append('device_name', deviceName)
+    formData.append('device_id', deviceId)
     formData.append('refer_code', referCode)
 
     fetch(API_URL.register, {
       method: 'POST',
       body: formData,
-      headers : getDefaultHeader(false)
+      headers: getDefaultHeader(false)
     }).then(res => res.json()).then(res => {
       console.log(res)
       setIsCreatingAccount(false)
@@ -86,7 +89,7 @@ const SignUp = ({ navigation }: any) => {
       <CustomModal modals={modalAlert} updater={setModalAlert} />
       <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-        <View style={[styles.topContainer, {paddingBottom : 10}]}>
+        <View style={[styles.topContainer, { paddingBottom: 10 }]}>
           <Image source={images.sign_up} style={[styles.topImage, { height: 150 }]} />
           <Text style={styles.title}>Sign Up to Win Karo</Text>
           <Text style={styles.description}>Sign Up to Win Karo to watch and win</Text>

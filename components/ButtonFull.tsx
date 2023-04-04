@@ -8,7 +8,7 @@ const ButtonFull = ({ title, cb, styles, disabled, textStyles }: any) => {
     if (!textStyles) textStyles = {}
     return (
         <TouchableOpacity style={[buttons.full, styles]} onPress={cb} activeOpacity={0.8} disabled={disabled}>
-            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium }, textStyles]}>{title || 'Sample Button'}</Text>
+            <Text style={[{ textAlign: 'center', fontSize: 16, color: 'white', fontFamily: fonts.medium }, textStyles]}>{title || 'Sample Button'}</Text>
         </TouchableOpacity>
     )
 }

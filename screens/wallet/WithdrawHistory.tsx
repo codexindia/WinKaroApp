@@ -7,15 +7,15 @@ import { fonts } from '../../styles/fonts'
 const WithdrawHistory = ({ data }: any) => {
   return (
     <View style={{
-      gap : 10
+      gap: 10
     }}>
       {
         data.map((item: any, index: number) => {
           return <View style={{
             display: 'flex', flexDirection: 'row',
             alignItems: 'center', justifyContent: 'space-between',
-            borderBottomColor: '#eee', borderWidth: 1, padding : 20,
-            borderColor: '#00000000', backgroundColor : colors.inputBg, borderRadius : 20,
+            backgroundColor: '#fafafa', borderColor: "#e5e5e5", padding: 20, borderWidth: 0.5,
+            borderRadius: 20,
           }} key={index}>
             <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
               <View>

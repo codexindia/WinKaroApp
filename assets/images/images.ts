@@ -18,5 +18,6 @@ const images = {
     gaming : require('./src/gaming.jpg'),
     spinWheel : require('./src/spinWheel.jpg'),
     // offer : require('./src/offer.jpg'),
+    // coins_mobile : require('./src/coins_mobile.jpg'),
 }
 export default images
