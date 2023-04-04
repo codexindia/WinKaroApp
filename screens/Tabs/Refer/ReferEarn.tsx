@@ -60,7 +60,7 @@ const ReferEarn = ({ navigation }: any) => {
                 flexDirection: 'row', gap: 15, backgroundColor: 'white', padding: 13, borderRadius: 10,
                 borderStyle: 'dashed', borderWidth: 1, borderColor: colors.text
               }}>
-                <Text style={{ fontSize: 15, color: colors.text, fontFamily: fonts.medium }}>{referCode || 'WIN2698 '}</Text>
+                <Text style={{ fontSize: 15, color: colors.text, fontFamily: fonts.medium }}>{referCode}</Text>
                 <Image source={isCopied ? icons.check : icons.copy} style={{ width: 15, height: 15, tintColor: isCopied ? 'limegreen' : colors.text, }} />
               </View>
             </TouchableOpacity>
@@ -70,7 +70,6 @@ const ReferEarn = ({ navigation }: any) => {
             shareText(`Check out Win Karo App on the Google Play Store using this link: ${playStoreLink}. Use my referral code ${referCode} for a special bonus when you sign up. Enjoy!`)
           }} />
         </View>
-
 
         <View style={[referStyles.lightCard, referStyles.referCard, { paddingLeft: 20 }]}>
           <View style={{ width: '52%', flexDirection: 'row', gap: 15 }}>

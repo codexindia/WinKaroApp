@@ -1,4 +1,5 @@
 import {
+  Alert,
   Animated, Dimensions, Easing, Image, Modal,
   ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native'
@@ -11,6 +12,12 @@ import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
 import Video from 'react-native-video'
 import buttons from '../../styles/buttons'
+import { Linking } from 'react-native'
+import RecordScreen, { RecordingStartResponse } from 'react-native-record-screen';
+import { RecordingResult } from 'react-native-record-screen'
+
+
+const { height, width } = Dimensions.get('window')
 /*[{
   "resource": "/workspaces/win-karo/screens/Tasks/YouTubeTask.tsx",
   "owner": "typescript",
@@ -23,11 +30,24 @@ import buttons from '../../styles/buttons'
   "endLineNumber": 9,
   "endColumn": 52
 }]*/
-export default function YouTubeTask({navigation} : any) {
-  const { height, width } = Dimensions.get('window')
+
+function GoBtn({ url }: { url: string }) {
+  return <TouchableOpacity style={[buttons.full, { backgroundColor: 'limegreen', width: width / 3 - 25 }]} activeOpacity={0.8}
+    onPress={() => {
+      console.log('Go')
+      Linking.openURL(url)
+    }}
+  >
+    <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Go</Text>
+  </TouchableOpacity>
+}
+
+
+export default function YouTubeTask({ navigation }: any) {
   const [bottomSwipeIcon] = useState(new Animated.Value(0))
   const [topSwipeIcon] = useState(new Animated.Value(10))
   const [modalVisible, setModalVisible] = useState(false)
+  const [recordingIndex, setRecordingIndex] = useState(-1)
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
   let titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4',]
@@ -42,6 +62,41 @@ export default function YouTubeTask({navigation} : any) {
     ).start()
   }, [])
 
+  useEffect(() => {
+    // RecordScreen.clean().then(data => {
+    //   console.log(data)
+    // })
+  }, [])
+
+
+  function startRecording(index: number) {
+    RecordScreen.startRecording({ mic: false }).then(res => {
+      if (res === RecordingResult.PermissionError) {
+        console.log("Permission Error")
+        Alert.alert('Permission Error', 'Please allow the permission to record screen')
+      } else {
+        // Everything is ok
+        console.log("Start Recording");
+        console.log(res);
+        setRecordingIndex(index)
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  function stopRecording() {
+    RecordScreen.stopRecording().then(res => {
+      const URL = res.result.outputURL
+      Alert.alert('For Testing only Alert', 'Video saved at ' + URL + '\nThe next step of uploading will be build after the API is ready')
+      RecordScreen.clean().then(data => {
+        console.log(data)
+      })
+      setRecordingIndex(-1)
+    }).catch(err => {
+      console.log(err);
+    })
+  }
 
   return (
     <View style={{
@@ -124,7 +179,6 @@ export default function YouTubeTask({navigation} : any) {
               </View>
               <TaskAmount />
 
-
               <View style={{
                 padding: 20, gap: 5, backgroundColor: '#fafafa', borderColor: '#e5e5e5', borderWidth: 0.5,
                 borderRadius: 20,
@@ -138,27 +192,46 @@ export default function YouTubeTask({navigation} : any) {
                 }}>Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
                 </Text>
                 <View>
-                  <WatchTutorial navigation={navigation}/>
+                  <WatchTutorial navigation={navigation} />
                 </View>
               </View>
-
-
 
               <View style={{ width: '100%' }}>
 
                 <View style={{ paddingHorizontal: 20, marginTop: 10, width: '100%', gap: 15 }}>
                   <View style={{
                     flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'
-                  }}>
-                    <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25 }]} activeOpacity={0.8} >
-                      <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
-                      <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[buttons.full, { backgroundColor: 'limegreen', width: width / 3 - 25 }]} activeOpacity={0.8} >
-                      <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Go</Text>
-                    </TouchableOpacity>
+                  }}>{
+
+                      recordingIndex === index ?
+                        <>
+                          <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25, backgroundColor: 'red' }]} activeOpacity={0.8} onPress={() => stopRecording()}>
+                            <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
+                            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Stop and Complete</Text>
+                          </TouchableOpacity>
+                          <GoBtn url={"https://google.com"} />
+                        </>
+                        :
+                        <>
+                          {
+                            recordingIndex === -1 ?
+                              <>
+                                <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25 }]} activeOpacity={0.8} onPress={() => startRecording(index)}                          >
+                                  <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
+                                  <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
+                                </TouchableOpacity>
+                                <GoBtn url={"https://google.com"} />
+                              </>
+                              :
+                              <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
+                                <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
+                                <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Recording another task</Text>
+                              </TouchableOpacity>
+                          }
+                        </>
+                    }
                   </View>
-                  <TouchableOpacity activeOpacity={0.8}>
+                  {/* <TouchableOpacity activeOpacity={0.8}>
                     <View style={{
                       flexDirection: 'row', alignItems: 'center', gap: 20,
                       backgroundColor: '#fafafa', borderRadius: 15,
@@ -175,7 +248,7 @@ export default function YouTubeTask({navigation} : any) {
                         }}>Select the recorded video</Text>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
 
                 <SwipeUp bottomSwipeIcon={bottomSwipeIcon} topSwipeIcon={topSwipeIcon} isVisible={index == taskLen - 1 ? false : true} />
@@ -188,12 +261,12 @@ export default function YouTubeTask({navigation} : any) {
 }
 function TaskAmount() {
   return <View style={{
-    width: '100%', 
+    width: '100%',
     paddingHorizontal: 20, gap: 15,
     //  position: 'absolute', top: 70
   }}>
     <View style={{
-      backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5',flexDirection: 'row', justifyContent: 'space-between',
+      backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5', flexDirection: 'row', justifyContent: 'space-between',
     }}>
       <View style={{
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
@@ -228,8 +301,8 @@ function TaskAmount() {
   </View>
 }
 
-function WatchTutorial({navigation} : any) {
-  return <TouchableOpacity activeOpacity={0.7} onPress={()=>{
+function WatchTutorial({ navigation }: any) {
+  return <TouchableOpacity activeOpacity={0.7} onPress={() => {
     navigation.navigate('YouTubeTaskTutorial')
   }}>
     <View style={{

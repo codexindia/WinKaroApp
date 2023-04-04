@@ -125,7 +125,7 @@ function Tasks({ navigation }: any) {
 					tasks.map((task, index) => {
 						return (
 							<View key={index} style={{ width: '30%' }}>
-								<TouchableOpacity activeOpacity={0.8} onPress={task.callback}>
+								<TouchableOpacity activeOpacity={0.5} onPress={task.callback}>
 									<View style={taskStyles.task}>
 										<Image source={task.icons} style={[taskStyles.image, { backgroundColor: task.background ? task.background : '#fff' }]} />
 										<Text style={taskStyles.taskName}>{task.name}</Text>
