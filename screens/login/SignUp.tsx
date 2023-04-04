@@ -54,7 +54,7 @@ const SignUp = ({ navigation }: any) => {
     formData.append('email', email)
     formData.append('phone', mobileNumber)
     formData.append('device_id', deviceId)
-    formData.append('refer_code', referCode)
+    if (referCode) { formData.append('refer_code', referCode) }
 
     fetch(API_URL.register, {
       method: 'POST',
