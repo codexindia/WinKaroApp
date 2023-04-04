@@ -9,7 +9,6 @@ import { colors } from '../../styles/colors'
 import ButtonFull from '../../components/ButtonFull'
 import icons from '../../assets/icons/icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import RecordScreen, { RecordingStartResponse } from 'react-native-record-screen';
 
 
 function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?: Function }) {
@@ -30,7 +29,8 @@ function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?
 }
 
 
-const YoutubeTaskTutorial = ({ navigation }: any) => {
+const YoutubeTaskTutorial = ({ route, navigation }: any) => {
+   const { isFromHome } = route.params
    const { width, height } = Dimensions.get('window')
    const [dontShowAgainChecked, setDontShowAgainChecked] = React.useState(false)
 
@@ -128,7 +128,9 @@ const YoutubeTaskTutorial = ({ navigation }: any) => {
 
             <ButtonFull title="View Available Tasks" cb={() => {
                AsyncStorage.setItem('dontShowYoutubeTaskTutorial', dontShowAgainChecked.toString()).then(() => {
-                  navigation.replace('YouTubeTask')
+                  if (isFromHome)
+                     navigation.replace('YouTubeTask')
+                  else navigation.goBack()
                })
             }} />
 

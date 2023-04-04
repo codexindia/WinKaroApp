@@ -85,7 +85,9 @@ function Tasks({ navigation }: any) {
 					if (data === 'true') {
 						navigation.navigate('YouTubeTask')
 					} else {
-						navigation.navigate('YouTubeTaskTutorial')
+						navigation.navigate('YouTubeTaskTutorial' , {
+							isFromHome: true
+						})
 					}
 				})
 			}

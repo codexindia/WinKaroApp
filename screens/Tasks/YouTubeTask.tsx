@@ -1,5 +1,5 @@
 import {
-  Alert,
+  Alert, BackHandler,
   Animated, Dimensions, Easing, Image, Modal,
   ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native'
@@ -15,6 +15,7 @@ import buttons from '../../styles/buttons'
 import { Linking } from 'react-native'
 import RecordScreen, { RecordingStartResponse } from 'react-native-record-screen';
 import { RecordingResult } from 'react-native-record-screen'
+import CustomModal from '../../components/CustomModal'
 
 
 const { height, width } = Dimensions.get('window')
@@ -49,6 +50,7 @@ export default function YouTubeTask({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false)
   const [recordingIndex, setRecordingIndex] = useState(-1)
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
+  const [modals, setModals] = useState<any>([])
 
   let titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4',]
   let taskLen = titles.length
@@ -68,6 +70,32 @@ export default function YouTubeTask({ navigation }: any) {
     // })
   }, [])
 
+  useEffect(() => {
+    const backAction = () => {
+      if (recordingIndex === -1)
+        return false;
+      setModals([{
+        title: "Are you sure?",
+        description: "Are you sure you want to go back? This will stop your recording to complete the task and you have to start again.",
+        type: "success", active: true,
+        buttons: [
+          { text: "No" },
+          {
+            text: "Yes", positive: true, onPress: () => {
+              cancelRecording()
+              navigation.goBack()
+            },
+          },
+        ]
+      }])
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, [recordingIndex])
 
   function startRecording(index: number) {
     RecordScreen.startRecording({ mic: false }).then(res => {
@@ -97,11 +125,23 @@ export default function YouTubeTask({ navigation }: any) {
       console.log(err);
     })
   }
+  function cancelRecording() {
+    RecordScreen.stopRecording().then(res => {
+      RecordScreen.clean().then(data => {
+        console.log(data)
+      })
+      setRecordingIndex(-1)
+    }).catch(err => {
+      console.log(err);
+    })
+  }
 
   return (
     <View style={{
       backgroundColor: 'white', flex: 1
     }}>
+      <CustomModal modals={modals} updater={setModals} />
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -303,7 +343,7 @@ function TaskAmount() {
 
 function WatchTutorial({ navigation }: any) {
   return <TouchableOpacity activeOpacity={0.7} onPress={() => {
-    navigation.navigate('YouTubeTaskTutorial')
+    navigation.navigate('YouTubeTaskTutorial', { isFromHome: false })
   }}>
     <View style={{
       flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10,
