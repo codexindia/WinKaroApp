@@ -11,9 +11,17 @@ import changeNavigationBarColor, { hideNavigationBar } from 'react-native-naviga
 import icons from '../../assets/icons/icons'
 
 
+const SPIN_DURATION = 7000
+
+
 export default function Spin({ navigation }: any) {
   const spinArr = [6, 7, 8, 9, 10, 6, 7, 8]
   const { width, height } = Dimensions.get('window')
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [isSpinningFinished, setIsSpinningFinished] = useState(false)
+  const [earnedCoins, setEarnedCoins] = useState(0)
+  const [buttonText, setButtonText] = useState('Test your luck')
+
 
   const imageWidth = width * (4 / 5)
   const extraWidth = width * (1 / 5)
@@ -40,10 +48,13 @@ export default function Spin({ navigation }: any) {
     const randomDeg = random * deg
     // Alert.alert('You won', `${result} coins`)
 
+
+    setIsSpinning(true)
+
     rotateValue.setValue(0)
     Animated.timing(rotateValue, {
       toValue: 1,
-      duration: 7000,
+      duration: SPIN_DURATION,
       useNativeDriver: false,
       easing: Easing.elastic(2),
     }).start()
@@ -54,6 +65,12 @@ export default function Spin({ navigation }: any) {
         `${360 * 2 + randomDeg}deg`
       ]
     }))
+    setTimeout(() => {
+      setIsSpinning(false)
+      setEarnedCoins(result)
+      setIsSpinningFinished(true)
+      setButtonText('Watch ad to claim')
+    }, SPIN_DURATION)
   }
 
 
@@ -145,15 +162,33 @@ export default function Spin({ navigation }: any) {
                 )
               })
             }
+
+
           </View>
         </Animated.View>
-
       </View>
-      <View style={{ padding: 20, width: width }}>
-        <ButtonFull title="Test your Luck" cb={() => spinWheel()} />
+
+      <View style={{
+        opacity: earnedCoins == 0 ? 0 : 1,
+      }}>
+        <Text style={{ fontSize: 16, color: 'white', fontFamily: fonts.medium, textAlign: 'center' }}>You own 8 coins</Text>
+      </View>
+
+
+      <View style={{ padding: 20, width: width, opacity: isSpinning ? 0 : 1 }}>
+        {
+          <ButtonFull title={buttonText}
+            disabled={isSpinning}
+            cb={() => {
+              return isSpinningFinished ? watchAdToClaim() : spinWheel()
+            }} />
+        }
       </View>
     </View >
   )
+}
+function watchAdToClaim() {
+  console.log('watch ad to claim')
 }
 
 const styles = StyleSheet.create({

@@ -55,8 +55,8 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
             }}>Get Money Steps Tutorial</Text>
             <Video
                controls={true}
-               // paused={true}
-               source={{ uri: "http://commondatastorage.goreplaceogleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" }}
+               paused={true}
+               source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" }}
                style={{
                   // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
                   width: width, height: (width) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
