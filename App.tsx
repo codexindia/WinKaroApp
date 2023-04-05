@@ -18,6 +18,7 @@ import YouTubeTask from './screens/Tasks/YouTubeTask';
 import YoutubeTaskTutorial from './screens/Tasks/YoutubeTaskTutorial';
 import Spin from './screens/Tasks/Spin';
 import ReferEarn from './screens/Tabs/Refer/ReferEarn';
+import RewardAdScreen from './screens/RewardAdScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -44,6 +45,7 @@ const App = () => {
         <Stack.Screen name="YouTubeTask" component={YouTubeTask} options={{ title: 'YouTube Task', headerShown: false }} />
         <Stack.Screen name="YouTubeTaskTutorial" component={YoutubeTaskTutorial} options={{ title: 'YouTube Task Tutorial', headerShown: false }} />
         <Stack.Screen name="Spin" component={Spin} options={{ headerShown: false }} />
+        <Stack.Screen name="RewardAd" component={RewardAdScreen} options={{ title: 'RewardAd', headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

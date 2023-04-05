@@ -9,7 +9,7 @@
     "start": "react-native start",
     "test": "jest",
     "build": "cd android && gradlew assembleRelease",
-    "install": "adb install -r android/app/build/outputs/apk/debug/app-arm64-v8a-debug.apk"
+    "installApk": "adb install -r android/app/build/outputs/apk/debug/app-arm64-v8a-debug.apk"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -18,7 +18,6 @@
     "@react-navigation/native-stack": "^6.9.12",
     "react": "18.2.0",
     "react-native": "0.71.4",
-    "react-native-applovin-max": "^5.0.2",
     "react-native-device-info": "^10.4.0",
     "react-native-google-mobile-ads": "^10.1.0",
     "react-native-navigation-bar-color": "^2.0.2",

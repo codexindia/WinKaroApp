@@ -11,6 +11,7 @@ import changeNavigationBarColor, { hideNavigationBar } from 'react-native-naviga
 import icons from '../../assets/icons/icons'
 
 
+  
 const SPIN_DURATION = 7000
 
 
@@ -70,7 +71,7 @@ export default function Spin({ navigation }: any) {
       setEarnedCoins(result)
       setIsSpinningFinished(true)
       setButtonText('Watch ad to claim')
-    }, SPIN_DURATION)
+    }, SPIN_DURATION - 1000)
   }
 
 
@@ -180,14 +181,17 @@ export default function Spin({ navigation }: any) {
           <ButtonFull title={buttonText}
             disabled={isSpinning}
             cb={() => {
-              return isSpinningFinished ? watchAdToClaim() : spinWheel()
+              return isSpinningFinished ? watchAdToClaim(navigation, earnedCoins) : spinWheel()
             }} />
         }
       </View>
     </View >
   )
 }
-function watchAdToClaim() {
+function watchAdToClaim(navigation: any, earnedCoins: number) {
+  navigation.navigate('RewardAd', {
+    earnedCoins: earnedCoins
+  })
   console.log('watch ad to claim')
 }
 
