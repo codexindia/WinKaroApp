@@ -120,7 +120,9 @@ function Tasks({ navigation }: any) {
 		{
 			name: 'Watch and Earn',
 			icons: icons.watch_and_earn,
-			callback: () => console.log('App')
+			callback: () => navigation.navigate('RewardAd', {
+				earnedCoins: 7
+			})
 		},
 		{
 			name: 'Spin and \nEarn',
