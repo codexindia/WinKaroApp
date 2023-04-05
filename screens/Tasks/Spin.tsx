@@ -9,24 +9,33 @@ import ButtonFull from '../../components/ButtonFull'
 import { colors } from '../../styles/colors'
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
 import icons from '../../assets/icons/icons'
-
+import { API_URL } from '../../appData'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getDefaultHeader } from '../methods';
+import CustomModal from '../../components/CustomModal'
 
 
 const SPIN_DURATION = 5000
 
+const spinArr = [6, 7, 8, 9, 10, 6, 7, 8]
+const deg = 360 / spinArr.length
+
 
 export default function Spin({ navigation }: any) {
-  const spinArr = [6, 7, 8, 9, 10, 6, 7, 8]
   const { width, height } = Dimensions.get('window')
   const [isSpinning, setIsSpinning] = useState(false)
   const [isSpinningFinished, setIsSpinningFinished] = useState(false)
   const [earnedCoins, setEarnedCoins] = useState(0)
-  const [buttonText, setButtonText] = useState('Test your luck')
+  const [buttonText, setButtonText] = useState('Loading Coins...')
   const [clickedWatchAd, setClickedWatchAd] = useState(false)
+  const [isLoadedCoins, setIsLoadedCoins] = useState(false)
+  const [textStatus, setTextStatus] = useState('Loading Coins...')
+  let [modalAlert, setModalAlert] = useState<any>([])
+
+
 
   const imageWidth = width * (4 / 5)
   const extraWidth = width * (1 / 5)
-  const deg = 360 / spinArr.length
   const [rotateValue, setRotateValue] = useState(new Animated.Value(0));
 
   const [rotate, setRotate] = useState(rotateValue.interpolate({
@@ -36,17 +45,64 @@ export default function Spin({ navigation }: any) {
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
-      navigation.navigate('Home')
+      navigation.goBack()
       changeNavigationBarColor('#ffffff', true);
       return true
     })
   }, [])
+
+
+  useEffect(() => {
+    if (isSpinningFinished)
+      setTextStatus('You have earned ' + earnedCoins + ' coins')
+  }, [isSpinningFinished])
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const token = await AsyncStorage.getItem('token')
+      const headers = getDefaultHeader(token)
+
+      fetch(API_URL.get_pin_coins, {
+        method: 'POST',
+        headers: headers
+      }).then((data) => {
+        return data.json()
+      }).then((data) => {
+        console.log(data)
+        if (data.status === true || data.status === 'true') {
+          // Main Logic here
+          setIsLoadedCoins(true)
+          setEarnedCoins(data.data)
+          setButtonText('Spin Now')
+          setTextStatus('Spin to earn coins')
+          // console.log(data.data, spinArr.indexOf(data.data));
+        } else {
+          setModalAlert([{
+            title: "Error", description: "Something went wong. Please restart the app.", active: true,
+            buttons: [
+              { text: "Go Back", positive: true, onPress: async () => { navigation.goBack() }, },
+            ]
+          }])
+        }
+      }).catch(err => {
+        setModalAlert([{
+          title: "Error", description: "Network Error, Check your internet connectivity.", active: true,
+          buttons: [
+            { text: "Go Back", positive: true, onPress: async () => { navigation.goBack() }, },
+          ]
+        }])
+      })
+    }, 0);
+  }, [])
+
+
   function watchAdToClaim(navigation: any, earnedCoins: number) {
     console.log('watch ad to claim')
     setClickedWatchAd(true)
     setButtonText('Done, Go back!')
-    navigation.replace('RewardAd', {
-      earnedCoins: earnedCoins
+    navigation.replace('DailyLimit', {
+      earnedCoins: earnedCoins,
+      from: 'spin',
     })
   }
   async function changNavBarCol(color: string, light: boolean) {
@@ -59,11 +115,13 @@ export default function Spin({ navigation }: any) {
   }
 
   function spinWheel() {
-    const random = Math.floor(Math.random() * spinArr.length)
+    // const random = Math.floor(Math.random() * spinArr.length)
+    const random = spinArr.indexOf(earnedCoins)
+    console.log(random, earnedCoins)
+
     const result = spinArr[random]
     const randomDeg = random * deg
     // Alert.alert('You won', `${result} coins`)
-
 
     setIsSpinning(true)
 
@@ -78,7 +136,7 @@ export default function Spin({ navigation }: any) {
     setRotate(rotateValue.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg',
-        `${360 * 2 + randomDeg}deg`
+        `${360 * 2 - randomDeg}deg`
       ]
     }))
     setTimeout(() => {
@@ -99,6 +157,7 @@ export default function Spin({ navigation }: any) {
     <View style={{
       flex: 1, backgroundColor: '#012759', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10,
     }}>
+      <CustomModal modals={modalAlert} updater={setModalAlert} />
       <StatusBar backgroundColor="#012759" barStyle="light-content" />
       <View>
         <Text style={{ fontSize: 25, fontFamily: fonts.semiBold, textAlign: 'center', marginTop: 20, color: 'white', opacity: 0.8 }}>Spin and Earn</Text>
@@ -174,23 +233,23 @@ export default function Spin({ navigation }: any) {
                 )
               })
             }
-
-
           </View>
         </Animated.View>
       </View>
 
       <View style={{
-        opacity: earnedCoins == 0 ? 0 : 1,
+        // opacity: earnedCoins == 0 ? 0 : 1,
       }}>
-        <Text style={{ fontSize: 16, color: 'white', fontFamily: fonts.medium, textAlign: 'center' }}>You own 8 coins</Text>
+        <Text style={{ fontSize: 16, color: 'white', fontFamily: fonts.medium, textAlign: 'center' }}>{
+          textStatus
+        }</Text>
       </View>
 
 
-      <View style={{ padding: 20, width: width, opacity: isSpinning ? 0 : 1 }}>
+      <View style={{ padding: 20, width: width, opacity: isSpinning || !isLoadedCoins ? 0 : 1 }}>
         {
           <ButtonFull title={buttonText}
-            disabled={isSpinning}
+            disabled={isSpinning || !isLoadedCoins}
             cb={() => {
               return isSpinningFinished ?
                 clickedWatchAd ? () => {

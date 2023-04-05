@@ -3,7 +3,22 @@ import { Modal, Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 import { colors } from '../styles/colors'
 import { fonts } from '../styles/fonts'
 
-
+/*setModalAlert([{
+          title: "Log Out", description: "Are you sure you want to log out?", type: "success", active: true,
+          buttons: [
+            { text: "No" },
+            {
+              text: "Yes", positive: true, onPress: async () => {
+                // await AsyncStorage.removeItem('token')
+                // await AsyncStorage.removeItem('isLoggedIn')
+                // Clear all data from AsyncStorage
+                await AsyncStorage.clear()
+                navigation.replace('LogIn')
+              },
+            },
+          ]
+        }])
+*/
 export default function CustomModal({ modals, updater }: any) {
 
   return (
@@ -12,7 +27,7 @@ export default function CustomModal({ modals, updater }: any) {
         modals.map((modal: any, i: number) => {
           const [modalActive, setModalActive] = useState(modal.active);
           const buttons = modal.buttons || [
-            { text: 'OK', positive: true,  }
+            { text: 'OK', positive: true, }
           ]
           return <Modal key={i} animationType="fade" transparent={true} visible={modalActive}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.15)', width: '100%' }}>

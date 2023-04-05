@@ -10,53 +10,52 @@ import images from '../assets/images/images';
 const adUnitId = TestIds.REWARDED;
 
 
-const rewarded = RewardedAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ['fashion', 'clothing'],
-});
+const rewarded = RewardedAd.createForAdRequest(adUnitId);
 
 const RewardAdScreen = ({ route, navigation }: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
   const earnedCoins = route.params.earnedCoins
+  const from = route.params.from || 'watch'
   const [claimingText, setClaimingText] = useState('Claiming Coins...')
   const [isClaimed, setIsClaimed] = useState(false)
+  const [checkedDailyLimit, setCheckedDailyLimit] = useState(true)
+  const [playingAd, setPlayingAd] = useState(false)
+
 
   useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
       setIsLoaded(true);
     });
     const unsubscribeEarned = rewarded.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
+      RewardedAdEventType.EARNED_REWARD, reward => {
         console.log('User earned reward of ', earnedCoins);
         Alert.alert("Congratulations", "You have earned " + earnedCoins + " for watching the ad.")
         setIsWatched(true);
         claimCoins(earnedCoins)
-        // navigation.goBack()
       },
     );
-
-    // Start loading the rewarded ad straight away
     rewarded.load();
-
-    // Unsubscribe from events on unmount
     return () => {
       unsubscribeLoaded();
       unsubscribeEarned();
     };
 
+    // Check Daily limit here
+
   }, [])
 
   useEffect(() => {
     changeNavigationBarColor('#ffffff', true);
-  }, [])
-
-  useEffect(() => {
-    if (isLoaded) {
+    // Check daily limit
+    if (isLoaded && checkedDailyLimit && !playingAd) {
       rewarded.show();
+      setPlayingAd(true)
     }
-  }, [isLoaded])
+  }, [isLoaded, checkedDailyLimit])
+
+
+
 
 
   function claimCoins(earnedCoins: number) {
@@ -112,7 +111,7 @@ const RewardAdScreen = ({ route, navigation }: any) => {
       <Text style={{
         fontSize: 18, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
         width: '80%',
-      }}>You Did not watch the ad completely. Please go back and start again</Text>
+      }}>Loading...</Text>
     </View >
   )
 }
