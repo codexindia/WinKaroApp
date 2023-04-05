@@ -59,8 +59,10 @@ const Profile = ({ navigation }: any) => {
             { text: "No" },
             {
               text: "Yes", positive: true, onPress: async () => {
-                await AsyncStorage.removeItem('token')
-                await AsyncStorage.removeItem('isLoggedIn')
+                // await AsyncStorage.removeItem('token')
+                // await AsyncStorage.removeItem('isLoggedIn')
+                // Clear all data from AsyncStorage
+                await AsyncStorage.clear()
                 navigation.replace('LogIn')
               },
             },
