@@ -6,20 +6,10 @@ import { API_URL } from '../appData';
 import CustomModal from '../components/CustomModal';
 import { colors } from '../styles/colors';
 import { fonts } from '../styles/fonts';
-import { getDefaultHeader } from './methods';
+import { getDefaultHeader, storeUserData } from './methods';
 
 // import { AsyncStorage } from 'react-native';
 
-async function storeUserData(res: any) {
-  const userData = {
-    name: res.data.name,
-    email: res.data.email,
-    phone: res.data.phone,
-    refer_code: res.data.refer_code,
-  }
-  await AsyncStorage.setItem('userData', JSON.stringify(userData))
-  console.log('User data is stored in AsyncStorage')
-}
 
 async function unexpectedLoggedOut(navigation: any, setModals: Function) {
   setModals([{ title: 'Error', description: 'Unexpectedly logged out from the app. Please login again.' }])

@@ -10,12 +10,15 @@ import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
+import { API_URL } from '../../../appData';
+import { getDefaultHeader, storeUserData } from '../../methods';
 
 
 
 
 const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
+	const [balance, setBalance] = useState('')
 
 	useEffect(() => {
 		setTimeout(async () => {
@@ -23,11 +26,33 @@ const HomeScreen = ({ navigation }: any) => {
 		}, 0);
 	}, [])
 
+	useEffect(() => {
+		// Test data
+		const updateData = setInterval(async () => {
+			const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
+			const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
+			const res = await fetched.json()
+			console.log(res)
+			if (res.status === true || res.status === 'true') {
+				await storeUserData(res)
+				setBalance(res.balance + '')
+				await changeNavigationBarColor('white', true);
+			}
+			else {
+				// Show error message
+				// await unexpectedLoggeai dOut(navigation, setModals)
+			}
+		}, 30000);
+
+		return () => clearInterval(updateData)
+	}, [])
+
 
 	setTimeout(async () => {
 		const userData = await AsyncStorage.getItem('userData')
 		let data: UserData = JSON.parse(userData as string)
 		setName(data.name.split(' ')[0])
+		setBalance(data.balance + '')
 	}, 0);
 
 
@@ -57,7 +82,7 @@ const HomeScreen = ({ navigation }: any) => {
 							<Text style={{
 								fontSize: 15, fontFamily: fonts.medium,
 								color: colors.text,
-							}}>1200</Text>
+							}}>{balance}</Text>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity activeOpacity={0.8}
@@ -121,7 +146,7 @@ function Tasks({ navigation }: any) {
 			name: 'Watch and Earn',
 			icons: icons.watch_and_earn,
 			callback: () => navigation.navigate('DailyLimit', {
-				earnedCoins: 5,
+				earnedCoins: 10,
 				from: 'watch'
 			})
 		},

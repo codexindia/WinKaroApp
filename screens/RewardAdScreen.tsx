@@ -7,6 +7,9 @@ import { colors } from '../styles/colors';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import ButtonFull from '../components/ButtonFull';
 import images from '../assets/images/images';
+import { getDefaultHeader } from './methods';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '../appData';
 const adUnitId = TestIds.REWARDED;
 
 
@@ -15,7 +18,7 @@ const rewarded = RewardedAd.createForAdRequest(adUnitId);
 const RewardAdScreen = ({ route, navigation }: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
-  const earnedCoins = route.params.earnedCoins
+  const earnedCoins = route.params.earnedCoins || 0
   const from = route.params.from || 'watch'
   const [claimingText, setClaimingText] = useState('Claiming Coins...')
   const [isClaimed, setIsClaimed] = useState(false)
@@ -45,11 +48,11 @@ const RewardAdScreen = ({ route, navigation }: any) => {
 
   }, [])
 
-  useEffect(() => {
-    const backAction = () => { return true; };
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () => backHandler.remove();
-  }, []);
+  // useEffect(() => {
+  //   const backAction = () => { return true; };
+  //   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+  //   return () => backHandler.remove();
+  // }, []);
 
 
   useEffect(() => {
@@ -66,12 +69,37 @@ const RewardAdScreen = ({ route, navigation }: any) => {
 
 
   function claimCoins(earnedCoins: number) {
-    setTimeout(() => {
-      console.log('claim coins')
-      // navigation.goBack()
-      setClaimingText(earnedCoins + ' Coins Claimed!')
-      setIsClaimed(true)
-    }, 5000);
+    setTimeout(async () => {
+      const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+      if (from === 'watch') {
+        const res = await fetch(API_URL.add_reward, { method: 'POST', headers, })
+        const data = await res.json()
+
+        console.log(data)
+        if (data.status === 'true' || data.status === true) {
+          setClaimingText(earnedCoins + ' Coins Claimed!')
+        } else {
+          setClaimingText('Error Claiming Coins!')
+        }
+        setIsClaimed(true)
+      }
+
+      else if (from == 'spin') {
+        const formData = new FormData()
+        formData.append('coin', earnedCoins.toString())
+        const res = await fetch(API_URL.spin_add_reward, { method: 'POST', headers, body: formData })
+        const data = await res.json()
+
+        console.log(data)
+        if (data.status === 'true' || data.status === true) {
+          setClaimingText(earnedCoins + ' Coins Claimed!')
+        }
+        else {
+          setClaimingText('Error Claiming Coins!')
+        }
+        setIsClaimed(true)
+      }
+    }, 0);
   }
 
   if (!isLoaded) {

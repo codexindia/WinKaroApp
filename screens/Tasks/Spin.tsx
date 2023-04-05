@@ -78,7 +78,7 @@ export default function Spin({ navigation }: any) {
           // console.log(data.data, spinArr.indexOf(data.data));
         } else {
           setModalAlert([{
-            title: "Error", description: "Something went wong. Please restart the app.", active: true,
+            title: "Error", description: data.message, active: true,
             buttons: [
               { text: "Go Back", positive: true, onPress: async () => { navigation.goBack() }, },
             ]
@@ -100,7 +100,7 @@ export default function Spin({ navigation }: any) {
     console.log('watch ad to claim')
     setClickedWatchAd(true)
     setButtonText('Done, Go back!')
-    navigation.replace('DailyLimit', {
+    navigation.replace('RewardAd', {
       earnedCoins: earnedCoins,
       from: 'spin',
     })
