@@ -84,10 +84,10 @@ const RewardAdScreen = ({ route, navigation }: any) => {
         flex: 1, justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff',
         padding: 20, gap: 10, width: '100%'
       }}>
+        <View></View>
         <View style={{ width: '100%' }}>
-          <Image source={images.wallet} style={{
-            width: '100%', height: 200, resizeMode: 'contain',
-            marginTop: 20,
+          <Image source={images.coins} style={{
+            width: '100%', height: 250, resizeMode: 'contain',
           }} />
         </View>
         <Text style={{
