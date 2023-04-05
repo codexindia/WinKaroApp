@@ -11,8 +11,8 @@ import changeNavigationBarColor, { hideNavigationBar } from 'react-native-naviga
 import icons from '../../assets/icons/icons'
 
 
-  
-const SPIN_DURATION = 7000
+
+const SPIN_DURATION = 5000
 
 
 export default function Spin({ navigation }: any) {
@@ -22,7 +22,7 @@ export default function Spin({ navigation }: any) {
   const [isSpinningFinished, setIsSpinningFinished] = useState(false)
   const [earnedCoins, setEarnedCoins] = useState(0)
   const [buttonText, setButtonText] = useState('Test your luck')
-
+  const [clickedWatchAd, setClickedWatchAd] = useState(false)
 
   const imageWidth = width * (4 / 5)
   const extraWidth = width * (1 / 5)
@@ -41,7 +41,22 @@ export default function Spin({ navigation }: any) {
       return true
     })
   }, [])
-
+  function watchAdToClaim(navigation: any, earnedCoins: number) {
+    console.log('watch ad to claim')
+    setClickedWatchAd(true)
+    setButtonText('Done, Go back!')
+    navigation.replace('RewardAd', {
+      earnedCoins: earnedCoins
+    })
+  }
+  async function changNavBarCol(color: string, light: boolean) {
+    try {
+      await changeNavigationBarColor(color, light);
+    } catch (e) {
+      console.log(e)
+    }
+    // changeNavigationBarColor(color, light);
+  }
 
   function spinWheel() {
     const random = Math.floor(Math.random() * spinArr.length)
@@ -71,17 +86,13 @@ export default function Spin({ navigation }: any) {
       setEarnedCoins(result)
       setIsSpinningFinished(true)
       setButtonText('Watch ad to claim')
-    }, SPIN_DURATION - 1000)
+    }, SPIN_DURATION)
   }
 
 
   useEffect(() => {
     setTimeout(async () => {
-      try {
-        await changeNavigationBarColor('#012759', true);
-      } catch (e) {
-        console.log(e)
-      }
+      changNavBarCol('#012759', true)
     }, 0);
   }, [])
   return (
@@ -181,19 +192,20 @@ export default function Spin({ navigation }: any) {
           <ButtonFull title={buttonText}
             disabled={isSpinning}
             cb={() => {
-              return isSpinningFinished ? watchAdToClaim(navigation, earnedCoins) : spinWheel()
+              return isSpinningFinished ?
+                clickedWatchAd ? () => {
+                  navigation.goBack()
+                  changNavBarCol('#ffffff', true)
+                } :
+                  watchAdToClaim(navigation, earnedCoins)
+                : spinWheel()
             }} />
         }
       </View>
     </View >
   )
 }
-function watchAdToClaim(navigation: any, earnedCoins: number) {
-  navigation.navigate('RewardAd', {
-    earnedCoins: earnedCoins
-  })
-  console.log('watch ad to claim')
-}
+
 
 const styles = StyleSheet.create({
   box: {

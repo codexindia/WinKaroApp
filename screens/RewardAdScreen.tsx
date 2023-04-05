@@ -1,8 +1,12 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import Loading from '../components/Loading';
-
+import { fonts } from '../styles/fonts';
+import { colors } from '../styles/colors';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import ButtonFull from '../components/ButtonFull';
+import images from '../assets/images/images';
 const adUnitId = TestIds.REWARDED;
 
 
@@ -13,7 +17,10 @@ const rewarded = RewardedAd.createForAdRequest(adUnitId, {
 
 const RewardAdScreen = ({ route, navigation }: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isWatched, setIsWatched] = useState(false);
   const earnedCoins = route.params.earnedCoins
+  const [claimingText, setClaimingText] = useState('Claiming Coins...')
+  const [isClaimed, setIsClaimed] = useState(false)
 
   useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
@@ -24,7 +31,9 @@ const RewardAdScreen = ({ route, navigation }: any) => {
       reward => {
         console.log('User earned reward of ', earnedCoins);
         Alert.alert("Congratulations", "You have earned " + earnedCoins + " for watching the ad.")
-        navigation.pop(2)
+        setIsWatched(true);
+        claimCoins(earnedCoins)
+        // navigation.goBack()
       },
     );
 
@@ -37,9 +46,11 @@ const RewardAdScreen = ({ route, navigation }: any) => {
       unsubscribeEarned();
     };
 
-
   }, [])
 
+  useEffect(() => {
+    changeNavigationBarColor('#ffffff', true);
+  }, [])
 
   useEffect(() => {
     if (isLoaded) {
@@ -47,26 +58,62 @@ const RewardAdScreen = ({ route, navigation }: any) => {
     }
   }, [isLoaded])
 
+
+  function claimCoins(earnedCoins: number) {
+    setTimeout(() => {
+      console.log('claim coins')
+      // navigation.goBack()
+      setClaimingText(earnedCoins + ' Coins Claimed!')
+      setIsClaimed(true)
+    }, 5000);
+  }
+
   if (!isLoaded) {
     return (
-      <Loading />
+      <View style={{
+        flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff',
+      }}>
+        <Loading />
+        <Text>Loading Ad...</Text>
+      </View>
     );
+  }
+  if (isWatched) {
+    return (
+      <View style={{
+        flex: 1, justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff',
+        padding: 20, gap: 10, width: '100%'
+      }}>
+        <View style={{ width: '100%' }}>
+          <Image source={images.wallet} style={{
+            width: '100%', height: 200, resizeMode: 'contain',
+            marginTop: 20,
+          }} />
+        </View>
+        <Text style={{
+          fontSize: 18, fontFamily: fonts.medium, color: colors.text,
+          textAlign: 'center', width: '80%',
+        }}>{claimingText}</Text>
+
+
+        <ButtonFull title="Go Back" cb={() => navigation.goBack()} styles={{
+          opacity: isClaimed ? 1 : 0.5,
+        }} disabled={
+          !isClaimed ? true : false
+        } />
+      </View >
+    )
   }
 
   return (
-    // <View style={{
-    //   flex: 1, justifyContent: 'center', alignItems: 'center'
-    // }}>
-    //   <Text style={{
-    //     fontSize: 20, fontWeight: 'bold'
-    //   }}>RewardAd</Text>
-    //   <TouchableOpacity onPress={() => rewarded.show()} ><Text>show</Text></TouchableOpacity>
-    // </View>
-    <View>
-      <Text>Loading Ad...</Text>
-      <Loading />
-    </View>
-
+    <View style={{
+      flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff',
+    }}>
+      <Text style={{
+        fontSize: 18, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
+        width: '80%',
+      }}>You Did not watch the ad completely. Please go back and start again</Text>
+    </View >
   )
 }
 
