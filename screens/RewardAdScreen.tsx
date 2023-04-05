@@ -1,4 +1,4 @@
-import { Alert, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, BackHandler, Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import Loading from '../components/Loading';
@@ -44,6 +44,13 @@ const RewardAdScreen = ({ route, navigation }: any) => {
     // Check Daily limit here
 
   }, [])
+
+  useEffect(() => {
+    const backAction = () => { return true; };
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+    return () => backHandler.remove();
+  }, []);
+
 
   useEffect(() => {
     changeNavigationBarColor('#ffffff', true);

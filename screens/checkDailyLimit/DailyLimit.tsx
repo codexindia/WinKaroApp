@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Loading from '../../components/Loading'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
@@ -8,6 +8,12 @@ const DailyLimit = ({ navigation, route }: any) => {
    const [checkedDailyLimit, setCheckedDailyLimit] = useState(false)
    const earnedCoins = route.params.earnedCoins
    const checkFor = route.params.checkFor || 'watch'
+   // Disable Back Button
+   useEffect(() => {
+      const backAction = () => { return true; };
+      const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+      return () => backHandler.remove();
+   }, []);
 
 
    useEffect(() => {
