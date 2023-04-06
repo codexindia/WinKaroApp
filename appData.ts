@@ -9,6 +9,9 @@ export const API_URL = {
     get_reward_video_daily_limit: API + 'watch_and_earn/get_reward_video',
     add_reward: API + 'watch_and_earn/add_reward',
     spin_add_reward: API + 'spin_and_earn/add_reward',
+    get_wallet_account: API + 'wallet/get_account',
+    bind_wallet_account: API + 'wallet/bind_account',
+    withdraw_wallet_account: API + 'wallet/withdraw',
 }
 
 

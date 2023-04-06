@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }: any) => {
 				// Show error message
 				// await unexpectedLoggeai dOut(navigation, setModals)
 			}
-		}, 30000);
+		}, 3000000);
 
 		return () => clearInterval(updateData)
 	}, [])
