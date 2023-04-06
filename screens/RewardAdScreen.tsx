@@ -131,7 +131,7 @@ const RewardAdScreen = ({ route, navigation }: any) => {
         }}>{claimingText}</Text>
 
 
-        <ButtonFull title="Go Back" cb={() => navigation.goBack()} styles={{
+        <ButtonFull title="Go Back" onPress={() => navigation.goBack()} styles={{
           opacity: isClaimed ? 1 : 0.5,
         }} disabled={
           !isClaimed ? true : false

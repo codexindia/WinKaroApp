@@ -66,7 +66,7 @@ const ReferEarn = ({ navigation }: any) => {
             </TouchableOpacity>
             <View></View>
           </View>
-          <ButtonFull title="Refer a Friend Now" cb={() => {
+          <ButtonFull title="Refer a Friend Now" onPress={() => {
             shareText(`Check out Win Karo App on the Google Play Store using this link: ${playStoreLink}. Use my referral code ${referCode} for a special bonus when you sign up. Enjoy!`)
           }} />
         </View>
@@ -162,7 +162,7 @@ const ReferEarn = ({ navigation }: any) => {
     //           <Text style={{ color: colors.accent, fontSize: 16, fontFamily: fonts.medium }}>{copiedText}</Text>
     //         </View>
     //       </TouchableOpacity>
-    //       <ButtonFull title="Refer a Friend" cb={() => {
+    //       <ButtonFull title="Refer a Friend" onPress={() => {
     //         shareText(
     //           `Check out Win Karo App on the Google Play Store using this link: ${playStoreLink}. Use my referral code ${referCode} for a special bonus when you sign up. Enjoy!`
     //         )

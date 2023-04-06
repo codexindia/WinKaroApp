@@ -250,7 +250,7 @@ export default function Spin({ navigation }: any) {
         {
           <ButtonFull title={buttonText}
             disabled={isSpinning || !isLoadedCoins}
-            cb={() => {
+            onPress={() => {
               return isSpinningFinished ?
                 clickedWatchAd ? () => {
                   navigation.goBack()

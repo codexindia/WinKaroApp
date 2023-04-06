@@ -33,7 +33,7 @@ const Promotion = () => {
       </View>
 
       <View style={{ padding: 20 }}>
-        <ButtonFull title='Send Email' cb={sendEmail} />
+        <ButtonFull title='Send Email' onPress={sendEmail} />
       </View>
     </View>
   )

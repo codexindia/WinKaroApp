@@ -81,7 +81,7 @@ const Login = ({ navigation }: any) => {
 
 
           <View style={{ marginTop: 20 }}>
-            <ButtonFull title={isSendingOTPText} cb={handleLogin} disabled={isSendingOTP} />
+            <ButtonFull title={isSendingOTPText} onPress={handleLogin} disabled={isSendingOTP} />
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>

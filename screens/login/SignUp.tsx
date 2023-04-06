@@ -171,7 +171,7 @@ const SignUp = ({ navigation }: any) => {
 
 
           <View style={{ marginTop: 20 }}>
-            <ButtonFull title={buttonText} cb={createAccount} disabled={isCreatingAccount} />
+            <ButtonFull title={buttonText} onPress={createAccount} disabled={isCreatingAccount} />
           </View>
 
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>

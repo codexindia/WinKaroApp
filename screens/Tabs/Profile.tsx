@@ -77,6 +77,9 @@ const Profile = ({ navigation }: any) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [balance, setBalance] = useState('')
+
+
   useEffect(() => {
     setTimeout(async () => {
       const userData = await AsyncStorage.getItem('userData')
@@ -84,6 +87,7 @@ const Profile = ({ navigation }: any) => {
       setName(data.name)
       setEmail(data.email)
       setPhone(data.phone)
+      setBalance(data.balance)
     }, 0);
   }, [])
 
@@ -132,7 +136,7 @@ const Profile = ({ navigation }: any) => {
             <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Wallet')}>
               <View style={[styles.flexRow, { gap: 7 }]}>
                 <Image source={icons.coins} style={styles.balanceImage} />
-                <Text style={[styles.balance]}>2456</Text>
+                <Text style={[styles.balance]}>{balance}</Text>
               </View>
               <Text style={[styles.balanceType]}>Wallet</Text>
             </TouchableOpacity>

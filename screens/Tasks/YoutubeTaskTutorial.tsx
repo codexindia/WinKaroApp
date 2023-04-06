@@ -128,7 +128,7 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
                </View>
             </TouchableOpacity>
 
-            <ButtonFull title="View Available Tasks" cb={() => {
+            <ButtonFull title="View Available Tasks" onPress={() => {
                AsyncStorage.setItem('dontShowYoutubeTaskTutorial', dontShowAgainChecked.toString()).then(() => {
                   if (isFromHome)
                      navigation.replace('YouTubeTask')

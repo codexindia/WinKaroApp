@@ -50,7 +50,27 @@ export default function YouTubeTask({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false)
   const [recordingIndex, setRecordingIndex] = useState(-1)
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [modals, setModals] = useState<any>([])
+  const [progress, setProgress] = useState(33)
+  const [uploadingIndex, setUploadingIndex] = useState(0)
+
+  function cancelUpload() {
+    console.log('Cancel upload')
+    setModals([{
+      title: "Are you sure?",
+      description: "Are you sure you want to cancel this upload? This will stop your recording to complete the task.",
+      buttons: [
+        { text: "No" },
+        {
+          text: "Yes", positive: true, onPress: () => {
+            setModals([])
+            navigation.goBack()
+          },
+        },
+      ]
+    }])
+  }
 
   let titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4',]
   let taskLen = titles.length
@@ -120,6 +140,8 @@ export default function YouTubeTask({ navigation }: any) {
       RecordScreen.clean().then(data => {
         console.log(data)
       })
+      setIsUploading(true)
+      setUploadingIndex(recordingIndex)
       setRecordingIndex(-1)
     }).catch(err => {
       console.log(err);
@@ -158,7 +180,7 @@ export default function YouTubeTask({ navigation }: any) {
             <Text style={{
               fontSize: 20, fontFamily: fonts.regular, color: colors.text, textAlign: 'center'
             }}>Swipe Up To View Next Task</Text>
-            <ButtonFull title='Ok, Got it' cb={() => {
+            <ButtonFull title='Ok, Got it' onPress={() => {
               setModalVisible(false)
             }} />
           </View>
@@ -242,33 +264,40 @@ export default function YouTubeTask({ navigation }: any) {
                   <View style={{
                     flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'
                   }}>{
-
-                      recordingIndex === index ?
-                        <>
-                          <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25, backgroundColor: 'red' }]} activeOpacity={0.8} onPress={() => stopRecording()}>
+                      isUploading ?
+                        uploadingIndex === index ?
+                          <Uploading progress={progress} cancel={cancelUpload} />
+                          : <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
                             <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
-                            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Stop and Complete</Text>
+                            <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Uploading another task</Text>
                           </TouchableOpacity>
-                          <GoBtn url={"https://google.com"} />
-                        </>
                         :
-                        <>
-                          {
-                            recordingIndex === -1 ?
-                              <>
-                                <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25 }]} activeOpacity={0.8} onPress={() => startRecording(index)}                          >
+                        recordingIndex === index ?
+                          <>
+                            <TouchableOpacity style={[buttons.full, { width: width * 2 / 3 - 25, backgroundColor: 'red' }]} activeOpacity={0.8} onPress={() => stopRecording()}>
+                              <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
+                              <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Stop and Complete</Text>
+                            </TouchableOpacity>
+                            <GoBtn url={"https://google.com"} />
+                          </>
+                          :
+                          <>
+                            {
+                              recordingIndex === -1 ?
+                                <>
+                                  <TouchableOpacity style={[buttons.full, { width: width - 40 }]} activeOpacity={0.8} onPress={() => startRecording(index)}                          >
+                                    <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
+                                    <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
+                                  </TouchableOpacity>
+                                  {/* <GoBtn url={"https://google.com"} /> */}
+                                </>
+                                :
+                                <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
                                   <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
-                                  <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Start Recording</Text>
+                                  <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Recording another task</Text>
                                 </TouchableOpacity>
-                                <GoBtn url={"https://google.com"} />
-                              </>
-                              :
-                              <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
-                                <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
-                                <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Recording another task</Text>
-                              </TouchableOpacity>
-                          }
-                        </>
+                            }
+                          </>
                     }
                   </View>
                   {/* <TouchableOpacity activeOpacity={0.8}>
@@ -378,3 +407,25 @@ function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
   </View>
 }
 
+
+function Uploading({ progress, cancel }: { progress: number, cancel: Function }) {
+  return <View>
+    <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
+    <View style={{
+      width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10,
+    }}>
+      <View style={{
+        width: progress + '%', height: 5, backgroundColor: colors.accent, borderRadius: 5,
+      }}>
+      </View>
+    </View>
+
+    <ButtonFull styles={{
+      width: width - 40, backgroundColor: 'red', marginTop: 20,
+    }}
+      title={"Cancel Uploading"} onPress={() => {
+        cancel()
+      }} />
+
+  </View>
+}
