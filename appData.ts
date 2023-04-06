@@ -11,4 +11,8 @@ export const API_URL = {
     spin_add_reward: API + 'spin_and_earn/add_reward',
 }
 
+
+
+export const WATCH_AND_EARN_COINS = 5
+
 export const playStoreLink = '[Play Store Link]'

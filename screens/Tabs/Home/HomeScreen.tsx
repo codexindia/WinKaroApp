@@ -10,7 +10,7 @@ import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
-import { API_URL } from '../../../appData';
+import { API_URL, WATCH_AND_EARN_COINS } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
 
 
@@ -146,7 +146,7 @@ function Tasks({ navigation }: any) {
 			name: 'Watch and Earn',
 			icons: icons.watch_and_earn,
 			callback: () => navigation.navigate('DailyLimit', {
-				earnedCoins: 10,
+				earnedCoins: WATCH_AND_EARN_COINS,
 				from: 'watch'
 			})
 		},

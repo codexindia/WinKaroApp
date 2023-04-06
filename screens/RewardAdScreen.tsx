@@ -84,20 +84,21 @@ const RewardAdScreen = ({ route, navigation }: any) => {
         setIsClaimed(true)
       }
 
-      else if (from == 'spin') {
-        const formData = new FormData()
-        formData.append('coin', earnedCoins.toString())
-        const res = await fetch(API_URL.spin_add_reward, { method: 'POST', headers, body: formData })
-        const data = await res.json()
-
-        console.log(data)
-        if (data.status === 'true' || data.status === true) {
-          setClaimingText(earnedCoins + ' Coins Claimed!')
+      else if (from === 'spin') {
+        console.log("From Spin")
+        try {
+          const res = await fetch(API_URL.add_reward, { method: 'POST', headers, body: JSON.stringify({ coin: earnedCoins }) })
+          const data = await res.json()
+          console.log(data)
+          if (data.status === 'true' || data.status === true) {
+            setClaimingText(earnedCoins + ' Coins Claimed!')
+          } else {
+            setClaimingText('Error Claiming Coins!')
+          }
+          setIsClaimed(true)
+        } catch (err) {
+          console.log(err)
         }
-        else {
-          setClaimingText('Error Claiming Coins!')
-        }
-        setIsClaimed(true)
       }
     }, 0);
   }
