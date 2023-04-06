@@ -10,7 +10,7 @@ import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
-import { API_URL, WATCH_AND_EARN_COINS } from '../../../appData';
+import { API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
 
 
@@ -65,7 +65,9 @@ const HomeScreen = ({ navigation }: any) => {
 				>
 					<View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15 }}>
 						<Image source={icons.user_icon} style={styles.topImage} />
-						<Text className='text-[#000] font-bold'>{name}</Text>
+						<Text className='text-[#000] text-lg' style={{
+							fontFamily: fonts.semiBold,
+						}}>{name}</Text>
 					</View>
 				</TouchableOpacity>
 				<View style={[styles.flexRow, { gap: 20 }]}>
@@ -146,7 +148,7 @@ function Tasks({ navigation }: any) {
 			name: 'Watch and Earn',
 			icons: icons.watch_and_earn,
 			callback: () => navigation.navigate('DailyLimit', {
-				earnedCoins: WATCH_AND_EARN_COINS,
+				earnedCoins: 0,
 				from: 'watch'
 			})
 		},

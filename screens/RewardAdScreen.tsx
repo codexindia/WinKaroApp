@@ -18,7 +18,8 @@ const rewarded = RewardedAd.createForAdRequest(adUnitId);
 const RewardAdScreen = ({ route, navigation }: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
-  const earnedCoins = route.params.earnedCoins || 0
+  const [earnedCoins, setEarnedCoins] = useState(route.params.earnedCoins || 0)
+  // const earnedCoins = 
   const from = route.params.from || 'watch'
   const [claimingText, setClaimingText] = useState('Claiming Coins...')
   const [isClaimed, setIsClaimed] = useState(false)
@@ -77,7 +78,9 @@ const RewardAdScreen = ({ route, navigation }: any) => {
 
         console.log(data)
         if (data.status === 'true' || data.status === true) {
-          setClaimingText(earnedCoins + ' Coins Claimed!')
+          setEarnedCoins(data.amount)
+          console.log("Amount: " + data.amount)
+          setClaimingText(data.amount + ' Coins Claimed!')
         } else {
           setClaimingText('Error Claiming Coins!')
         }

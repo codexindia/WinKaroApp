@@ -12,7 +12,4 @@ export const API_URL = {
 }
 
 
-
-export const WATCH_AND_EARN_COINS = 5
-
 export const playStoreLink = '[Play Store Link]'
