@@ -10,7 +10,8 @@ const TermsAndConditions = () => {
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView style={{ padding: 20 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15, color: colors.text }}>Terms and Conditions</Text>
+        <Text className="text-[#000] font-bold text-2xl mb-3"
+        >Terms and Conditions</Text>
         <Text style={styles.para}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae
           nisl nec nunc aliquet lacinia. Sed euismod, nisl eget aliquam
@@ -60,6 +61,6 @@ const styles = StyleSheet.create({
   },
   para: {
     color: colors.gray,
-    marginTop : 10,
+    marginTop: 10,
   }
 })

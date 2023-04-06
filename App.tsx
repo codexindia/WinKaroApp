@@ -20,8 +20,16 @@ import Spin from './screens/Tasks/Spin';
 import ReferEarn from './screens/Tabs/Refer/ReferEarn';
 import RewardAdScreen from './screens/RewardAdScreen';
 import DailyLimit from './screens/checkDailyLimit/DailyLimit';
+import { Text, View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
+
+function Sample() {
+  return <View>
+    <Text className='font-bold text-[#ff0000]'>Sample</Text>
+  </View>
+}
+
 
 const App = () => {
   return (

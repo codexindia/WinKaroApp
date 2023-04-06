@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: any) => {
 				>
 					<View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15 }}>
 						<Image source={icons.user_icon} style={styles.topImage} />
-						<Text style={{ fontSize: 19, color: colors.text, fontFamily: fonts.semiBold }}>{name}</Text>
+						<Text className='text-[#000] font-bold'>{name}</Text>
 					</View>
 				</TouchableOpacity>
 				<View style={[styles.flexRow, { gap: 20 }]}>
