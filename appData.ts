@@ -16,3 +16,11 @@ export const API_URL = {
 
 
 export const playStoreLink = '[Play Store Link]'
+
+
+export function coins_to_inr(coins: number, balance: number) {
+    // Two decimal places
+    if (coins > balance)
+        return "Insufficient Balance (" + balance + " coins)"
+    return (coins / 100).toFixed(2)
+}

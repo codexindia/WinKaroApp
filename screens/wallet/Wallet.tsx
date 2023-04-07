@@ -10,7 +10,7 @@ import WithdrawHistory from './WithdrawHistory'
 import { fonts } from '../../styles/fonts'
 import { getDefaultHeader } from '../methods'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { API_URL } from '../../appData'
+import { API_URL, coins_to_inr } from '../../appData'
 import CustomModal from '../../components/CustomModal'
 
 const data = [
@@ -29,7 +29,7 @@ function Radio({ data, updater, selectedValue, disabled }: any) {
   return (
     <View style={{
       flexDirection: 'row',
-      gap: 15
+      gap: 15, opacity: disabled ? 0.5 : 1
     }}>
       {
         data.map((item: any, index: any) => {
@@ -109,9 +109,11 @@ const Wallet = ({ navigation }: any) => {
       if (res.status === 'true' || res.status === true) {
         setWalletDetails(res)
         setCoins(res.coins)
-        setIsBound(res.data.length > 0 || res.data.account_number)
-        setAccountNumber(res.data[0]?.account_number || res.data.account_number)
-        setAccountType(res.data[0]?.type || res.data.type)
+        if (res.data !== null) {
+          setIsBound(true)
+          setAccountNumber(res.data[0]?.account_number || res.data.account_number)
+          setAccountType(res.data[0]?.type || res.data.type)
+        }
       } else {
         setSomethingWrong(setModalAlert, navigation)
       }
@@ -235,26 +237,37 @@ const Wallet = ({ navigation }: any) => {
         <Text style={{ marginTop: 20, color: colors.text, fontSize: 13.5, fontFamily: fonts.regular, }}><Text style={{ fontWeight: 'bold', }}>Note : </Text>The UPI or Paytm wallet of your first withdraw will be bounded to this account. You would not be able to bind another UPI to this account.</Text>
       </View> */}
 
-      <View style={{ marginTop: 30 }}>
-        <Text style={[styles.label]}>Select Account Type</Text>
-        <Radio data={data} updater={setAccountType} selectedValue={accountType} disabled={isBound} />
+      <View style={{ marginTop: isBound ? 0 : 30 }}>
+        {
+          !isBound ? <>
+            <Text style={[styles.label]}>Select Account Type</Text>
+            <Radio data={data} updater={setAccountType} selectedValue={accountType} disabled={isBound} />
+          </>
+            : null
+        }
         <View style={{ marginTop: 15, gap: 15 }}>
-          {/* <Text style={[styles.label]}>Enter account information</Text> */}
-          <View style={input.singleInputContainer}>
-            <Image source={icons.at} style={[input.inputImage, { width: 23, height: 23 }]} />
-            <TextInput
-              // value={phoneNumber}
-              // onChangeText={(text) => setPhoneNumber(text)}
-              value={accountNumber}
-              onChangeText={(text) => setAccountNumber(text)}
-              placeholderTextColor={colors.textLighter}
-              style={input.textInput}
-              placeholder={accountType === 'wallet' ? 'Your Paytm Wallet Number' : 'Your UPI ID'}
-              keyboardType="phone-pad"
-              maxLength={10}
-              editable={!isBound}
-            />
-          </View>
+          {
+            !isBound ?
+              <View style={input.singleInputContainer}>
+                <Image source={icons.at} style={[input.inputImage, { width: 23, height: 23 }]} />
+                <TextInput
+                  // value={phoneNumber}
+                  // onChangeText={(text) => setPhoneNumber(text)}
+                  value={accountNumber}
+                  onChangeText={(text) => setAccountNumber(text)}
+                  placeholderTextColor={colors.textLighter}
+                  style={input.textInput}
+                  placeholder={accountType === 'wallet' ? 'Your Paytm Wallet Number' : 'Your UPI ID'}
+                  keyboardType="phone-pad"
+                  maxLength={10}
+                  editable={!isBound}
+                />
+
+              </View>
+              : <Text className='text-[#333333] text-base bg-[#eeeeee] p-3 text-center rounded-2xl'>
+                Account Bound to {accountNumber}({accountType}) <Text style={{ color: 'limegreen' }}>✓</Text>
+              </Text>
+          }
           {/* <Text style={[styles.label]}>Enter Amount</Text> */}
           <View style={input.singleInputContainer}>
             <Image source={icons.money} style={[input.inputImage, { width: 21, height: 21 }]} />
@@ -263,12 +276,16 @@ const Wallet = ({ navigation }: any) => {
               // onChangeText={(text) => setPhoneNumber(text)}
               placeholderTextColor={colors.textLighter}
               style={input.textInput}
-              placeholder="Amount to withdraw"
+              placeholder="Coins to Withdraw"
               keyboardType="phone-pad"
               value={withdrawCoins}
               onChangeText={(text) => setWithdrawCoins(text)}
             />
-          </View>
+          </View>{
+            withdrawCoins ?
+              <Text className='text-black' style={{ fontFamily: fonts.regular }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
+              : null
+          }
           <ButtonFull title={buttonText} onPress={() => { withdrawAmount() }} disabled={loading} />
         </View>
       </View>
