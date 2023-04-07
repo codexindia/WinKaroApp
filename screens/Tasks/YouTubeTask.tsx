@@ -16,6 +16,11 @@ import { Linking } from 'react-native'
 import RecordScreen, { RecordingStartResponse } from 'react-native-record-screen';
 import { RecordingResult } from 'react-native-record-screen'
 import CustomModal from '../../components/CustomModal'
+import { getDefaultHeader } from '../methods'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { API_URL } from '../../appData'
+import Loading from '../../components/Loading'
+import { Clipboard } from 'react-native'
 
 
 const { height, width } = Dimensions.get('window')
@@ -55,6 +60,8 @@ export default function YouTubeTask({ navigation }: any) {
   const [progress, setProgress] = useState(33)
   const [uploadingIndex, setUploadingIndex] = useState(0)
 
+  const [tasks, setTasks] = useState<any>(null)
+
   function cancelUpload() {
     console.log('Cancel upload')
     setModals([{
@@ -83,11 +90,33 @@ export default function YouTubeTask({ navigation }: any) {
       ])
     ).start()
   }, [])
+  /*{
+    - "action_url": "",
+      "created_at": null,
+      "expire_at": "2023-04-07 20:40:05.727051",
+    - "id": 1, 
+    - "publisher": "asdasd",
+    - "reward_coin": 232,
+    - "status": "deactive",
+    - "task_name": "adad",
+    - "thumbnail_image": "adad",
+    - "title": "adad", 
+    - "type": "youtube",
+    - "updated_at": "2023-04-07T15:10:05.000000Z"
+},
+  */
 
+
+
+  async function getTasks() {
+    const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+    const res = await fetch(API_URL.get_yt_task, { method: 'POST', headers: headers })
+    const data = await res.json()
+    console.log(data.data)
+    setTasks(data.data)
+  }
   useEffect(() => {
-    // RecordScreen.clean().then(data => {
-    //   console.log(data)
-    // })
+    getTasks()
   }, [])
 
   useEffect(() => {
@@ -157,6 +186,23 @@ export default function YouTubeTask({ navigation }: any) {
       console.log(err);
     })
   }
+  function WatchHelp() {
+    return <View style={{ padding: 20, gap: 5, backgroundColor: '#fafafa', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 20, width: width - 40, alignSelf: 'center', marginBottom: 20 }}>
+      <Text style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
+        Don't Know how to complete this process?
+      </Text>
+      <Text style={{ fontSize: 14, fontFamily: fonts.regular, color: colors.text, }}>
+        Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
+      </Text>
+      <View>
+        <WatchTutorial navigation={navigation} />
+      </View>
+    </View>
+  }
+
+  if (tasks === null)
+    return <Loading />
+
 
   return (
     <View style={{
@@ -193,73 +239,43 @@ export default function YouTubeTask({ navigation }: any) {
         showsHorizontalScrollIndicator={false}
       >
         {
-          titles.map((title, index) => {
-            return <View style={{
-              height: height, width: '100%',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }} key={index}>
+          tasks.map((task: any, index: number) => {
+            // if (task.status !== 'active')
+            // return null
+            return <View style={{ height: height, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', }} key={task.id}>
               <View>
                 <View style={{
                   backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 10, paddingBottom: 0
                 }}>
-                  <Text style={{ fontSize: 20, fontFamily: fonts.semiBold, color: colors.text, textAlign: 'center' }}>TouTube {title}</Text>
+                  <Text style={{ fontSize: 20, fontFamily: fonts.semiBold, color: colors.text, textAlign: 'center' }}>
+                    TouTube Tasks
+                  </Text>
                 </View>
                 <View>
                   {/*16 : 9 Video Thumbnail*/}
-                  <Image source={images.gaming} style={{
-                    width: width - 40, height: (width - 40) * 9 / 16,
-                    alignSelf: 'center', marginTop: 20, borderRadius: 25,
-                  }}
+                  <Image source={{ uri: task.thumbnail_image }}
+                    style={{ width: width - 40, height: (width - 40) * 9 / 16, alignSelf: 'center', marginTop: 20, borderRadius: 25, }}
                   ></Image>
-                  <View style={{
-                    flexDirection: 'row', width: width - 50, alignItems: 'center',
-                    justifyContent: 'space-between', marginTop: 15, gap: 10
-                  }}>
-                    <View style={{
-                      // backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10,
-                      padding: 10, paddingTop: 0, paddingBottom: 0,
-                      width: width - 100
-                    }}>
-                      <Text style={{
-                        fontSize: 16, fontFamily: fonts.medium, color: colors.text,
-                      }}>
-                        The Gaming Strategy That Will Make You a Better Player | The Art of Gaming
+                  <View style={{ flexDirection: 'row', width: width - 50, alignItems: 'center', justifyContent: 'space-between', marginTop: 15, gap: 10 }}>
+                    <View style={{ padding: 10, paddingTop: 0, paddingBottom: 0, width: width - 100 }}>
+                      <Text style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
+                        {task.title}
                       </Text>
-                      <Text style={{ color: colors.text, fontFamily: fonts.regular, marginTop: 10 }}>Publisher : <Text style={{ fontFamily: fonts.medium, color: colors.accent }}>SamplePublisher</Text></Text>
+                      <Text style={{ color: colors.text, fontFamily: fonts.regular, marginTop: 10 }}>Publisher : <Text style={{ fontFamily: fonts.medium, color: colors.accent }}>{task.publisher}</Text></Text>
                     </View>
-                    <View style={{
-                      backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10, padding: 10,
-                    }}>
-                      <TouchableOpacity >
-                        <Image source={icons.copy} style={{
-                          width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain',
-                        }} />
+                    <View style={{ backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10, padding: 10, }}>
+                      <TouchableOpacity onPress={() => copyToClipboard(task.title)}>
+                        <Image source={icons.copy} style={{ width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain', }} />
                       </TouchableOpacity>
                     </View>
                   </View>
                 </View>
               </View>
-              <TaskAmount />
 
-              <View style={{
-                padding: 20, gap: 5, backgroundColor: '#fafafa', borderColor: '#e5e5e5', borderWidth: 0.5,
-                borderRadius: 20,
-                width: width - 40, alignSelf: 'center', marginBottom: 20
-              }}>
-                <Text style={{
-                  fontSize: 16, fontFamily: fonts.medium, color: colors.text,
-                }}>Don't Know how to complete this process?</Text>
-                <Text style={{
-                  fontSize: 14, fontFamily: fonts.regular, color: colors.text,
-                }}>Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
-                </Text>
-                <View>
-                  <WatchTutorial navigation={navigation} />
-                </View>
-              </View>
+              <TaskAmount coins={task.reward_coin} />
+              <WatchHelp />
 
               <View style={{ width: '100%' }}>
-
                 <View style={{ paddingHorizontal: 20, marginTop: 10, width: '100%', gap: 15 }}>
                   <View style={{
                     flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'space-between'
@@ -278,7 +294,7 @@ export default function YouTubeTask({ navigation }: any) {
                               <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
                               <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Stop and Complete</Text>
                             </TouchableOpacity>
-                            <GoBtn url={"https://google.com"} />
+                            <GoBtn url={task.action_url} />
                           </>
                           :
                           <>
@@ -327,46 +343,26 @@ export default function YouTubeTask({ navigation }: any) {
       </ScrollView>
     </View >
   )
+  function copyToClipboard(text: string) {
+    Clipboard.setString(text);
+  }
 }
-function TaskAmount() {
-  return <View style={{
-    width: '100%',
-    paddingHorizontal: 20, gap: 15,
-    //  position: 'absolute', top: 70
-  }}>
-    <View style={{
-      backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5', flexDirection: 'row', justifyContent: 'space-between',
-    }}>
-      <View style={{
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
-        // backgroundColor: '#f5f5f5',
-        padding: 10, paddingHorizontal: 20,
-        // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
-      }}>
-        <Image source={icons.coins} style={{
-          width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain',
-        }} />
-        <Text style={{
-          fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
-        }}>2000</Text>
+function TaskAmount({ coins }: { coins: number }) {
+  return <View style={{ width: '100%', paddingHorizontal: 20, gap: 15, }}>
+    <View style={{ backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5', flexDirection: 'row', justifyContent: 'space-between', }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15, padding: 10, paddingHorizontal: 20 }}>
+        <Image source={icons.coins} style={{ width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain', }} />
+        <Text style={{ fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center', }}>
+          {coins}
+        </Text>
       </View>
-      <View style={{
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15,
-        // backgroundColor: '#f5f5f5',
-        padding: 10, paddingHorizontal: 20,
-        // borderRadius: 15, borderColor: '#e5e5e5', borderWidth: 0.5, paddingRight: 25
-      }}>
-        <Image source={icons.countdown} style={{
-          width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain',
-        }} />
-        <Text style={{
-          fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center',
-        }}>10:15:22</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15, padding: 10, paddingHorizontal: 20, }}>
+        <Image source={icons.countdown} style={{ width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain', }} />
+        <Text style={{ fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center', }}>
+          10:15:22
+        </Text>
       </View>
     </View>
-
-
-
   </View>
 }
 
@@ -374,13 +370,8 @@ function WatchTutorial({ navigation }: any) {
   return <TouchableOpacity activeOpacity={0.7} onPress={() => {
     navigation.navigate('YouTubeTaskTutorial', { isFromHome: false })
   }}>
-    <View style={{
-      flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10,
-    }}>
-      <View style={{
-        flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10,
-        backgroundColor: colors.accentLight, padding: 15, borderRadius: 15, width: 'auto', paddingHorizontal: 20
-      }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10, }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, backgroundColor: colors.accentLight, padding: 15, borderRadius: 15, width: 'auto', paddingHorizontal: 20 }}>
         <Image source={icons.video} style={{
           width: 22, height: 22, alignSelf: 'center', resizeMode: 'contain',
         }}></Image>

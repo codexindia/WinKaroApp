@@ -1,12 +1,13 @@
 import {
 	StyleSheet, Text, View,
-	ScrollView, useWindowDimensions, Image, TouchableOpacity,
+	ScrollView, useWindowDimensions, Image, TouchableOpacity, Linking,
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList } from 'react-native'
 import { colors } from '../../../styles/colors';
 import images from '../../../assets/images/images';
 import { Touchable } from 'react-native';
+import Loading from '../../../components/Loading';
 
 const scrollImages = [
 	'https://source.unsplash.com/random/500x300',
@@ -21,10 +22,16 @@ const Slider = () => {
 	const height = (width - 30) * 0.6
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 	const scrollSlider = useRef<ScrollView>(null)
+	const [banners, setBanners] = useState<any>([])
 
 	useEffect(() => {
-		
+
 	}), []
+	if (!banners) return <View style={{
+		height: height,
+	}}>
+		<Loading />
+	</View>
 
 	return (
 		<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15, paddingBottom: 20 }}>
@@ -41,7 +48,9 @@ const Slider = () => {
 			>
 				{
 					scrollImages.map((image, index) => {
-						return <TouchableOpacity key={index} activeOpacity={0.95}>
+						return <TouchableOpacity key={index} activeOpacity={0.8} onPress={() => {
+							Linking.openURL('https://www.google.com/')
+						}}>
 							<Image source={images.banner} style={[styles.bannerImage, { width: width, height, marginHorizontal: 15, backgroundColor: colors.inputBg }]} />
 						</TouchableOpacity>
 					})

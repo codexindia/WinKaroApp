@@ -13,8 +13,11 @@ export const API_URL = {
     bind_wallet_account: API + 'wallet/bind_account',
     withdraw_wallet_account: API + 'wallet/withdraw',
     get_notification: API + 'notifications/get_notification',
-    withdraw_history : API + 'wallet/get_transactions/withdraw',
-    notifications_mark_read : API + 'notifications/mark_read',
+    withdraw_history: API + 'wallet/get_transactions/withdraw',
+    notifications_mark_read: API + 'notifications/mark_read',
+    get_yt_task: API + 'tasks/get/youtube',
+    get_insta_task: API + 'tasks/get/instagram',
+    get_yt_shorts_task: API + 'tasks/get/yt_shorts',
 }
 
 
