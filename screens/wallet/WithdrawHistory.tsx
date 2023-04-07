@@ -4,6 +4,7 @@ import icons from '../../assets/icons/icons'
 import { colors } from '../../styles/colors'
 import { fonts } from '../../styles/fonts'
 import Loading from '../../components/Loading'
+import { coins_to_inr } from '../../appData'
 
 const WithdrawHistory = ({ data }: any) => {
 
@@ -32,7 +33,7 @@ const WithdrawHistory = ({ data }: any) => {
               <View><Image source={icons.coins} style={{ height: 40, aspectRatio: 1, resizeMode: 'contain', }} /></View>
               <View>
                 <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.semiBold }}>{item.coins}</Text>
+                  <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.semiBold }}>₹ {coin_to_inr(item.coins)}</Text>
                   <Text style={{ textTransform: 'capitalize', fontFamily: fonts.medium, color: getStatusColor(item.status) }}>{item.status}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
@@ -62,8 +63,9 @@ function getStatusColor(color: string) {
     return 'red'
 }
 
+function coin_to_inr(coin: number) {
+  // two decimal places
+  const inr = coin / 1000
+  return inr.toFixed(2)
+}
 export default WithdrawHistory
-
-const styles = StyleSheet.create({
-
-})
