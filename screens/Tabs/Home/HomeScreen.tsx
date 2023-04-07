@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	Image, SafeAreaView, ScrollView, StatusBar, StyleSheet,
 	Text, TouchableOpacity, View
@@ -12,7 +12,7 @@ import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
 import { API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -20,32 +20,33 @@ const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
 	const [balance, setBalance] = useState('')
 
+	async function updateUserData() {
+		const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
+		const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
+		const res = await fetched.json()
+		console.log(res)
+		if (res.status === true || res.status === 'true') {
+			await storeUserData(res)
+			setBalance(res.balance)
+			await changeNavigationBarColor('white', true);
+		}
+		else {
+			// Show error message
+		}
+	}
+
 	useEffect(() => {
 		setTimeout(async () => {
 			await changeNavigationBarColor('#ffffff', true);
 		}, 0);
 	}, [])
 
-	useEffect(() => {
-		// Test data
-		const updateData = setInterval(async () => {
-			const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
-			const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
-			const res = await fetched.json()
-			console.log(res)
-			if (res.status === true || res.status === 'true') {
-				await storeUserData(res)
-				setBalance(res.balance + '')
-				await changeNavigationBarColor('white', true);
-			}
-			else {
-				// Show error message
-				// await unexpectedLoggeai dOut(navigation, setModals)
-			}
-		}, 3000000);
-
-		return () => clearInterval(updateData)
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			console.log('Focused')
+			updateUserData()
+		}, [])
+	)
 
 
 	setTimeout(async () => {
