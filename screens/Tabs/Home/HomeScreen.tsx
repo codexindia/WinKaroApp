@@ -46,6 +46,16 @@ const HomeScreen = ({ navigation }: any) => {
 			}, 0);
 	}, [focused])
 
+
+	// update user data each 30 seconds
+	useEffect(() => {
+		const interval = setInterval(async () => {
+			await updateUserData()
+		}, 30000);
+		return () => clearInterval(interval);
+	}, [])
+
+
 	return (
 		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex: 1 }}>
 			<StatusBar barStyle="dark-content" backgroundColor="white" />

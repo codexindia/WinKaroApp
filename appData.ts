@@ -14,6 +14,7 @@ export const API_URL = {
     withdraw_wallet_account: API + 'wallet/withdraw',
     get_notification: API + 'notifications/get_notification',
     withdraw_history : API + 'wallet/get_transactions/withdraw',
+    notifications_mark_read : API + 'notifications/mark_read',
 }
 
 

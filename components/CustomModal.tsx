@@ -24,7 +24,7 @@ export default function CustomModal({ modals, updater }: any) {
         modals.map((modal: any, i: number) => {
           const [modalActive, setModalActive] = useState(modal.active);
           const buttons = modal.buttons || [
-            { text: 'OK', positive: true, }
+            { text: 'OK', positive: true }
           ]
           return <Modal key={i} animationType="fade" transparent={true} visible={modalActive}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.15)', width: '100%' }}>
