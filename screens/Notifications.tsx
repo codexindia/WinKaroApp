@@ -97,8 +97,8 @@ const Notifications = () => {
                     <Image source={icons.bell} style={{ width: 30, height: 30, resizeMode: 'contain' }} />
                   </View>
                   <View style={{ width: width - 50 - 30, marginLeft: 6 }} className=''>
-                    <Text style={{ fontFamily: fonts.medium }} className='text-black text-base'>{noti.title}</Text>
-                    <Text numberOfLines={3} style={{ fontFamily: fonts.regular }} className='text-black'>{noti.subtitle}</Text>
+                    <Text style={{ fontFamily: fonts.medium, color: colors.text }} className='text-base'>{noti.title}</Text>
+                    <Text numberOfLines={3} style={{ fontFamily: fonts.regular, color: colors.text }}>{noti.subtitle}</Text>
                   </View>
                 </View>
               </TouchableOpacity>

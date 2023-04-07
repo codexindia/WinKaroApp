@@ -296,7 +296,7 @@ const Wallet = ({ navigation }: any) => {
             />
           </View>{
             withdrawCoins ?
-              <Text className='text-black' style={{ fontFamily: fonts.regular }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
+              <Text style={{ fontFamily: fonts.regular, color : colors.text }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
               : null
           }
           <ButtonFull title={buttonText} onPress={() => { withdrawAmount() }} disabled={loading} />
