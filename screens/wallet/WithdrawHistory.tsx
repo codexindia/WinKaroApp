@@ -32,7 +32,7 @@ const WithdrawHistory = ({ data }: any) => {
               <View><Image source={icons.coins} style={{ height: 40, aspectRatio: 1, resizeMode: 'contain', }} /></View>
               <View>
                 <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.semiBold }}>₹ {item.coins}</Text>
+                  <Text style={{ fontSize: 20, color: colors.text, fontFamily: fonts.semiBold }}>{item.coins}</Text>
                   <Text style={{ textTransform: 'capitalize', fontFamily: fonts.medium, color: getStatusColor(item.status) }}>{item.status}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
