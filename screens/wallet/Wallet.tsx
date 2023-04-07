@@ -98,6 +98,7 @@ const Wallet = ({ navigation }: any) => {
   const [buttonText, setButtonText] = useState('Withdraw')
   const [loading, setLoading] = useState(false)
   const [withdrawCoins, setWithdrawCoins] = useState('')
+  const [withdrawHistory, setWithdrawHistory] = useState<any>(null)
 
 
   useEffect(() => {
@@ -105,7 +106,7 @@ const Wallet = ({ navigation }: any) => {
       const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
       const data = await fetch(API_URL.get_wallet_account, { method: 'POST', headers: headers })
       const res = await data.json()
-      console.log(res)
+      // console.log(res)
       if (res.status === 'true' || res.status === true) {
         setWalletDetails(res)
         setCoins(res.coins)
@@ -119,6 +120,11 @@ const Wallet = ({ navigation }: any) => {
       }
     }, 0);
   }, [])
+
+  useEffect(() => {
+    getWithdrawHistory()
+  }, [])
+
 
 
   async function withdrawAmount() {
@@ -149,7 +155,7 @@ const Wallet = ({ navigation }: any) => {
         setLoading(false)
         setSomethingWrong(setModalAlert, navigation)
       }
-      console.log(res)
+      // console.log(res)
     }
 
     async function withdraw() {
@@ -176,7 +182,7 @@ const Wallet = ({ navigation }: any) => {
         body: JSON.stringify({ coin: wth_coins })
       })
       const res = await data.json()
-      console.log(res)
+      // console.log(res)
 
       if (res.status === 'true' || res.status === true) {
         setModalAlert([{
@@ -200,6 +206,13 @@ const Wallet = ({ navigation }: any) => {
 
   }
 
+  async function getWithdrawHistory() {
+    console.log('getWithdrawHistory')
+    const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+    const data = await fetch(API_URL.withdraw_history, { method: 'POST', headers: headers })
+    const res = await data.json()
+    setWithdrawHistory(res.data)
+  }
 
   // const [accTypePlaceholder, setAccTypePlaceholder] = useState('Your Paytm Wallet Number')
   if (walletDetails) return (
@@ -290,28 +303,15 @@ const Wallet = ({ navigation }: any) => {
         </View>
       </View>
 
+      {
 
-      <View style={{ marginTop: 50, marginBottom: 50 }}>
-        <View style={{
-          width: '100%',
-          display: 'flex', flexDirection: 'row',
-          justifyContent: 'space-between', alignItems: 'center'
-        }}>
-          <Text style={{
-            fontSize: 20, color: colors.text, marginBottom: 10, fontFamily: fonts.bold
-          }}>Withdraw History</Text>
-          {/* <TouchableOpacity>
-            <Text style={{ color: colors.accent, fontWeight: 'bold' }}>View All</Text>
-          </TouchableOpacity> */}
+        <View style={{ marginTop: 50, marginBottom: 50 }}>
+          <View style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, color: colors.text, marginBottom: 10, fontFamily: fonts.bold }}>Withdraw History</Text>
+          </View>
+          <WithdrawHistory data={withdrawHistory} />
         </View>
-
-        <WithdrawHistory data={[
-          { amount: 73, status: 'pending', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98FT65GF4758' },
-          { amount: 50, status: 'success', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98YPO8ME4595' },
-          { amount: 17, status: 'failed', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '9Y8SD4H26F5G' }
-        ]} />
-
-      </View>
+      }
     </ScrollView>
   )
   else
@@ -320,6 +320,11 @@ const Wallet = ({ navigation }: any) => {
     )
 }
 
+//   [
+//   { amount: 73, status: 'pending', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98FT65GF4758' },
+//   { amount: 50, status: 'success', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '98YPO8ME4595' },
+//   { amount: 17, status: 'failed', to: '987654321@oksbi', date: '12 Jan 2023\n1:30 PM', ref: '9Y8SD4H26F5G' }
+// ]
 export default Wallet
 
 const styles = StyleSheet.create({
