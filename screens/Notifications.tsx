@@ -87,12 +87,11 @@ const Notifications = () => {
         {
           notifications.map((noti: any) => {
             return (
-              <TouchableOpacity activeOpacity={0.8} onPress={() => showNotificationInModal(setModals, noti.title, noti.subtitle)}>
-                <View key={noti.id}
-                  style={{
-                    width: width, borderWidth: 0.5,
-                    borderTopWidth: 1, borderBottomWidth: 0, borderLeftWidth: 0, borderColor: '#e0e0e0', borderRadius: 10,
-                  }}
+              <TouchableOpacity activeOpacity={0.8} onPress={() => showNotificationInModal(setModals, noti.title, noti.subtitle)} key={noti.id}>
+                <View style={{
+                  width: width, borderWidth: 0.5,
+                  borderTopWidth: 1, borderBottomWidth: 0, borderLeftWidth: 0, borderColor: '#e0e0e0', borderRadius: 10,
+                }}
                   className='p-3 pt-4 pb-4 justify-center flex-row '>
                   <View style={{ width: 50, height: 50 }} className='justify-center items-center'>
                     <Image source={icons.bell} style={{ width: 30, height: 30, resizeMode: 'contain' }} />

@@ -43,6 +43,8 @@ const HomeScreen = ({ navigation }: any) => {
 				let data: UserData = JSON.parse(userData as string)
 				setName(data.name.split(' ')[0])
 				setBalance(data.balance)
+				setNotificationCount(data.unread_alert)
+				console.log(notificationCount)
 			}, 0);
 	}, [focused])
 

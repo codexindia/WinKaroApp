@@ -4,4 +4,5 @@ export type UserData = {
     phone : string,
     refer_code : string,
     balance : string,
+    unread_alert : number,
 }
