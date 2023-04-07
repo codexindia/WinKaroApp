@@ -18,6 +18,7 @@ const images = {
     gaming : require('./src/gaming.jpg'),
     spinWheel : require('./src/spinWheel.jpg'),
     coins : require('./src/coins.jpg'),
+    bell : require('./src/bell.jpg'),
     // offer : require('./src/offer.jpg'),
     // coins_mobile : require('./src/coins_mobile.jpg'),
 }

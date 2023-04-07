@@ -12,6 +12,7 @@ export const API_URL = {
     get_wallet_account: API + 'wallet/get_account',
     bind_wallet_account: API + 'wallet/bind_account',
     withdraw_wallet_account: API + 'wallet/withdraw',
+    get_notification: API + 'notifications/get_notification',
 }
 
 
