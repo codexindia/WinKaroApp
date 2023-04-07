@@ -90,7 +90,8 @@ const RewardAdScreen = ({ route, navigation }: any) => {
       else if (from === 'spin') {
         console.log("From Spin")
         try {
-          const res = await fetch(API_URL.add_reward, { method: 'POST', headers, body: JSON.stringify({ coin: earnedCoins }) })
+          // console.log('Cooooo' + earnedCoins)
+          const res = await fetch(API_URL.spin_add_reward, { method: 'POST', headers, body: JSON.stringify({ coin: earnedCoins }) })
           const data = await res.json()
           console.log(data)
           if (data.status === 'true' || data.status === true) {

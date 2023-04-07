@@ -12,50 +12,39 @@ import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
 import { API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 
 
 const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
 	const [balance, setBalance] = useState('')
+	const [notificationCount, setNotificationCount] = useState(0)
+	const focused = useIsFocused()
 
 	async function updateUserData() {
 		const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
 		const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
 		const res = await fetched.json()
 		console.log(res)
-		if (res.status === true || res.status === 'true') {
-			await storeUserData(res)
-			setBalance(res.balance)
-			await changeNavigationBarColor('white', true);
-		}
-		else {
-			// Show error message
-		}
+		if (res.status === true || res.status === 'true')
+			storeUserData(res)
+		else { }
 	}
 
+	useEffect(() => { setTimeout(async () => { await changeNavigationBarColor('#ffffff', true); }, 0); }, [])
+
 	useEffect(() => {
-		setTimeout(async () => {
-			await changeNavigationBarColor('#ffffff', true);
-		}, 0);
-	}, [])
-
-	useFocusEffect(
-		useCallback(() => {
-			console.log('Focused')
-			updateUserData()
-		}, [])
-	)
-
-
-	setTimeout(async () => {
-		const userData = await AsyncStorage.getItem('userData')
-		let data: UserData = JSON.parse(userData as string)
-		setName(data.name.split(' ')[0])
-		setBalance(data.balance + '')
-	}, 0);
-
+		if (focused)
+			setTimeout(async () => {
+				await updateUserData()
+				console.log('Focused')
+				const userData = await AsyncStorage.getItem('userData')
+				let data: UserData = JSON.parse(userData as string)
+				setName(data.name.split(' ')[0])
+				setBalance(data.balance)
+			}, 0);
+	}, [focused])
 
 	return (
 		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex: 1 }}>
@@ -93,7 +82,7 @@ const HomeScreen = ({ navigation }: any) => {
 					>
 						<View>
 							<Image source={icons.notification_icon} style={[styles.topImage, { width: 20, height: 20, opacity: 0.9 }]} />
-							<View style={styles.dot}></View>
+							<View style={[styles.dot, { opacity: notificationCount > 0 ? 1 : 0 }]}></View>
 						</View>
 					</TouchableOpacity>
 				</View>
