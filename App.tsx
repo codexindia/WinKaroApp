@@ -15,7 +15,7 @@ import Test from './components/Test';
 import Wallet from './screens/wallet/Wallet';
 import Promotions from './screens/Tabs/others/Promotion';
 import YouTubeTask from './screens/Tasks/YouTubeTask';
-import YoutubeTaskTutorial from './screens/Tasks/YoutubeTaskTutorial';
+import TaskTutorial from './screens/Tasks/TaskTutorial';
 import Spin from './screens/Tasks/Spin';
 import ReferEarn from './screens/Tabs/Refer/ReferEarn';
 import RewardAdScreen from './screens/RewardAdScreen';
@@ -51,7 +51,7 @@ const App = () => {
         <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} />
         <Stack.Screen name="Test" component={Test} options={{ title: 'Test' }} />
         <Stack.Screen name="YouTubeTask" component={YouTubeTask} options={{ title: 'YouTube Task', headerShown: false }} />
-        <Stack.Screen name="YouTubeTaskTutorial" component={YoutubeTaskTutorial} options={{ title: 'YouTube Task Tutorial', headerShown: false }} />
+        <Stack.Screen name="TaskTutorial" component={TaskTutorial} options={{ title: 'YouTube Task Tutorial', headerShown: false }} />
         <Stack.Screen name="Spin" component={Spin} options={{ headerShown: false }} />
         <Stack.Screen name="RewardAd" component={RewardAdScreen} options={{ title: 'RewardAd', headerShown: false }} />
         <Stack.Screen name="DailyLimit" component={DailyLimit} options={{ title: 'DailyLimit', headerShown: false }} />

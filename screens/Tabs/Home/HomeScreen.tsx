@@ -119,11 +119,11 @@ function Tasks({ navigation }: any) {
 			name: 'Youtube Tasks',
 			icons: icons.youtube,
 			callback: () => {
-				AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((data) => {
+				AsyncStorage.getItem('dontShowTaskTutorial').then((data) => {
 					if (data === 'true') {
 						navigation.navigate('YouTubeTask')
 					} else {
-						navigation.navigate('YouTubeTaskTutorial', {
+						navigation.navigate('TaskTutorial', {
 							isFromHome: true
 						})
 					}

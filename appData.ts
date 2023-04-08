@@ -18,6 +18,7 @@ export const API_URL = {
     get_yt_task: API + 'tasks/get/youtube',
     get_insta_task: API + 'tasks/get/instagram',
     get_yt_shorts_task: API + 'tasks/get/yt_shorts',
+    upload_task : API + 'tasks/submit/task',
 }
 
 

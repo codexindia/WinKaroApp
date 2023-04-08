@@ -29,13 +29,13 @@ function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?
 }
 
 
-const YoutubeTaskTutorial = ({ route, navigation }: any) => {
+const TaskTutorial = ({ route, navigation }: any) => {
    const { isFromHome } = route.params
    const { width, height } = Dimensions.get('window')
    const [dontShowAgainChecked, setDontShowAgainChecked] = React.useState(false)
 
    useEffect(() => {
-      AsyncStorage.getItem('dontShowYoutubeTaskTutorial').then((value) => {
+      AsyncStorage.getItem('dontShowTaskTutorial').then((value) => {
          setDontShowAgainChecked(value === 'true')
       })
    }, [])
@@ -66,51 +66,6 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
                }}
             />
          </View>
-         {/* <Text style={{
-            fontSize: 25, fontWeight: 'bold', color: 'black'
-         }}>English Dictionary</Text>
-         <TouchableOpacity style={{
-            backgroundColor: 'black', padding: 10, borderRadius: 5,
-            marginTop: 20
-         }} onPress={() => {
-            RecordScreen.startRecording({mic: false}).catch(err => {
-               console.log(err)
-            }).then(res => {
-               if (res == "permission_error") {
-                  console.log(res)
-               }
-            })
-         }}>
-            <Text style={{
-               color: 'white', fontSize: 20
-            }}>Start Recording</Text>
-         </TouchableOpacity>
-         <TouchableOpacity style={{
-            backgroundColor: 'black', padding: 10, borderRadius: 5,
-            marginTop: 20
-         }} onPress={() => {
-            RecordScreen.stopRecording().then(res => {
-               const url: any = res.result.outputURL
-               Alert.alert(url)
-               console.log(url)
-            }).catch(err => {
-               console.log(err)
-            }).then(res => {
-               console.log(res)
-            }
-            )
-         }}>
-            <Text style={{
-               color: 'white', fontSize: 20
-            }}>Stop Recording</Text>
-         </TouchableOpacity>
-         <TouchableOpacity onPress={() => {
-            RecordScreen.clean().then(res => {
-               console.log(res)
-            })
-         }}>
-            <Text>Clean</Text>
-         </TouchableOpacity> */}
          <TaskRules />
          <View style={{
             padding: 20, width: '100%', gap: 10, paddingBottom: 15
@@ -129,7 +84,7 @@ const YoutubeTaskTutorial = ({ route, navigation }: any) => {
             </TouchableOpacity>
 
             <ButtonFull title="View Available Tasks" onPress={() => {
-               AsyncStorage.setItem('dontShowYoutubeTaskTutorial', dontShowAgainChecked.toString()).then(() => {
+               AsyncStorage.setItem('dontShowTaskTutorial', dontShowAgainChecked.toString()).then(() => {
                   if (isFromHome)
                      navigation.replace('YouTubeTask')
                   else navigation.goBack()
@@ -163,7 +118,7 @@ function TaskRules() {
 }
 
 
-export default YoutubeTaskTutorial
+export default TaskTutorial
 
 const styles = StyleSheet.create({
    stepsStyle: {

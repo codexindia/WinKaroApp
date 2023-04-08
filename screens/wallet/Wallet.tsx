@@ -177,9 +177,12 @@ const Wallet = ({ navigation }: any) => {
         return
       }
 
+
+      const formData = new FormData()
+      formData.append('coin', wth_coins)
       const data = await fetch(API_URL.withdraw_wallet_account, {
         method: 'POST', headers: headers,
-        body: JSON.stringify({ coin: wth_coins })
+        body: formData
       })
       const res = await data.json()
       // console.log(res)
@@ -296,7 +299,7 @@ const Wallet = ({ navigation }: any) => {
             />
           </View>{
             withdrawCoins ?
-              <Text style={{ fontFamily: fonts.regular, color : colors.text }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
+              <Text style={{ fontFamily: fonts.regular, color: colors.text }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
               : null
           }
           <ButtonFull title={buttonText} onPress={() => { withdrawAmount() }} disabled={loading} />
