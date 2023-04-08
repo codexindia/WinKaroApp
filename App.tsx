@@ -21,6 +21,7 @@ import ReferEarn from './screens/Tabs/Refer/ReferEarn';
 import RewardAdScreen from './screens/RewardAdScreen';
 import DailyLimit from './screens/checkDailyLimit/DailyLimit';
 import { Text, View } from 'react-native';
+import EditProfile from './screens/Tabs/Profile/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,7 @@ const App = () => {
         <Stack.Screen name="Spin" component={Spin} options={{ headerShown: false }} />
         <Stack.Screen name="RewardAd" component={RewardAdScreen} options={{ title: 'RewardAd', headerShown: false }} />
         <Stack.Screen name="DailyLimit" component={DailyLimit} options={{ title: 'DailyLimit', headerShown: false }} />
+        <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: 'Edit Profile' }} />
 
       </Stack.Navigator>
     </NavigationContainer>

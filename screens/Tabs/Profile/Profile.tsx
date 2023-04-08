@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { Alert, Image, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import icons from '../../assets/icons/icons'
-import { colors } from '../../styles/colors'
-import { fonts } from '../../styles/fonts'
-import { UserData } from '../types'
-import CustomModal from '../../components/CustomModal'
+import icons from '../../../assets/icons/icons'
+import { colors } from '../../../styles/colors'
+import { fonts } from '../../../styles/fonts'
+import { UserData } from '../../types'
+import CustomModal from '../../../components/CustomModal'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 
 
@@ -78,6 +79,7 @@ const Profile = ({ navigation }: any) => {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [balance, setBalance] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
 
 
   useEffect(() => {
@@ -110,13 +112,20 @@ const Profile = ({ navigation }: any) => {
               {/* <Text style={[styles.userName]}>@userName</Text> */}
             </View>
           </View>
-          <TouchableOpacity onPress={() => { Alert.alert('Upload a picture') }} activeOpacity={0.8}>
-            <Text style={
-              {
-                textAlign: 'center', color: colors.accent,
-                fontFamily: fonts.medium, backgroundColor: colors.accentLight,
-                padding: 8, borderRadius: 10, paddingHorizontal: 17, fontSize: 13
-              }}>{"Change Pic"}</Text>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('EditProfile', {
+              ppLink: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80',
+              name: name
+            })
+          }} activeOpacity={0.8}>
+            {/* <Text style={
+              { textAlign: 'center', color: colors.accent, fontFamily: fonts.medium, backgroundColor: colors.accentLight, padding: 8, borderRadius: 10, paddingHorizontal: 17, fontSize: 13 }}>
+              {"Change Pic"}
+            </Text> */}
+            <View className='p-3 rounded-full' style={{ backgroundColor: colors.accentLight }}>
+
+              <Image source={icons.pencil} style={{ height: 15, aspectRatio: 1, resizeMode: 'contain', tintColor: colors.accent }} />
+            </View>
           </TouchableOpacity>
         </View>
         <View style={[styles.detailsContainer]}>
@@ -129,7 +138,6 @@ const Profile = ({ navigation }: any) => {
             <Text style={[styles.detailsText]}>{email}</Text>
           </View>
         </View>
-
 
         <View style={[styles.flexRow, styles.balanceContainer]}>
           <View style={[styles.balanceBox]}>
@@ -150,38 +158,17 @@ const Profile = ({ navigation }: any) => {
           </View>
         </View>
         <View>
-
-
           <View style={{ marginTop: 0, gap: 1, paddingBottom: 20 }}>
             {
               options.map((item, index) => {
                 return (
                   <TouchableOpacity key={index} activeOpacity={0.6} onPress={item.onPress}>
-                    <View style={[styles.flexRow, {
-                      justifyContent: 'space-between',
-                      paddingVertical: 10,
-                      paddingHorizontal: 30,
-                      // backgroundColor: colors.inputBg,
-                    }]}>
-                      <View style={[styles.flexRow, {
-                        gap: 20,
-                      }]}>
-                        <Image source={item.icon} style={{
-                          width: 30,
-                          height: 32,
-                          resizeMode: 'contain',
-                        }} />
-                        <Text style={[{
-                          fontSize: 15,
-                          color: colors.text,
-                          fontFamily: fonts.medium
-                        }]}>{item.title}</Text>
+                    <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 30, }]}>
+                      <View style={[styles.flexRow, { gap: 20, }]}>
+                        <Image source={item.icon} style={{ width: 30, height: 32, resizeMode: 'contain', }} />
+                        <Text style={[{ fontSize: 15, color: colors.text, fontFamily: fonts.medium }]}>{item.title}</Text>
                       </View>
-                      <Image source={icons.back} style={{
-                        width: 17,
-                        height: 17,
-                        tintColor: '#aaa',
-                      }} />
+                      <Image source={icons.back} style={{ width: 17, height: 17, tintColor: '#aaa', }} />
                     </View>
                   </TouchableOpacity>
                 )

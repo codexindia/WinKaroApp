@@ -32,7 +32,7 @@ const { height, width } = Dimensions.get('window')
 const API_LINKS: any = {
   'youtube': API_URL.get_yt_task,
   'yt_shorts': API_URL.get_yt_shorts_task,
-  'instagram': API_URL.get_yt_task,
+  'instagram': API_URL.get_insta_task,
 }
 
 
@@ -44,10 +44,12 @@ export default function YouTubeTask({ route, navigation }: any) {
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [modals, setModals] = useState<any>([])
-  const [progress, setProgress] = useState(33)
+  const [progress, setProgress] = useState(0)
   const [uploadingIndex, setUploadingIndex] = useState(0)
   const [currentRecordingTaskId, setCurrentRecordingTaskId] = useState(-1)
   const [tasks, setTasks] = useState<any>(null)
+  const [uploadResponse, setUploadResponse] = useState<any>(null)
+  const xhr = new XMLHttpRequest();
   const taskType = route.params.taskType
 
 
@@ -88,7 +90,7 @@ export default function YouTubeTask({ route, navigation }: any) {
     const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
     const res = await fetch(API_LINKS[taskType], { method: 'POST', headers: headers })
     const data = await res.json()
-    data.data.shift()
+    // data.data.shift()
     setTasks(data.data)
     console.log(data.data)
   }
@@ -177,12 +179,43 @@ export default function YouTubeTask({ route, navigation }: any) {
         // const data = await res.json()
         // console.log(data)
 
+
+
+        xhr.upload.addEventListener('progress', (e) => {
+          const percent = e.loaded / e.total;
+          let progress = Math.round(percent * 100);
+          if (progress === 100) { progress = 99 }
+          setProgress(progress)
+        });
+
+        xhr.addEventListener('load', () => {
+          console.log('Completed')
+          setIsUploading(false)
+          setUploadResponse(xhr.response)
+          setModals([{
+            title: "Success", description: "Your video has been uploaded successfully.", type: "success", active: true,
+            buttons: [{ text: "Ok", positive: true, onPress: () => { setModals([]), navigation.goBack() } },]
+          }])
+
+          // Delete the video from the phone
+          RecordScreen.clean().then(data => {
+            console.log(data)
+          })
+        });
+
+        xhr.open('POST', API_URL.upload_task);
+        xhr.setRequestHeader('secret', 'hellothisisocdexindia')
+        xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+        xhr.setRequestHeader('Accept', 'application/json')
+        xhr.setRequestHeader('Authorization', `Bearer ${auth}`)
+        xhr.send(formData);
       }
     }).catch(err => {
       console.log(err);
     })
   }
   function cancelRecording() {
+    xhr.abort()
     RecordScreen.stopRecording().then(res => {
       RecordScreen.clean().then(data => {
         console.log(data)

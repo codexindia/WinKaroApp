@@ -47,6 +47,6 @@ const icons = {
     video_file : require('./src/video_file.png'),
     pin : require('./src/pin.png'),
     bell : require('./src/bell.png'),
-    
+    pencil : require('./src/pencil.png'),
 }
 export default icons

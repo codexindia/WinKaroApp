@@ -5,7 +5,7 @@ import icons from '../assets/icons/icons';
 import { colors } from '../styles/colors';
 import HomeScreen from './Tabs/Home/HomeScreen';
 import Offer from './Tabs/Offer';
-import Profile from './Tabs/Profile';
+import Profile from './Tabs/Profile/Profile';
 import ReferEarn from './Tabs/Refer/ReferEarn';
 const Tab = createBottomTabNavigator();
 
