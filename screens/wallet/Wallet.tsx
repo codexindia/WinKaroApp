@@ -178,11 +178,20 @@ const Wallet = ({ navigation }: any) => {
       }
 
 
+
+      // const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+      const auth = await AsyncStorage.getItem('token')
       const formData = new FormData()
       formData.append('coin', wth_coins)
       const data = await fetch(API_URL.withdraw_wallet_account, {
-        method: 'POST', headers: headers,
-        body: formData
+        method: 'POST',
+        body: formData,
+        headers: {
+          'secret': 'hellothisisocdexindia',
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${auth}`
+        },
       })
       const res = await data.json()
       // console.log(res)
