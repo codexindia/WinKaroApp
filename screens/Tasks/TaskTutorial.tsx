@@ -11,6 +11,42 @@ import icons from '../../assets/icons/icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
+const video_url: any = {
+   'youtube': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+   'instagram': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+   'yt_shorts': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+}
+
+function steps(taskType: string) {
+   switch (taskType) {
+      case 'youtube': return <>
+         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
+         <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
+         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
+         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
+         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
+         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+      </>
+      case 'instagram': return <>
+         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
+         <Text style={styles.stepsStyle}>2. Copy search title & paste it on instagram.</Text>
+         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
+         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
+         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
+         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+      </>
+      case 'yt_shorts': return <>
+         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
+         <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
+         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
+         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
+         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
+         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+      </>
+   }
+}
+
+
 function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?: Function }) {
    return <TouchableOpacity activeOpacity={0.9} onPress={() => {
       onClick()
@@ -31,6 +67,9 @@ function CheckBox({ checked, onClick = () => { } }: { checked: boolean, onClick?
 
 const TaskTutorial = ({ route, navigation }: any) => {
    const { isFromHome } = route.params
+   const taskType: string = route.params.taskType
+   console.log(taskType)
+
    const { width, height } = Dimensions.get('window')
    const [dontShowAgainChecked, setDontShowAgainChecked] = React.useState(false)
 
@@ -56,7 +95,7 @@ const TaskTutorial = ({ route, navigation }: any) => {
             <Video
                controls={true}
                paused={true}
-               source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" }}
+               source={{ uri: video_url[taskType] }}
                style={{
                   // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
                   width: width, height: (width) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
@@ -66,7 +105,7 @@ const TaskTutorial = ({ route, navigation }: any) => {
                }}
             />
          </View>
-         <TaskRules />
+         <TaskRules taskType={taskType} />
          <View style={{
             padding: 20, width: '100%', gap: 10, paddingBottom: 15
          }}>
@@ -86,7 +125,9 @@ const TaskTutorial = ({ route, navigation }: any) => {
             <ButtonFull title="View Available Tasks" onPress={() => {
                AsyncStorage.setItem('dontShowTaskTutorial', dontShowAgainChecked.toString()).then(() => {
                   if (isFromHome)
-                     navigation.replace('YouTubeTask')
+                     navigation.replace('YouTubeTask', {
+                        taskType: taskType, isFromHome: false
+                     })
                   else navigation.goBack()
                })
             }} />
@@ -97,7 +138,7 @@ const TaskTutorial = ({ route, navigation }: any) => {
 }
 
 
-function TaskRules() {
+function TaskRules({ taskType }: { taskType: string }) {
    return <View style={{ padding: 20, gap: 5 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 5, marginBottom: 10 }}>
          <Text style={{ fontSize: 25, fontFamily: fonts.medium, color: colors.text }}> Get Money Steps </Text>
@@ -106,12 +147,9 @@ function TaskRules() {
       <View style={{
          backgroundColor: '#f5f5f5', padding: 20, borderRadius: 10, borderWidth: 0.5, borderColor: '#c5c5c5'
       }}>
-         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
-         <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
-         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
-         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
-         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
-         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+         {
+            steps(taskType)
+         }
       </View>
       {/* <Text style={styles.stepsStyle}>7. Video's Screen Recording b. Like Screenshot c. Comment Screenshot d. Valid Paytm Number</Text> */}
    </View>

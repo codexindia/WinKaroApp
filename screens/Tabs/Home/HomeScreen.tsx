@@ -16,6 +16,8 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 
 
+
+
 const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
 	const [balance, setBalance] = useState('')
@@ -113,32 +115,38 @@ function Tasks({ navigation }: any) {
 
 	}, [])
 
+	function openTaskPage(taskType: string) {
+		AsyncStorage.getItem('dontShowTaskTutorial').then((data) => {
+			if (data === 'true') {
+				navigation.navigate('YouTubeTask', {
+					isFromHome: true,
+					taskType
+				})
+			} else {
+				navigation.navigate('TaskTutorial', {
+					isFromHome: true,
+					taskType
+				})
+			}
+		})
+	}
+
 
 	const tasks = [
 		{
 			name: 'Youtube Tasks',
 			icons: icons.youtube,
-			callback: () => {
-				AsyncStorage.getItem('dontShowTaskTutorial').then((data) => {
-					if (data === 'true') {
-						navigation.navigate('YouTubeTask')
-					} else {
-						navigation.navigate('TaskTutorial', {
-							isFromHome: true
-						})
-					}
-				})
-			}
+			callback: () => openTaskPage('youtube')
 		},
 		{
 			name: 'Yt Short Tasks',
 			icons: icons.youtube_shorts,
-			callback: () => console.log('Yt Short')
+			callback: () => openTaskPage('yt_shorts')
 		},
 		{
 			name: 'Instagram Tasks',
 			icons: icons.insta,
-			callback: () => console.log('Instagram')
+			callback: () => openTaskPage('instagram')
 		},
 		{
 			name: 'App install Tasks',

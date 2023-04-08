@@ -21,36 +21,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
-import axios from 'axios'
+import {
+  GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
+  TaskAmount, SwipeUp, WatchTutorial, Uploading, WatchHelp
+} from './Components'
 
 
 const { height, width } = Dimensions.get('window')
-/*[{
-  "resource": "/workspaces/win-karo/screens/Tasks/YouTubeTask.tsx",
-  "owner": "typescript",
-  "code": "7016",
-  "severity": 8,
-  "message": "Could not find a declaration file for module 'react-native-video-player'. '/workspaces/win-karo/node_modules/react-native-video-player/index.js' implicitly has an 'any' type.\n  Try `npm i --save-dev @types/react-native-video-player` if it exists or add a new declaration (.d.ts) file containing `declare module 'react-native-video-player';`",
-  "source": "ts",
-  "startLineNumber": 9,
-  "startColumn": 25,
-  "endLineNumber": 9,
-  "endColumn": 52
-}]*/
 
-function GoBtn({ url }: { url: string }) {
-  return <TouchableOpacity style={[buttons.full, { backgroundColor: 'limegreen', width: width / 3 - 25 }]} activeOpacity={0.8}
-    onPress={() => {
-      console.log('Go')
-      Linking.openURL(url)
-    }}
-  >
-    <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Go</Text>
-  </TouchableOpacity>
+const API_LINKS: any = {
+  'youtube': API_URL.get_yt_task,
+  'yt_shorts': API_URL.get_yt_shorts_task,
+  'instagram': API_URL.get_yt_task,
 }
 
 
-export default function YouTubeTask({ navigation }: any) {
+export default function YouTubeTask({ route, navigation }: any) {
   const [bottomSwipeIcon] = useState(new Animated.Value(0))
   const [topSwipeIcon] = useState(new Animated.Value(10))
   const [modalVisible, setModalVisible] = useState(false)
@@ -62,6 +48,8 @@ export default function YouTubeTask({ navigation }: any) {
   const [uploadingIndex, setUploadingIndex] = useState(0)
   const [currentRecordingTaskId, setCurrentRecordingTaskId] = useState(-1)
   const [tasks, setTasks] = useState<any>(null)
+  const taskType = route.params.taskType
+
 
   function cancelUpload() {
     console.log('Cancel upload')
@@ -74,14 +62,17 @@ export default function YouTubeTask({ navigation }: any) {
           text: "Yes", positive: true, onPress: () => {
             setModals([])
             navigation.goBack()
+            // Clear all recording files
+            RecordScreen.clean().then(res => {
+              console.log(res);
+            }).catch(err => {
+              console.log(err);
+            })
           },
         },
       ]
     }])
   }
-
-  let titles = ['Task 1', 'Task 2', 'Task 3', 'Task 4',]
-  let taskLen = titles.length
 
   useEffect(() => {
     Animated.loop(
@@ -93,25 +84,16 @@ export default function YouTubeTask({ navigation }: any) {
   }, [])
 
 
-  // Clean old recording files
-  // useEffect(() => {
-  //   RecordScreen.clean().then(res => {
-  //     console.log(res);
-  //   }).catch(err => {
-  //     console.log(err);
-  //   })
-  // }, [])
-
-
-
-  async function getTasks() {
+  async function getTasks(taskType: string) {
     const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
-    const res = await fetch(API_URL.get_yt_task, { method: 'POST', headers: headers })
+    const res = await fetch(API_LINKS[taskType], { method: 'POST', headers: headers })
     const data = await res.json()
+    data.data.shift()
     setTasks(data.data)
+    console.log(data.data)
   }
   useEffect(() => {
-    getTasks()
+    getTasks(taskType)
   }, [])
 
   useEffect(() => {
@@ -168,6 +150,10 @@ export default function YouTubeTask({ navigation }: any) {
       setRecordingIndex(-1)
       uploadVideo()
 
+      // RecordScreen.clean().then(data => {
+      //   console.log(data)
+      // })
+
       async function uploadVideo() {
         const auth = await AsyncStorage.getItem('token')
         const formData = new FormData();
@@ -195,13 +181,6 @@ export default function YouTubeTask({ navigation }: any) {
     }).catch(err => {
       console.log(err);
     })
-
-    // Clan old recording files after upload
-    RecordScreen.clean().then(data => {
-      console.log(data)
-    }
-    )
-
   }
   function cancelRecording() {
     RecordScreen.stopRecording().then(res => {
@@ -213,22 +192,19 @@ export default function YouTubeTask({ navigation }: any) {
       console.log(err);
     })
   }
-  function WatchHelp() {
-    return <View style={{ padding: 20, gap: 5, backgroundColor: '#fafafa', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 20, width: width - 40, alignSelf: 'center', marginBottom: 20 }}>
-      <Text style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
-        Don't Know how to complete this process?
-      </Text>
-      <Text style={{ fontSize: 14, fontFamily: fonts.regular, color: colors.text, }}>
-        Click on the button bellow to learn how to complete this task. Don't worry we will explain everything in detail.
-      </Text>
-      <View>
-        <WatchTutorial navigation={navigation} />
-      </View>
-    </View>
-  }
 
   if (tasks === null)
     return <Loading />
+
+
+
+  if (tasks.length === 0) {
+    return <View className='flex-1 justify-center items-center bg-white'>
+      <Text style={{ fontFamily: fonts.medium, color: colors.text }}>
+        No tasks available for today
+      </Text>
+    </View>
+  }
 
 
   return (
@@ -284,22 +260,36 @@ export default function YouTubeTask({ navigation }: any) {
     const ends_at = task.data.expire_at
     const id = task.data.id
     const [s, ss] = useState(task.status)
-    const [status, setStatus] = useMemo(() => [s, ss], [s])
+    // const [status, setStatus] = useMemo(() => [s, ss], [s])
     const now = new Date()
     const end = new Date(ends_at)
     // const isExpired = now > end
+    const [isCopied, setIsCopied] = useState(false)
     const isExpired = false
 
     return <View style={{ height: height, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', }} key={index}>
       <View>
-        <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 10, paddingBottom: 0 }}>
+        <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', padding: 10, paddingBottom: 20 }}>
           <Text style={{ fontSize: 20, fontFamily: fonts.semiBold, color: colors.text, textAlign: 'center' }}>
             {task_name}
           </Text>
         </View>
         <View>
           {/*16 : 9 Video Thumbnail*/}
-          <Image source={{ uri: thumbnail_image }} style={{ width: width - 40, height: (width - 40) * 9 / 16, alignSelf: 'center', marginTop: 20, borderRadius: 25, }}></Image>
+          {
+            taskType === 'youtube' ?
+              <Image source={{ uri: thumbnail_image }} style={{ width: width - 40, height: (width - 40) * 9 / 16, alignSelf: 'center', borderRadius: 25, }}></Image>
+              :
+              <View>
+                <Image blurRadius={10} source={{ uri: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80' }}
+                  style={{ width: width - 40, height: (width - 40) * 12 / 16, alignSelf: 'center', borderRadius: 25, }}></Image>
+                <Image source={{ uri: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80' }} style={{
+                  width: width - 40, height: (width - 40) * 12 / 16, position: 'absolute',
+                  resizeMode: 'contain',
+                  // left: (width) / 4,
+                }}></Image>
+              </View>
+          }
           <View style={{ flexDirection: 'row', width: width - 50, alignItems: 'center', justifyContent: 'space-between', marginTop: 15, gap: 10 }}>
             <View style={{ padding: 10, paddingTop: 0, paddingBottom: 0, width: width - 100 }}>
               <Text style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
@@ -310,8 +300,14 @@ export default function YouTubeTask({ navigation }: any) {
               </Text></Text>
             </View>
             <View style={{ backgroundColor: '#f5f5f5', borderColor: '#e5e5e5', borderWidth: 0.5, borderRadius: 10, padding: 10, }}>
-              <TouchableOpacity onPress={() => copyToClipboard(title)}>
-                <Image source={icons.copy} style={{ width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain', }} />
+              <TouchableOpacity onPress={() => {
+                copyToClipboard(title), setIsCopied(true)
+                setTimeout(() => { setIsCopied(false) }, 5000)
+              }}>
+                <Image source={isCopied ? icons.check : icons.copy} style={{
+                  width: 23, height: 23, alignSelf: 'center', resizeMode: 'contain',
+                  tintColor: isCopied ? 'limegreen' : colors.text
+                }} />
               </TouchableOpacity>
             </View>
           </View>
@@ -319,10 +315,10 @@ export default function YouTubeTask({ navigation }: any) {
       </View>
 
       <TaskAmount coins={reward_coin} endTime={ends_at} />
-      <WatchHelp />
+      <WatchHelp navigation={navigation} taskType={taskType} />
       <View style={{ width: '100%' }}>
 
-        {s === 'rejected' ? <TaskRejectedUI reason={task.remarks} retry={setStatus} /> : null}
+        {s === 'rejected' ? <TaskRejectedUI reason={task.remarks} retry={ss} /> : null}
         <View style={{ paddingHorizontal: 20, marginTop: 10, width: '100%', gap: 15 }}>
           {
             s === 'complete' || s === 'processing' ? <TaskStatusUI status={s} /> :
@@ -368,153 +364,8 @@ export default function YouTubeTask({ navigation }: any) {
               </View>
           }
         </View>
-        <SwipeUp bottomSwipeIcon={bottomSwipeIcon} topSwipeIcon={topSwipeIcon} isVisible={index == taskLen - 1 ? false : true} />
+        <SwipeUp bottomSwipeIcon={bottomSwipeIcon} topSwipeIcon={topSwipeIcon} isVisible={index == tasks.length - 1 ? false : true} />
       </View>
     </View>
-
   }
-
-
-
-  function copyToClipboard(text: string) {
-    Clipboard.setString(text);
-  }
-}
-function TaskAmount({ coins, endTime }: { coins: number, endTime: string }) {
-  const [countdown, setCountdown] = useState<any>('')
-  const now = new Date()
-  const end = new Date(endTime)
-  // Make a countdown timer
-  useEffect(() => {
-    function countdownTimer() {
-      const now = new Date()
-      const end = new Date(endTime)
-      // Increment the time +24 hours
-      // const diff = end.getTime() - now.getTime() 
-      const diff = end.getTime() - now.getTime() + 24 * 60 * 60 * 1000
-      const hours = Math.floor(diff / (1000 * 60 * 60))
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000)
-      setCountdown(hours + ':' + minutes + ':' + seconds)
-    }
-
-    // if (now.getTime() < end.getTime()) {
-    if (true) {
-      const interval = setInterval(() => {
-        countdownTimer()
-      }, 1000)
-      return () => clearInterval(interval)
-    } else {
-      setCountdown(<Text style={{ color: 'red' }}>Expired</Text>)
-    }
-  }, [])
-
-
-  return <View style={{ width: '100%', paddingHorizontal: 20, gap: 15, }}>
-    <View style={{ backgroundColor: '#fafafa', borderRadius: 15, borderWidth: 0.5, borderColor: '#e5e5e5', flexDirection: 'row', justifyContent: 'space-between', }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15, padding: 10, paddingHorizontal: 20 }}>
-        <Image source={icons.coins} style={{ width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain', }} />
-        <Text style={{ fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center', }}>
-          {coins}
-        </Text>
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 15, padding: 10, paddingHorizontal: 20, }}>
-        <Image source={icons.countdown} style={{ width: 25, height: 25, alignSelf: 'center', resizeMode: 'contain', }} />
-        <Text style={{ fontSize: 20, fontFamily: fonts.medium, color: colors.text, textAlign: 'center', }}>
-          {countdown}
-        </Text>
-      </View>
-    </View>
-  </View>
-}
-
-function WatchTutorial({ navigation }: any) {
-  return <TouchableOpacity activeOpacity={0.7} onPress={() => {
-    navigation.navigate('TaskTutorial', { isFromHome: false })
-  }}>
-    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 10, }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, backgroundColor: colors.accentLight, padding: 15, borderRadius: 15, width: 'auto', paddingHorizontal: 20 }}>
-        <Image source={icons.video} style={{
-          width: 22, height: 22, alignSelf: 'center', resizeMode: 'contain',
-        }}></Image>
-        <Text style={{
-          color: colors.accent, fontFamily: fonts.medium, fontSize: 14,
-        }}>Watch Tutorial</Text>
-      </View>
-    </View>
-  </TouchableOpacity>
-}
-
-function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
-  return <View style={{
-    opacity: isVisible ? 1 : 0,
-    flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: isVisible ? 50 : 20,
-  }}>
-    <Animated.View style={{ marginBottom: bottomSwipeIcon, marginTop: topSwipeIcon, gap: 2 }}>
-      <Image source={icons.back} style={{
-        width: 20, height: 20, alignSelf: 'center',
-        transform: [{ rotate: '-90deg' }], tintColor: colors.gray,
-      }}></Image>
-      <Text style={{ color: colors.gray, fontFamily: fonts.medium, fontSize: 12 }}>Next Task</Text>
-    </Animated.View>
-  </View>
-}
-
-
-function Uploading({ progress, cancel }: { progress: number, cancel: Function }) {
-  return <View>
-    <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
-    <View style={{
-      width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10,
-    }}>
-      <View style={{
-        width: progress + '%', height: 5, backgroundColor: colors.accent, borderRadius: 5,
-      }}>
-      </View>
-    </View>
-
-    <ButtonFull styles={{
-      width: width - 40, backgroundColor: 'red', marginTop: 20,
-    }}
-      title={"Cancel Uploading"} onPress={() => {
-        cancel()
-      }} />
-
-  </View>
-}
-
-
-function getTaskStatus(status: string) {
-  if (status === 'complete')
-    return 'Task Completed Successfully'
-  else if (status === 'processing')
-    return 'Uploaded, Task Processing'
-}
-
-function getTaskStatusColor(status: string) {
-  if (status === 'complete')
-    return 'limegreen'
-  else if (status === 'processing')
-    return 'orange'
-}
-
-
-function TaskStatusUI({ status }: { status: string }) {
-  return <View>
-    <Text style={{
-      fontSize: 20, fontFamily: fonts.medium,
-      color: getTaskStatusColor(status),
-      textAlign: 'center',
-    }}>{getTaskStatus(status)}</Text>
-  </View>
-}
-
-function TaskRejectedUI({ reason, retry }: { reason: string, retry: Function }) {
-  return <View style={{ gap: 5, paddingHorizontal: 20, flexDirection: 'row', flexWrap: 'wrap' }}>
-    <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: 'red' }}>This task was rejected once.</Text>
-    <TouchableOpacity onPress={() => Alert.alert('Reason for Rejection', reason)}>
-      <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.accent }}>See Why?</Text>
-    </TouchableOpacity>
-    <Text style={{ fontSize: 12, fontFamily: fonts.regular, color: colors.text, }}>But you can retry again by clicking the 'Start Recording' button bellow</Text>
-  </View>
 }
