@@ -100,6 +100,13 @@ export default function YouTubeTask({ route, navigation }: any) {
 
   useEffect(() => {
     const backAction = () => {
+      // Clear all recording files
+      RecordScreen.clean().then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
+
       if (recordingIndex === -1)
         return false;
       setModals([{
