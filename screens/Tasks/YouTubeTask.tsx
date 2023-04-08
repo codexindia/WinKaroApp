@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
+import axios from 'axios'
 
 
 const { height, width } = Dimensions.get('window')
@@ -92,15 +93,21 @@ export default function YouTubeTask({ navigation }: any) {
   }, [])
 
 
+  // Clean old recording files
+  // useEffect(() => {
+  //   RecordScreen.clean().then(res => {
+  //     console.log(res);
+  //   }).catch(err => {
+  //     console.log(err);
+  //   })
+  // }, [])
+
 
 
   async function getTasks() {
     const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
     const res = await fetch(API_URL.get_yt_task, { method: 'POST', headers: headers })
     const data = await res.json()
-    console.log(data.data)
-    console.log(data.data)
-    data.data.shift()
     setTasks(data.data)
   }
   useEffect(() => {
@@ -154,41 +161,46 @@ export default function YouTubeTask({ navigation }: any) {
 
   function stopRecording() {
     RecordScreen.stopRecording().then(res => {
-      const URL = res.result.outputURL
+      const URL = 'file://' + res.result.outputURL
+      console.log('URL', URL)
       setIsUploading(true)
       setUploadingIndex(recordingIndex)
       setRecordingIndex(-1)
+      uploadVideo()
 
+      async function uploadVideo() {
+        const auth = await AsyncStorage.getItem('token')
+        const formData = new FormData();
+        formData.append('task_id', currentRecordingTaskId)
+        formData.append('proof_src', {
+          uri: URL,
+          type: 'video/mp4',
+          name: 'video.mp4'
+        });
 
-      // const xhr = new XMLHttpRequest();
-      // const formData = new FormData();
-      // formData.append('task_id', currentRecordingTaskId)
+        // const res = await fetch(API_URL.upload_task, {
+        //   body: formData,
+        //   method: 'POST',
+        //   headers: {
+        //     'secret': 'hellothisisocdexindia',
+        //     'Content-Type': 'multipart/form-data',
+        //     'Accept': 'application/json',
+        //     'Authorization': `Bearer ${auth}`
+        //   },
+        // })
+        // const data = await res.json()
+        // console.log(data)
 
-      // xhr.open('POST', API_URL.upload_task);
-      // xhr.addEventListener('load', () => {
-      //   console.log(xhr.responseText);
-      //   setIsUploading(false)
-      //   // setProgress(33)
-      //   setToggleCheckBox(false)
-      //   getTasks()
-      // })
-
+      }
     }).catch(err => {
       console.log(err);
     })
 
-
-
-    setTimeout(async () => {
-      const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
-      const formData = new FormData();
-      const res = await fetch(API_URL.get_yt_task, { method: 'POST', body: formData, headers: headers })
-      const data = await res.json()
-      console.log(data.data)
-
-    }, 0);
-
-
+    // Clan old recording files after upload
+    RecordScreen.clean().then(data => {
+      console.log(data)
+    }
+    )
 
   }
   function cancelRecording() {
