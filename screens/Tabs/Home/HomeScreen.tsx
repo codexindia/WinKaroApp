@@ -13,6 +13,7 @@ import changeNavigationBarColor, { hideNavigationBar } from 'react-native-naviga
 import { API, API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import CustomModal from '../../../components/CustomModal';
 
 
 
@@ -60,10 +61,6 @@ const HomeScreen = ({ navigation }: any) => {
 		}, 30000);
 		return () => clearInterval(interval);
 	}, [])
-
-	useEffect(()=>{
-		console.log('Profile pic: ', profile_pic)
-	}, [profile_pic])
 
 
 	return (
@@ -116,7 +113,7 @@ const HomeScreen = ({ navigation }: any) => {
 }
 
 function Tasks({ navigation }: any) {
-
+	const [modals, setModals] = useState<any>([])
 	useEffect(() => {
 
 	}, [])
@@ -157,7 +154,7 @@ function Tasks({ navigation }: any) {
 		{
 			name: 'App install Tasks',
 			icons: icons.download,
-			callback: () => console.log('App'),
+			callback: () => setModals([{ title: "Coming Soon", description: "We are working on this feature. It will be available soon. Stay tuned!", }]),
 			background: '#fff'
 		},
 		{
@@ -176,6 +173,7 @@ function Tasks({ navigation }: any) {
 	]
 	return (
 		<View>
+			<CustomModal modals={modals} updater={setModals} />
 			<Text style={{ paddingLeft: 25, paddingBottom: 10, fontSize: 18, fontFamily: fonts.bold, color: colors.text }}>Explore tasks</Text>
 			<View style={taskStyles.container}>
 				{

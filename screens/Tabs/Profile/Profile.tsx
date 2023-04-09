@@ -137,7 +137,7 @@ const Profile = ({ navigation }: any) => {
         <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
           <View style={[styles.flexRow, { gap: 15 }]}>
             <View>
-              <Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={{ height: 70, width: 70, borderRadius : 70}} />
+              <Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={{ height: 70, width: 70, borderRadius: 70, resizeMode: 'contain' }} />
             </View>
             <View>
               <Text style={[styles.fullName]}>{name}</Text>

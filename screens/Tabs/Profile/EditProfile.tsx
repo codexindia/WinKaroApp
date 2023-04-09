@@ -51,13 +51,13 @@ const EditProfile = ({ route, navigation }: any) => {
          setModals([{ title: "Error", description: "Please select a profile picture or enter name or email", active: true, buttons: [{ text: "Ok", positive: true, onPress: async () => { }, },] }])
          return
       }
+      setButtonText('Saving...')
+      setIsUploading(true)
       const auth = await AsyncStorage.getItem('token')
       const formData = new FormData()
       profilePic && formData.append('profile_pic', { uri: profilePic, name: 'image.jpg', type: 'image/jpg' })
       name && formData.append('name', name)
       email && formData.append('email', email)
-      setButtonText('Saving...')
-      setIsUploading(true)
 
       const res = await fetch(API_URL.update_profile, {
          body: formData,
