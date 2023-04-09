@@ -65,7 +65,7 @@ function getStatusColor(color: string) {
 
 function coin_to_inr(coin: number) {
   // two decimal places
-  const inr = coin / 1000
+  const inr = coin / 100
   return inr.toFixed(2)
 }
 export default WithdrawHistory

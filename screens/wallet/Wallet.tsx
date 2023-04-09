@@ -282,7 +282,7 @@ const Wallet = ({ navigation }: any) => {
                   onChangeText={(text) => setAccountNumber(text)}
                   placeholderTextColor={colors.textLighter}
                   style={input.textInput}
-                  placeholder={accountType === 'wallet' ? 'Your Paytm Wallet Number' : 'Your UPI ID'}
+                  placeholder={accountType === 'paytm' ? 'Your Paytm Wallet Number' : 'Your UPI ID'}
                   keyboardType="phone-pad"
                   maxLength={10}
                   editable={!isBound}

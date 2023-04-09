@@ -31,5 +31,5 @@ export function coins_to_inr(coins: number, balance: number) {
     // Two decimal places
     if (coins > balance)
         return "Insufficient Balance (" + balance + " coins)"
-    return (coins / 1000).toFixed(2)
+    return (coins / 100).toFixed(2)
 }
