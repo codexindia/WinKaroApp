@@ -8,6 +8,9 @@ import { colors } from '../../../styles/colors';
 import images from '../../../assets/images/images';
 import { Touchable } from 'react-native';
 import Loading from '../../../components/Loading';
+import { API_URL } from '../../../appData';
+import { getDefaultHeader } from '../../methods';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const scrollImages = [
 	'https://source.unsplash.com/random/500x300',
@@ -22,11 +25,27 @@ const Slider = () => {
 	const height = (width - 30) * 0.6
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 	const scrollSlider = useRef<ScrollView>(null)
-	const [banners, setBanners] = useState<any>([])
+	const [banners, setBanners] = useState<any>(null)
+	async function loadBanners() {
+		try {
+			const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+			const res = await fetch(API_URL.banners, { headers, method: 'POST' })
+			const data = await res.json()
+			// setBanners(data)
+			console.log(banners)
+			console.log(data)
+			if (data.status === 'true' || data.status === true) {
+				setBanners(data.data)
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	useEffect(() => {
+		loadBanners()
+	}, [])
 
-	}), []
 	if (!banners) return <View style={{
 		height: height,
 	}}>
@@ -47,18 +66,20 @@ const Slider = () => {
 				onTouchStart={scrollToCurrentIndex}
 			>
 				{
-					scrollImages.map((image, index) => {
+					banners.map((banner: any, index: number) => {
 						return <TouchableOpacity key={index} activeOpacity={0.8} onPress={() => {
-							Linking.openURL('https://www.google.com/')
+							Linking.openURL(banner.action_link)
 						}}>
-							<Image source={images.banner} style={[styles.bannerImage, { width: width, height, marginHorizontal: 15, backgroundColor: colors.inputBg }]} />
+							<Image source={{
+								uri: banner.source_link
+							}} style={[styles.bannerImage, { width: width, height, marginHorizontal: 15, backgroundColor: colors.inputBg }]} />
 						</TouchableOpacity>
 					})
 				}
 			</ScrollView>
 			<View style={{ flexDirection: 'row', marginTop: 10, gap: 8 }}>
 				{
-					scrollImages.map((image, index) => {
+					banners.map((banner: any, index: number) => {
 						return <Dot key={index} active={index === activeSlideIndex} />
 					})
 				}

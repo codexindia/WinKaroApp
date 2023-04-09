@@ -321,13 +321,8 @@ export default function YouTubeTask({ route, navigation }: any) {
               <Image source={{ uri: thumbnail_image }} style={{ width: width - 40, height: (width - 40) * 9 / 16, alignSelf: 'center', borderRadius: 25, }}></Image>
               :
               <View>
-                <Image blurRadius={10} source={{ uri: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80' }}
-                  style={{ width: width - 40, height: (width - 40) * 12 / 16, alignSelf: 'center', borderRadius: 25, }}></Image>
-                <Image source={{ uri: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80' }} style={{
-                  width: width - 40, height: (width - 40) * 12 / 16, position: 'absolute',
-                  resizeMode: 'contain',
-                  // left: (width) / 4,
-                }}></Image>
+                <Image blurRadius={10} source={{ uri: thumbnail_image }} style={{ width: width - 40, height: (width - 40) * 12 / 16, alignSelf: 'center', borderRadius: 25, }}></Image>
+                <Image source={{ uri: thumbnail_image }} style={{ width: width - 40, height: (width - 40) * 12 / 16, position: 'absolute', resizeMode: 'contain', }}></Image>
               </View>
           }
           <View style={{ flexDirection: 'row', width: width - 50, alignItems: 'center', justifyContent: 'space-between', marginTop: 15, gap: 10 }}>

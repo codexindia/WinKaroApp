@@ -20,6 +20,7 @@ export const API_URL = {
     get_yt_shorts_task: API + 'tasks/get/yt_shorts',
     upload_task : API + 'tasks/submit/task',
     update_profile: API + 'profile/update_profile',
+    banners : API + 'banners/get',
 }
 
 
