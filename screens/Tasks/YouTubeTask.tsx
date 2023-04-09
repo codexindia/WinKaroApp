@@ -21,6 +21,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
+import RNRestart from 'react-native-restart';
+
 import {
   GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
   TaskAmount, SwipeUp, WatchTutorial, Uploading, WatchHelp
@@ -33,6 +35,11 @@ const API_LINKS: any = {
   'youtube': API_URL.get_yt_task,
   'yt_shorts': API_URL.get_yt_shorts_task,
   'instagram': API_URL.get_insta_task,
+}
+
+async function restartApp() {
+  await AsyncStorage.setItem('refresh', 'true')
+  RNRestart.Restart();
 }
 
 
@@ -51,25 +58,27 @@ export default function YouTubeTask({ route, navigation }: any) {
   const [uploadResponse, setUploadResponse] = useState<any>(null)
   const xhr = new XMLHttpRequest();
   const taskType = route.params.taskType
+  // const RecordScreen = require('react-native-record-screen').default
+
 
 
   function cancelUpload() {
     console.log('Cancel upload')
+    xhr.abort()
     setModals([{
       title: "Are you sure?",
       description: "Are you sure you want to cancel this upload? This will stop your recording to complete the task.",
       buttons: [
         { text: "No" },
         {
-          text: "Yes", positive: true, onPress: () => {
-            setModals([])
-            navigation.goBack()
+          text: "Yes", positive: true, onPress: async () => {
             // Clear all recording files
             RecordScreen.clean().then(res => {
               console.log(res);
             }).catch(err => {
               console.log(err);
             })
+            restartApp()
           },
         },
       ]
@@ -101,11 +110,11 @@ export default function YouTubeTask({ route, navigation }: any) {
   useEffect(() => {
     const backAction = () => {
       // Clear all recording files
-      RecordScreen.clean().then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      })
+      // RecordScreen.clean().then(res => {
+      //   console.log(res);
+      // }).catch(err => {
+      //   console.log(err);
+      // })
 
       if (recordingIndex === -1)
         return false;
@@ -118,7 +127,7 @@ export default function YouTubeTask({ route, navigation }: any) {
           {
             text: "Yes", positive: true, onPress: () => {
               cancelRecording()
-              navigation.goBack()
+              restartApp()
             },
           },
         ]
@@ -132,23 +141,29 @@ export default function YouTubeTask({ route, navigation }: any) {
     return () => backHandler.remove();
   }, [recordingIndex])
 
-  function startRecording(index: number, id: number) {
-    RecordScreen.startRecording({ mic: false }).then(res => {
+  async function startRecording(index: number, id: number) {
+    // let clear = await RecordScreen.clean()
+    // console.log(clear)
+    try {
+      let res = await RecordScreen.startRecording({ mic: false })
+      // res = await RecordScreen.startRecording({ mic: false })
       if (res === RecordingResult.PermissionError) {
         console.log("Permission Error")
         Alert.alert('Permission Error', 'Please allow the permission to record screen')
-      } else {
+      } else if (res === RecordingResult.Started) {
         // Everything is ok
         setCurrentRecordingTaskId(id)
         console.log(id)
         console.log("Start Recording");
         console.log(res);
         setRecordingIndex(index)
+      } else {
+        console.log(res)
       }
-    }).catch(err => {
+    } catch (err) {
+      console.log(err)
       setRecordingIndex(-1)
-      console.log(err);
-    })
+    }
   }
 
   function stopRecording() {
@@ -174,21 +189,6 @@ export default function YouTubeTask({ route, navigation }: any) {
           name: 'video.mp4'
         });
 
-        // const res = await fetch(API_URL.upload_task, {
-        //   body: formData,
-        //   method: 'POST',
-        //   headers: {
-        //     'secret': 'hellothisisocdexindia',
-        //     'Content-Type': 'multipart/form-data',
-        //     'Accept': 'application/json',
-        //     'Authorization': `Bearer ${auth}`
-        //   },
-        // })
-        // const data = await res.json()
-        // console.log(data)
-
-
-
         xhr.upload.addEventListener('progress', (e) => {
           const percent = e.loaded / e.total;
           let progress = Math.round(percent * 100);
@@ -202,7 +202,12 @@ export default function YouTubeTask({ route, navigation }: any) {
           setUploadResponse(xhr.response)
           setModals([{
             title: "Success", description: "Your video has been uploaded successfully.", type: "success", active: true,
-            buttons: [{ text: "Ok", positive: true, onPress: () => { setModals([]), navigation.goBack() } },]
+            buttons: [{
+              text: "Ok", positive: true, onPress: async () => {
+                // navigation.goBack(),
+                restartApp()
+              }
+            },]
           }])
 
           // Delete the video from the phone
@@ -236,7 +241,6 @@ export default function YouTubeTask({ route, navigation }: any) {
 
   if (tasks === null)
     return <Loading />
-
 
 
   if (tasks.length === 0) {
@@ -276,14 +280,12 @@ export default function YouTubeTask({ route, navigation }: any) {
           </View>
         </View>
 
-
       </Modal >
       <ScrollView
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
       >
         {
-
           tasks.map((task: any, index: number) => {
             return <Task task={task} index={index} key={index} />
           })}
@@ -363,7 +365,7 @@ export default function YouTubeTask({ route, navigation }: any) {
                   isExpired ? null :
                     isUploading ?
                       uploadingIndex === index ?
-                        <Uploading progress={progress} cancel={cancelUpload} />
+                        <Uploading progress={progress} cancel={() => cancelUpload()} />
                         : <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
                           <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
                           <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Uploading another task</Text>

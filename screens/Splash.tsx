@@ -17,9 +17,7 @@ async function unexpectedLoggedOut(navigation: any, setModals: Function) {
   navigation.replace('LogIn')
 }
 
-
 const Splash = ({ navigation }: any) => {
-
   async function mainProcess() {
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
     const isOnboarding = await AsyncStorage.getItem('onboarding')
@@ -59,11 +57,60 @@ const Splash = ({ navigation }: any) => {
     }
   }
   useEffect(() => {
-    setTimeout(async () => {
-      mainProcess()
-    }, 3000)
+    async function checkRefresh() {
+      const isRefresh = await AsyncStorage.getItem('refresh')
+      if (isRefresh === 'true') {
+        console.log('Refreshing')
+        await AsyncStorage.removeItem('refresh')
+        await AsyncStorage.removeItem('refresh')
+        // Set navigation bar color to white
+        await changeNavigationBarColor('white', true);
+        navigation.replace('Home')
+      }
+      else {
+
+        startAnimation()
+        setTimeout(async () => {
+          mainProcess()
+        }, 3000)
+
+      }
+    }
+    checkRefresh()
   }, []);
   const [modals, setModals] = React.useState<any>([])
+
+
+  function startAnimation() {
+    topAnimation()
+
+    setTimeout(() => {
+      sizeAnimation()
+      Animated.timing(top, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: false,
+      }).start();
+    }, 1500);
+
+    setTimeout(() => {
+      Animated.timing(borderRadius, {
+        toValue: 0,
+        duration: 700,
+        useNativeDriver: false,
+      }).start();
+    }, 1600);
+
+    setTimeout(async () => {
+      setIsActive(true)
+      setStatusBarColor(colors.accent)
+      await changeNavigationBarColor(colors.accent, true);
+    }, 2000);
+  }
+
+  useEffect(() => {
+    // startAnimation()
+  }, [])
 
   // return (
   //   <View style={styles.main}>
@@ -90,32 +137,6 @@ const Splash = ({ navigation }: any) => {
   const { height, width } = Dimensions.get('window');
   const [statusBarColor, setStatusBarColor] = useState('white')
 
-  useEffect(() => {
-    topAnimation()
-
-    setTimeout(() => {
-      sizeAnimation()
-      Animated.timing(top, {
-        toValue: 0,
-        duration: 700,
-        useNativeDriver: false,
-      }).start();
-    }, 1500);
-
-    setTimeout(() => {
-      Animated.timing(borderRadius, {
-        toValue: 0,
-        duration: 700,
-        useNativeDriver: false,
-      }).start();
-    }, 1600);
-
-    setTimeout(async () => {
-      setIsActive(true)
-      setStatusBarColor(colors.accent)
-      await changeNavigationBarColor(colors.accent, true);
-    }, 2000);
-  }, [])
 
   function topAnimation() {
     Animated.timing(top, {

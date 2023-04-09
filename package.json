@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "build": "cd android && gradlew assembleRelease",
-    "installApk": "adb install -r android/app/build/outputs/apk/debug/app-arm64-v8a-debug.apk"
+    "install-apk": "adb install -r android/app/build/outputs/apk/debug/app-arm64-v8a-debug.apk",
+    "install-release-apk": "adb install -r android/app/build/outputs/apk/release/app-arm64-v8a-release.apk"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -19,11 +20,13 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.71.4",
+    "react-native-compressor": "^1.6.1",
     "react-native-device-info": "^10.4.0",
     "react-native-google-mobile-ads": "^10.1.0",
     "react-native-image-picker": "^5.3.1",
     "react-native-navigation-bar-color": "^2.0.2",
     "react-native-record-screen": "^0.5.0",
+    "react-native-restart": "^0.0.27",
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
     "react-native-video": "^5.2.1"
