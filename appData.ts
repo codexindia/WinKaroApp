@@ -4,7 +4,7 @@ export const API_URL = {
     register: API + 'register',
     login: API + 'login',
     verify_otp: API + 'verify_otp',
-    get_user: API + 'get_user',
+    get_user: API + 'profile/get_user',
     get_pin_coins: API + 'spin_and_earn/get_spin_coin',
     get_reward_video_daily_limit: API + 'watch_and_earn/get_reward_video',
     add_reward: API + 'watch_and_earn/add_reward',
@@ -19,6 +19,7 @@ export const API_URL = {
     get_insta_task: API + 'tasks/get/instagram',
     get_yt_shorts_task: API + 'tasks/get/yt_shorts',
     upload_task : API + 'tasks/submit/task',
+    update_profile: API + 'profile/update_profile',
 }
 
 
