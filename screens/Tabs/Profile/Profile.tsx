@@ -112,7 +112,7 @@ const Profile = ({ navigation }: any) => {
         let data: UserData = JSON.parse(userData as string)
         setName(data.name)
         setBalance(data.balance)
-        setProfilePic(API + data.profile_pic)
+        setProfilePic(data.profile_pic)
         setEmail(data.email)
       }, 0);
   }, [focused])
@@ -124,7 +124,7 @@ const Profile = ({ navigation }: any) => {
       setEmail(data.email)
       setPhone(data.phone)
       setBalance(data.balance)
-      setProfilePic(API + data.profile_pic)
+      setProfilePic(data.profile_pic)
     }, 0);
   }, [])
 
@@ -137,7 +137,7 @@ const Profile = ({ navigation }: any) => {
         <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
           <View style={[styles.flexRow, { gap: 15 }]}>
             <View>
-              <Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={{ height: 70, width: 70, }} />
+              <Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={{ height: 70, width: 70, borderRadius : 70}} />
             </View>
             <View>
               <Text style={[styles.fullName]}>{name}</Text>

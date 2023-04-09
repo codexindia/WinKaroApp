@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }: any) => {
 				setName(data.name.split(' ')[0])
 				setBalance(data.balance)
 				setNotificationCount(data.unread_alert)
-				setProfilePic(API + data.profile_pic)
+				setProfilePic(data.profile_pic)
 				console.log(notificationCount)
 			}, 0);
 	}, [focused])
@@ -60,6 +60,10 @@ const HomeScreen = ({ navigation }: any) => {
 		}, 30000);
 		return () => clearInterval(interval);
 	}, [])
+
+	useEffect(()=>{
+		console.log('Profile pic: ', profile_pic)
+	}, [profile_pic])
 
 
 	return (
