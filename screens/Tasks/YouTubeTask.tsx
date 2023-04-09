@@ -146,6 +146,7 @@ export default function YouTubeTask({ route, navigation }: any) {
         setRecordingIndex(index)
       }
     }).catch(err => {
+      setRecordingIndex(-1)
       console.log(err);
     })
   }
