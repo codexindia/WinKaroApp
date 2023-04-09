@@ -22,6 +22,7 @@ export async function storeUserData(res: any) {
       refer_code: res.data.refer_code,
       balance: res.data.balance,
       unread_alert: res.unread_alert,
+      profile_pic: res.data.profile_pic,
    }
    await AsyncStorage.setItem('userData', JSON.stringify(userData))
    console.log('User data is stored in AsyncStorage')

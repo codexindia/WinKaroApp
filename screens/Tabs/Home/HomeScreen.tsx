@@ -10,7 +10,7 @@ import { fonts } from '../../../styles/fonts';
 import { UserData } from '../../types';
 import Slider from './Slider';
 import changeNavigationBarColor, { hideNavigationBar } from 'react-native-navigation-bar-color';
-import { API_URL } from '../../../appData';
+import { API, API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }: any) => {
 	const [name, setName] = useState('')
 	const [balance, setBalance] = useState('')
 	const [notificationCount, setNotificationCount] = useState(0)
+	const [profile_pic, setProfilePic] = useState<any>(null)
 	const focused = useIsFocused()
 
 	async function updateUserData() {
@@ -46,6 +47,7 @@ const HomeScreen = ({ navigation }: any) => {
 				setName(data.name.split(' ')[0])
 				setBalance(data.balance)
 				setNotificationCount(data.unread_alert)
+				setProfilePic(API + data.profile_pic)
 				console.log(notificationCount)
 			}, 0);
 	}, [focused])
@@ -68,7 +70,7 @@ const HomeScreen = ({ navigation }: any) => {
 					onPress={() => navigation.navigate('Profile')}
 				>
 					<View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15 }}>
-						<Image source={icons.user_icon} style={styles.topImage} />
+						<Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={styles.topImage} />
 						<Text className='text-[#000] text-lg' style={{
 							fontFamily: fonts.semiBold,
 						}}>{name}</Text>
@@ -267,6 +269,7 @@ const styles = StyleSheet.create({
 	topImage: {
 		height: 40,
 		width: 40,
+		borderRadius: 50,
 		resizeMode: 'contain'
 	},
 	flexRow: {

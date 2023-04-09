@@ -5,4 +5,5 @@ export type UserData = {
     refer_code : string,
     balance : string,
     unread_alert : number,
+    profile_pic : string,
 }

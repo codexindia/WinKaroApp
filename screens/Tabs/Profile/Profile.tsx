@@ -7,6 +7,9 @@ import { fonts } from '../../../styles/fonts'
 import { UserData } from '../../types'
 import CustomModal from '../../../components/CustomModal'
 import { launchImageLibrary } from 'react-native-image-picker'
+import { useIsFocused } from '@react-navigation/native'
+import { getDefaultHeader, storeUserData } from '../../methods'
+import { API, API_URL } from '../../../appData'
 
 
 
@@ -80,8 +83,39 @@ const Profile = ({ navigation }: any) => {
   const [phone, setPhone] = useState('')
   const [balance, setBalance] = useState('')
   const [isUploading, setIsUploading] = useState(false)
+  const [profile_pic, setProfilePic] = useState<any>(null)
+  const focused = useIsFocused()
 
 
+  async function updateUserData() {
+    const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
+    const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
+    const res = await fetched.json()
+    console.log(res)
+    if (res.status === true || res.status === 'true')
+      storeUserData(res)
+    else { }
+  }
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      await updateUserData()
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [])
+
+  useEffect(() => {
+    if (focused)
+      setTimeout(async () => {
+        await updateUserData()
+        console.log('Focused')
+        const userData = await AsyncStorage.getItem('userData')
+        let data: UserData = JSON.parse(userData as string)
+        setName(data.name)
+        setBalance(data.balance)
+        setProfilePic(API + data.profile_pic)
+        setEmail(data.email)
+      }, 0);
+  }, [focused])
   useEffect(() => {
     setTimeout(async () => {
       const userData = await AsyncStorage.getItem('userData')
@@ -90,6 +124,7 @@ const Profile = ({ navigation }: any) => {
       setEmail(data.email)
       setPhone(data.phone)
       setBalance(data.balance)
+      setProfilePic(API + data.profile_pic)
     }, 0);
   }, [])
 
@@ -102,10 +137,7 @@ const Profile = ({ navigation }: any) => {
         <View style={[styles.flexRow, { justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, gap: 10, paddingTop: 20, }]}>
           <View style={[styles.flexRow, { gap: 15 }]}>
             <View>
-              <Image source={icons.user_icon} style={{
-                height: 70,
-                width: 70,
-              }} />
+              <Image source={profile_pic ? { uri: profile_pic } : icons.user_icon} style={{ height: 70, width: 70, }} />
             </View>
             <View>
               <Text style={[styles.fullName]}>{name}</Text>
@@ -114,8 +146,9 @@ const Profile = ({ navigation }: any) => {
           </View>
           <TouchableOpacity onPress={() => {
             navigation.navigate('EditProfile', {
-              ppLink: 'https://images.unsplash.com/photo-1604311795833-25e1d5c128c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8OSUzQTE2fGVufDB8fDB8fA%3D%3D&w=1000&q=80',
-              name: name
+              ppLink: profile_pic,
+              name: name,
+              email: email,
             })
           }} activeOpacity={0.8}>
             {/* <Text style={

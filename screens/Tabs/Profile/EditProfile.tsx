@@ -12,13 +12,18 @@ import CustomModal from '../../../components/CustomModal'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import images from '../../../assets/images/images'
 import { fonts } from '../../../styles/fonts'
+import { API_URL } from '../../../appData'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const EditProfile = ({ route, navigation }: any) => {
    const [ppLink, setPpLink] = React.useState(null)
    const [name, setName] = React.useState(route.params.name || '')
+   const [email, setEmail] = React.useState(route.params.email || '')
    const [isUploading, setIsUploading] = React.useState(false)
    const [isImageSelected, setIsImageSelected] = React.useState(false)
    const [modals, setModals] = React.useState<any>([])
+   const [uploading, setUploading] = React.useState(false)
+   const [buttonText, setButtonText] = React.useState('Save')
    // Disable back button
    React.useEffect(() => {
       const backAction = () => {
@@ -37,6 +42,42 @@ const EditProfile = ({ route, navigation }: any) => {
       return () => backHandler.remove()
    }, [])
 
+   async function uploadPic() {
+
+      const auth = await AsyncStorage.getItem('token')
+      const formData = new FormData()
+      ppLink && formData.append('profile_pic', { uri: ppLink, name: 'image.jpg', type: 'image/jpg' })
+      name && formData.append('name', name)
+      email && formData.append('email', email)
+      setButtonText('Saving...')
+
+      const res = await fetch(API_URL.update_profile, {
+         body: formData,
+         method: 'POST',
+         headers: {
+            'secret': 'hellothisisocdexindia',
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${auth}`
+         }
+      })
+      const data = await res.json()
+      console.log(data)
+
+      if (data.status == 'true' || data.status == true) {
+         setButtonText('Saved')
+         setModals([{
+            title: "Success", description: "Profile updated successfully", active: true,
+            buttons: [{ text: "Ok", positive: true, onPress: async () => { navigation.goBack() }, },]
+         }])
+
+      } else {
+         setModals([{
+            title: "Error", description: data.message, active: true,
+            buttons: [{ text: "Ok", positive: true, onPress: async () => { }, },]
+         }])
+      }  
+   }
 
    async function selectPic() {
       console.log('selectPic')
@@ -44,7 +85,8 @@ const EditProfile = ({ route, navigation }: any) => {
          const res = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1, })
          if (res.didCancel || res.errorMessage) return
          setIsImageSelected(true)
-         const uri: string = res?.assets[0]?.uri as string
+         const uri: any = res?.assets[0]?.uri as string
+         setPpLink(uri)
       } catch (e) {
          console.log(e)
       }
@@ -72,18 +114,34 @@ const EditProfile = ({ route, navigation }: any) => {
             </Text>
          </View>
 
-         <View className='p-5'>
-            <Text style={styles.label} className='mb-3'>Your Name</Text>
-            <View style={styles.singleInputContainer}>
 
-               <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
-               <TextInput
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                  placeholderTextColor={colors.textLighter}
-                  style={styles.input}
-                  placeholder="eg. Jhon Doe"
-               />
+
+         <View className='p-5 gap-4'>
+            <View>
+               <Text style={styles.label} className='mb-3'>Your Name</Text>
+               <View style={styles.singleInputContainer}>
+                  <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
+                  <TextInput
+                     value={name}
+                     onChangeText={(text) => setName(text)}
+                     placeholderTextColor={colors.textLighter}
+                     style={styles.input}
+                     placeholder="eg. Jhon Doe"
+                  />
+               </View>
+            </View>
+            <View>
+               <Text style={styles.label} className='mb-3'>Your Email</Text>
+               <View style={styles.singleInputContainer}>
+                  <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
+                  <TextInput
+                     value={email}
+                     onChangeText={(text) => setEmail(text)}
+                     placeholderTextColor={colors.textLighter}
+                     style={styles.input}
+                     placeholder="eg. example@gmail.com"
+                  />
+               </View>
             </View>
          </View>
 
@@ -98,7 +156,7 @@ const EditProfile = ({ route, navigation }: any) => {
          </View>
 
          <View className='p-5'>
-            <ButtonFull title='Save' onPress={() => { }} />
+            <ButtonFull title={buttonText} onPress={() => uploadPic()} disabled={isUploading} />
          </View>
       </View>
    )

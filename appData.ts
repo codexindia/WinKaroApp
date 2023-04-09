@@ -1,4 +1,4 @@
-const API = 'https://winkaro.codexindia.com/api/'
+export const API = 'https://winkaro.codexindia.com/api/'
 
 export const API_URL = {
     register: API + 'register',
