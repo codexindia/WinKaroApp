@@ -130,7 +130,7 @@ const EditProfile = ({ route, navigation }: any) => {
             <View>
                <Text style={styles.label} className='mb-3'>Your Name</Text>
                <View style={styles.singleInputContainer}>
-                  <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
+                  <Image source={icons.profile} style={[styles.inputImage, { width: 23, height: 23 }]} />
                   <TextInput
                      value={name}
                      onChangeText={(text) => setName(text)}
@@ -143,7 +143,7 @@ const EditProfile = ({ route, navigation }: any) => {
             <View>
                <Text style={styles.label} className='mb-3'>Your Email</Text>
                <View style={styles.singleInputContainer}>
-                  <Image source={icons.mobile_solid} style={[styles.inputImage, { width: 23, height: 23 }]} />
+                  <Image source={icons.at} style={[styles.inputImage, { width: 23, height: 23 }]} />
                   <TextInput
                      value={email}
                      onChangeText={(text) => setEmail(text)}
