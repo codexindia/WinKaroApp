@@ -303,9 +303,9 @@ export default function YouTubeTask({ route, navigation }: any) {
     // const [status, setStatus] = useMemo(() => [s, ss], [s])
     const now = new Date()
     const end = new Date(ends_at)
-    // const isExpired = now > end
+    const isExpired = now > end
     const [isCopied, setIsCopied] = useState(false)
-    const isExpired = false
+    // const isExpired = false
 
     return <View style={{ height: height, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', }} key={index}>
       <View>

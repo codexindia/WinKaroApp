@@ -28,14 +28,14 @@ export function TaskAmount({ coins, endTime }: { coins: number, endTime: string 
          const end = new Date(endTime)
          // Increment the time +24 hours
          // const diff = end.getTime() - now.getTime() 
-         const diff = end.getTime() - now.getTime() + 24 * 60 * 60 * 1000
+         const diff = end.getTime() - now.getTime()
          const hours = Math.floor(diff / (1000 * 60 * 60))
          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
          const seconds = Math.floor((diff % (1000 * 60)) / 1000)
          setCountdown(addZero(hours) + ':' + addZero(minutes) + ':' + addZero(seconds))
       }
-      // if (now.getTime() < end.getTime()) {
-      if (true) {
+      if (now.getTime() < end.getTime()) {
+         // if (true) {
          countdownTimer()
          const interval = setInterval(() => {
             countdownTimer()
