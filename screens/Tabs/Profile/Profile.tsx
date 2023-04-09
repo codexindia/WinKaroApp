@@ -146,7 +146,7 @@ const Profile = ({ navigation }: any) => {
           </View>
           <TouchableOpacity onPress={() => {
             navigation.navigate('EditProfile', {
-              ppLink: profile_pic,
+              profile_pic: profile_pic,
               name: name,
               email: email,
             })

@@ -16,9 +16,9 @@ import { API_URL } from '../../../appData'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const EditProfile = ({ route, navigation }: any) => {
-   const [ppLink, setPpLink] = React.useState(null)
    const [name, setName] = React.useState(route.params.name || '')
    const [email, setEmail] = React.useState(route.params.email || '')
+   const [profilePic, setProfilePic] = React.useState(route.params.profile_pic || '')
    const [isUploading, setIsUploading] = React.useState(false)
    const [isImageSelected, setIsImageSelected] = React.useState(false)
    const [modals, setModals] = React.useState<any>([])
@@ -39,17 +39,25 @@ const EditProfile = ({ route, navigation }: any) => {
          "hardwareBackPress",
          backAction
       )
+
+      console.log(profilePic)
+
       return () => backHandler.remove()
+
    }, [])
 
    async function uploadPic() {
-
+      if (!profilePic && !name && !email) {
+         setModals([{ title: "Error", description: "Please select a profile picture or enter name or email", active: true, buttons: [{ text: "Ok", positive: true, onPress: async () => { }, },] }])
+         return
+      }
       const auth = await AsyncStorage.getItem('token')
       const formData = new FormData()
-      ppLink && formData.append('profile_pic', { uri: ppLink, name: 'image.jpg', type: 'image/jpg' })
+      profilePic && formData.append('profile_pic', { uri: profilePic, name: 'image.jpg', type: 'image/jpg' })
       name && formData.append('name', name)
       email && formData.append('email', email)
       setButtonText('Saving...')
+      setIsUploading(true)
 
       const res = await fetch(API_URL.update_profile, {
          body: formData,
@@ -76,7 +84,9 @@ const EditProfile = ({ route, navigation }: any) => {
             title: "Error", description: data.message, active: true,
             buttons: [{ text: "Ok", positive: true, onPress: async () => { }, },]
          }])
-      }  
+         setButtonText('Save')
+      }
+      setIsUploading(false)
    }
 
    async function selectPic() {
@@ -86,7 +96,7 @@ const EditProfile = ({ route, navigation }: any) => {
          if (res.didCancel || res.errorMessage) return
          setIsImageSelected(true)
          const uri: any = res?.assets[0]?.uri as string
-         setPpLink(uri)
+         setProfilePic(uri)
       } catch (e) {
          console.log(e)
       }
@@ -98,7 +108,7 @@ const EditProfile = ({ route, navigation }: any) => {
          <CustomModal modals={modals} updater={setModals} />
          <View>
             <TouchableOpacity className='ml-auto mr-auto pb-10' activeOpacity={0.8} onPress={() => { selectPic() }}>
-               <Image source={ppLink ? { uri: ppLink } : icons.user_icon}
+               <Image source={profilePic ? { uri: profilePic } : icons.user_icon}
                   style={{ width: 150, height: 150, borderRadius: 500, resizeMode: 'contain' }}
                />
                <View className='bg-white p-3 rounded-full' style={{
