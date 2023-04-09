@@ -47,14 +47,6 @@ const Offer = ({ navigation }: any) => {
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 15, backgroundColor: colors.accent, padding: 15, borderRadius: 20, }}>
             <View><Image source={icons.offer} style={{ width: 25, height: 25, resizeMode: 'contain', tintColor: "white" }}></Image></View>
             <View><Text style={{ fontSize: 16, fontFamily: fonts.regular, color: 'white', marginRight: 35 }}>
-              Claim 1000  Coins after completing 10 YouTube valid tasks continuously without any one task gap.
-            </Text>
-            </View>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 15, backgroundColor: colors.accent, padding: 15, borderRadius: 20, }}>
-            <View><Image source={icons.offer} style={{ width: 25, height: 25, resizeMode: 'contain', tintColor: "white" }}></Image></View>
-            <View><Text style={{ fontSize: 16, fontFamily: fonts.regular, color: 'white', marginRight: 35 }}>
               Join a Telegram Channel to claim 100 coins.
             </Text>
             </View>
@@ -71,7 +63,7 @@ const Offer = ({ navigation }: any) => {
 
         </View>
 
-        <Text style={{ fontSize: 18, fontFamily: fonts.semiBold, textAlign: 'center', color: colors.text }}>Completed Tasks</Text>
+        {/* <Text style={{ fontSize: 18, fontFamily: fonts.semiBold, textAlign: 'center', color: colors.text }}>Completed Tasks</Text> */}
         <View>
 
         </View>
