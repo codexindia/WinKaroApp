@@ -86,10 +86,12 @@ function ReferAccount({ data }: any) {
       <View className='pl-5 justify-center gap-1'>
         <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 16 }}>{name}</Text>
         <View className='flex-row justify-between' style={{}}>
-          <View className='flex-row justify-center items-center gap-1'>
+          <View className='flex-row justify-center items-center gap-2'>
             <Image source={icons.coins} style={{ height: 20, width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
-            <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 14, }}>{coins} earned</Text>
-            <Text style={{ fontFamily: fonts.medium, color: getStatusColor(status), fontSize: 14, }}> • {status}</Text>
+            <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 14, }}>{coins} coins</Text>
+            <Text style={{ fontFamily: fonts.medium, color:  getStatusColor(status), fontSize: 14, }}>•</Text>
+
+            <Text style={{ fontFamily: fonts.medium, color: getStatusColor(status), fontSize: 14, }}>{status}</Text>
           </View>
           <View>
           </View>
