@@ -1,7 +1,6 @@
 export const email = 'winkaro7253@gmail.com'
 
-
-export const API = 'https://winkaro.codexindia.com/api/'
+export const API = 'https://winkaro.yourexpand.in/api/'
 
 export const API_URL = {
     register: API + 'register',
@@ -28,10 +27,10 @@ export const API_URL = {
 }
 
 
-export const playStoreLink = 'https://play.google.com/store/apps/details?id=com.winkaro'
-export const t_and_c_link = ''
-export const privacy_policy_link = ''
-
+export const playStoreLink = 'https://play.google.in/store/apps/details?id=com.winkaro'
+export const t_and_c_link = 'https://winkaro.yourexpand.in/terms_and_conditions'
+export const privacy_policy_link = 'https://winkaro.yourexpand.in/privacy_policy'
+export const about_us_link = 'https://winkaro.yourexpand.in/about_us'
 
 export function coins_to_inr(coins: number, balance: number) {
     // Two decimal places

@@ -49,7 +49,7 @@ const App = () => {
         <Stack.Screen name="Withdraw" component={Wallet} options={{ title: 'Wallet', headerShown: false }} />
         <Stack.Screen name="Promotions" component={Promotions} options={{ title: 'Promotions' }} />
         <Stack.Screen name="ReferHistory" component={ReferHistory} options={{ title: 'Refer History' }} />
-        <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} />
+        {/* <Stack.Screen name="About" component={About} options={{ title: 'About Us' }} /> */}
         <Stack.Screen name="Test" component={Test} options={{ title: 'Test' }} />
         <Stack.Screen name="YouTubeTask" component={YouTubeTask} options={{ title: 'YouTube Task', headerShown: false }} />
         <Stack.Screen name="TaskTutorial" component={TaskTutorial} options={{ title: 'YouTube Task Tutorial', headerShown: false }} />

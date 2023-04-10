@@ -9,7 +9,7 @@ import CustomModal from '../../../components/CustomModal'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useIsFocused } from '@react-navigation/native'
 import { getDefaultHeader, storeUserData } from '../../methods'
-import { API, API_URL, playStoreLink, privacy_policy_link, t_and_c_link } from '../../../appData'
+import { API, API_URL, about_us_link, playStoreLink, privacy_policy_link, t_and_c_link } from '../../../appData'
 
 
 
@@ -51,7 +51,7 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'About us',
       icon: icons.information_desk,
-      onPress: () => { navigation.navigate('About') }
+      onPress: () => { Linking.openURL(about_us_link) }
     },
     {
       title: 'Log out',
