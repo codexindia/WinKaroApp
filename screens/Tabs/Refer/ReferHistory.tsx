@@ -81,7 +81,7 @@ function ReferAccount({ data }: any) {
 
     <View className='flex-row items-center'>
       <View>
-        <Image source={pp == null ? icons.user_icon : { uri: pp }} style={{ height: 50, aspectRatio: 1, resizeMode: 'contain', }} />
+        <Image source={pp == null ? icons.user_icon : { uri: pp }} style={{ height: 50, aspectRatio: 1, resizeMode: 'contain', borderRadius : 100 }} />
       </View>
       <View className='pl-5 justify-center gap-1'>
         <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 16 }}>{name}</Text>
@@ -89,7 +89,7 @@ function ReferAccount({ data }: any) {
           <View className='flex-row justify-center items-center gap-2'>
             <Image source={icons.coins} style={{ height: 20, width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
             <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 14, }}>{coins} coins</Text>
-            <Text style={{ fontFamily: fonts.medium, color:  getStatusColor(status), fontSize: 14, }}>•</Text>
+            <Text style={{ fontFamily: fonts.medium, color: getStatusColor(status), fontSize: 14, }}>•</Text>
 
             <Text style={{ fontFamily: fonts.medium, color: getStatusColor(status), fontSize: 14, }}>{status}</Text>
           </View>

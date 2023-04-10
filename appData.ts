@@ -28,7 +28,7 @@ export const API_URL = {
 }
 
 
-export const playStoreLink = '[Play Store Link]'
+export const playStoreLink = 'https://play.google.com/store/apps/details?id=com.winkaro'
 
 
 export function coins_to_inr(coins: number, balance: number) {

@@ -9,7 +9,7 @@ import CustomModal from '../../../components/CustomModal'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useIsFocused } from '@react-navigation/native'
 import { getDefaultHeader, storeUserData } from '../../methods'
-import { API, API_URL } from '../../../appData'
+import { API, API_URL, playStoreLink } from '../../../appData'
 
 
 
@@ -46,7 +46,7 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'Rate us',
       icon: icons.favorite,
-      onPress: () => { Linking.openURL('https://play.google.com/store/apps/details?id=com.earnmoneyapp') }
+      onPress: () => { Linking.openURL(playStoreLink) }
     },
     {
       title: 'About us',
