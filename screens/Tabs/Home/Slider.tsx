@@ -12,11 +12,11 @@ import { API_URL } from '../../../appData';
 import { getDefaultHeader } from '../../methods';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const scrollImages = [
-	'https://source.unsplash.com/random/500x300',
-	'https://source.unsplash.com/random/500x300',
-	'https://source.unsplash.com/random/500x300',
-];
+// const scrollImages = [
+// 	'https://source.unsplash.com/random/500x300',
+// 	'https://source.unsplash.com/random/500x300',
+// 	'https://source.unsplash.com/random/500x300',
+// ];
 
 
 const Slider = () => {
@@ -46,11 +46,10 @@ const Slider = () => {
 		loadBanners()
 	}, [])
 
-	if (!banners) return <View style={{
-		height: height,
-	}}>
-		<Loading />
-	</View>
+	if (!banners) return <View style={{ height: height, }}><Loading /></View>
+	if (banners.length === 0) return null
+
+
 
 	return (
 		<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15, paddingBottom: 20 }}>
