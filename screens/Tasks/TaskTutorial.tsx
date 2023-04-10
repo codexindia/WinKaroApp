@@ -109,18 +109,20 @@ const TaskTutorial = ({ route, navigation }: any) => {
          <View style={{
             padding: 20, width: '100%', gap: 10, paddingBottom: 15
          }}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => { setDontShowAgainChecked(!dontShowAgainChecked) }}>
+            <View>
                <View style={{
                   flexDirection: 'row', alignItems: 'center', gap: 15, marginBottom: 10
                }}>
-                  <CheckBox checked={dontShowAgainChecked} />
-                  <Text style={{
-                     fontSize: 16.5, fontFamily: fonts.regular, color: colors.text, textAlign: 'center'
-                  }}>
-                     Don't show this tutorial again
-                  </Text>
+                  <CheckBox checked={dontShowAgainChecked} onClick={() => { setDontShowAgainChecked(!dontShowAgainChecked) }} />
+                  <TouchableOpacity activeOpacity={0.8} onPress={() => { setDontShowAgainChecked(!dontShowAgainChecked) }}>
+                     <Text style={{
+                        fontSize: 16.5, fontFamily: fonts.regular, color: colors.text, textAlign: 'center'
+                     }}>
+                        Don't show this tutorial again
+                     </Text>
+                  </TouchableOpacity>  
                </View>
-            </TouchableOpacity>
+            </View>
 
             <ButtonFull title="View Available Tasks" onPress={() => {
                AsyncStorage.setItem('dontShowTaskTutorial', dontShowAgainChecked.toString()).then(() => {
