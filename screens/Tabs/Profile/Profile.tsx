@@ -82,6 +82,7 @@ const Profile = ({ navigation }: any) => {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [balance, setBalance] = useState('')
+  const [taskCount, setTaskCount] = useState('')
   const [isUploading, setIsUploading] = useState(false)
   const [profile_pic, setProfilePic] = useState<any>(null)
   const focused = useIsFocused()
@@ -114,6 +115,8 @@ const Profile = ({ navigation }: any) => {
         setBalance(data.balance)
         setProfilePic(data.profile_pic)
         setEmail(data.email)
+        setTaskCount(data.complete_tasks)
+        console.log('Complete Task', data.complete_tasks)
       }, 0);
   }, [focused])
   useEffect(() => {
@@ -125,6 +128,7 @@ const Profile = ({ navigation }: any) => {
       setPhone(data.phone)
       setBalance(data.balance)
       setProfilePic(data.profile_pic)
+      setTaskCount(data.complete_tasks)
     }, 0);
   }, [])
 
@@ -185,7 +189,7 @@ const Profile = ({ navigation }: any) => {
           <View style={[styles.balanceBox]}>
             <View style={[styles.flexRow, { gap: 7 }]}>
               <Image source={icons.task_list} style={styles.balanceImage} />
-              <Text style={[styles.balance]}>56</Text>
+              <Text style={[styles.balance]}>{taskCount}</Text>
             </View>
             <Text style={[styles.balanceType]}>Tasks</Text>
           </View>

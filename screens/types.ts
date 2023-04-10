@@ -6,4 +6,5 @@ export type UserData = {
     balance : string,
     unread_alert : number,
     profile_pic : string,
+    complete_tasks : string,
 }
