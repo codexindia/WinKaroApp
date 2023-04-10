@@ -33,7 +33,9 @@ const Offer = ({ navigation }: any) => {
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 15, backgroundColor: colors.accent, padding: 15, borderRadius: 20, }}>
             <View><Image source={icons.offer} style={{ width: 25, height: 25, resizeMode: 'contain', tintColor: "white" }}></Image></View>
             <View><Text style={{ fontSize: 16, fontFamily: fonts.regular, color: 'white', marginRight: 35 }}>
-              Claim 1000  Coins after completing 10 YouTube valid tasks continuously without any one task gap.
+              <Text>
+                Claim 1000  Coins after completing 10 YouTube valid tasks continuously without any one task gap.
+              </Text>
             </Text>
               {/* <TouchableOpacity>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 10, marginTop: 10 }}>
@@ -56,7 +58,7 @@ const Offer = ({ navigation }: any) => {
           {/* <View><Image source={icons.offer} style={{ width: 25, height: 25, resizeMode: 'contain', tintColor: "white" }}></Image></View> */}
           {/* <View><Text style={{ fontSize: 16, fontFamily: fonts.regular, color: 'white', marginRight: 35 }}> */}
           {/* Install task ( 200 coins ) YouTube png ( clickable ) ( demo video yt link  )  claim button ( link redirect ) Text submit button . */}
-          Install an app and complete a task to claim 200 coins.
+          {/* Install an app and complete a task to claim 200 coins. */}
           {/* </Text> */}
           {/* </View> */}
           {/* </View> */}
