@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {
   Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput,
-  TouchableOpacity, View
+  TouchableOpacity, View, Linking
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 // import { TextInput } from 'react-native/Libraries/Components/TextInput/TextInput'
-import { API_URL } from '../../appData'
+import { API_URL, t_and_c_link } from '../../appData'
 import icons from '../../assets/icons/icons'
 import images from '../../assets/images/images'
 import ButtonFull from '../../components/ButtonFull'
@@ -182,7 +182,7 @@ const SignUp = ({ navigation }: any) => {
           </View>
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>By Signing up in you accept our </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
+            <TouchableOpacity onPress={() => Linking.openURL(t_and_c_link)}>
               <Text style={{ color: colors.accent, fontFamily: fonts.medium }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>

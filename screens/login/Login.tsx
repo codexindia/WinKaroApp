@@ -3,7 +3,7 @@ import {
   StyleSheet, ScrollView,
   Text, View, Image, Button,
   StatusBar, TextInput,
-  TouchableOpacity, Modal,
+  TouchableOpacity, Modal, Linking,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
@@ -15,11 +15,12 @@ import ButtonFull from '../../components/ButtonFull'
 import { Alert } from 'react-native'
 import buttons from '../../styles/buttons'
 import styles from './styles'
-import { API_URL } from '../../appData'
+import { API_URL, t_and_c_link } from '../../appData'
 import { fonts } from '../../styles/fonts'
 import CustomModal from '../../components/CustomModal'
 import { getDefaultHeader } from '../methods'
 import DeviceInfo from 'react-native-device-info'
+import { Link } from '@react-navigation/native'
 
 
 // import { StatusBar } from 'react-native/Libraries/Components/StatusBar/StatusBar'
@@ -100,7 +101,7 @@ const Login = ({ navigation }: any) => {
           </View> */}
           <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: colors.textLight, fontFamily: fonts.regular }}>By Logging in you accept out </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
+            <TouchableOpacity onPress={() => Linking.openURL(t_and_c_link)}>
               <Text style={{ color: colors.accent, fontFamily: fonts.medium }}>terms and conditions</Text>
             </TouchableOpacity>
           </View>

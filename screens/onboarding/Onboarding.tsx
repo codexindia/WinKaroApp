@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useRef } from 'react'
-import { Animated, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
+import {
+  Animated, FlatList, Image, SafeAreaView, StatusBar, StyleSheet,
+  Text, TouchableOpacity, useWindowDimensions, View, Linking
+} from 'react-native'
 import icons from '../../assets/icons/icons'
 import buttons from '../../styles/buttons'
 import { colors } from '../../styles/colors'
@@ -8,6 +11,7 @@ import { fonts } from '../../styles/fonts'
 import txt from '../../styles/text'
 import data from './onboardingData'
 import Paginator from './Paginator'
+import { t_and_c_link } from '../../appData'
 
 const Onboarding = ({ navigation }: any) => {
   const [currentIndex, setCurrentIndex] = React.useState(0)
@@ -92,7 +96,7 @@ const Onboarding = ({ navigation }: any) => {
       <View style={[styles.bottom, { width: '100%' }]}>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 5 }}>
           <Text style={[styles.bottomText, { color: colors.gray, fontFamily: fonts.regular }]}>Read </Text>
-          <TouchableOpacity onPress={()=>navigation.navigate('Terms')}><Text style={[txt.color, styles.bottomText, { fontFamily: fonts.medium }]}>Terms and Conditions</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL(t_and_c_link)}><Text style={[txt.color, styles.bottomText, { fontFamily: fonts.medium }]}>Terms and Conditions</Text></TouchableOpacity>
           <Text style={[styles.bottomText, { color: colors.gray, fontFamily: fonts.regular }]}> before using the app.</Text>
         </View>
       </View>

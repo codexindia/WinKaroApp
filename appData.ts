@@ -21,14 +21,16 @@ export const API_URL = {
     get_yt_task: API + 'tasks/get/youtube',
     get_insta_task: API + 'tasks/get/instagram',
     get_yt_shorts_task: API + 'tasks/get/yt_shorts',
-    upload_task : API + 'tasks/submit/task',
+    upload_task: API + 'tasks/submit/task',
     update_profile: API + 'profile/update_profile',
-    banners : API + 'banners/get',
-    refer_history : API + 'refer/get_history'
+    banners: API + 'banners/get',
+    refer_history: API + 'refer/get_history'
 }
 
 
 export const playStoreLink = 'https://play.google.com/store/apps/details?id=com.winkaro'
+export const t_and_c_link = ''
+export const privacy_policy_link = ''
 
 
 export function coins_to_inr(coins: number, balance: number) {

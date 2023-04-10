@@ -9,7 +9,7 @@ import CustomModal from '../../../components/CustomModal'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useIsFocused } from '@react-navigation/native'
 import { getDefaultHeader, storeUserData } from '../../methods'
-import { API, API_URL, playStoreLink } from '../../../appData'
+import { API, API_URL, playStoreLink, privacy_policy_link, t_and_c_link } from '../../../appData'
 
 
 
@@ -36,12 +36,12 @@ const Profile = ({ navigation }: any) => {
     {
       title: 'Privacy policy',
       icon: icons.policy,
-      onPress: () => { navigation.navigate('PrivacyPolicy') }
+      onPress: () => { Linking.openURL(privacy_policy_link) }
     },
     {
       title: 'Term & condition',
       icon: icons.terms_and_conditions,
-      onPress: () => { navigation.navigate('Terms') }
+      onPress: () => { Linking.openURL(t_and_c_link) }
     },
     {
       title: 'Rate us',

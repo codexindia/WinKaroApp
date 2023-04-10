@@ -42,8 +42,8 @@ const App = () => {
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ title: 'Welcome', headerShown: false }} />
         <Stack.Screen name="OTP" component={OTP} options={{ headerShown: false }} />
-        <Stack.Screen name="Terms" component={TermsAndConditions} options={{ title: 'Terms & Conditions' }} />
-        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{ title: 'Privacy Policy' }} />
+        {/* <Stack.Screen name="Terms" component={TermsAndConditions} options={{ title: 'Terms & Conditions' }} /> */}
+        {/* <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{ title: 'Privacy Policy' }} /> */}
         <Stack.Screen name="Notifications" component={Notifications} options={{ title: 'Notifications' }} />
         <Stack.Screen name="Wallet" component={Wallet} options={{ title: 'Wallet', headerShown: false }} />
         <Stack.Screen name="Withdraw" component={Wallet} options={{ title: 'Wallet', headerShown: false }} />
