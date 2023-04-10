@@ -22,6 +22,8 @@ import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
+import { Video as CVideo } from 'react-native-compressor'
+
 
 import {
   GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
@@ -167,13 +169,26 @@ export default function YouTubeTask({ route, navigation }: any) {
   }
 
   function stopRecording() {
-    RecordScreen.stopRecording().then(res => {
-      const URL = 'file://' + res.result.outputURL
-      console.log('URL', URL)
+    RecordScreen.stopRecording().then(async res => {
+      let video_url = 'file://' + res.result.outputURL
+      // let compressedVideo = await CVideo.compress(video_url, {
+      //   compressionMethod: 'manual',
+      //   bitrate: 1024 * 100,
+      //   maxSize: 1024 * 1024 * 1024 * 5,
+      // },
+      //   (progress) => {
+      //     console.log('Compression Progress: ', Math.floor(progress * 100));
+      //   }
+      // )
+
+      // console.log('Compressed', compressedVideo)
       setIsUploading(true)
       setUploadingIndex(recordingIndex)
       setRecordingIndex(-1)
       uploadVideo()
+
+
+
 
       // RecordScreen.clean().then(data => {
       //   console.log(data)
@@ -184,7 +199,7 @@ export default function YouTubeTask({ route, navigation }: any) {
         const formData = new FormData();
         formData.append('task_id', currentRecordingTaskId)
         formData.append('proof_src', {
-          uri: URL,
+          uri: video_url,
           type: 'video/mp4',
           name: 'video.mp4'
         });
@@ -406,4 +421,21 @@ export default function YouTubeTask({ route, navigation }: any) {
       </View>
     </View>
   }
+}
+
+
+const test = {
+  "data": [{
+    "balance": 14549,
+    "created_at": "2023-04-04T11:03:35.000000Z",
+    "email": "codeabinash@gmail.com",
+    "id": 6, "name": "Abinash Karmakar",
+    "phone": "9547400680",
+    "profile_pic": "https://winkaro.codexindia.com/storage/users/profiles/JfSYlJk03rR07l9di0MMv7H9kkMQ0nFPzMb40tOL.jpg",
+    "refer_code": "WIN561226",
+    "referred_by": null, "updated_at": "2023-04-09T11:39:35.000000Z"
+  }],
+  "message": "user retrieve successfully",
+  "status": true,
+  "unread_alert": 0
 }

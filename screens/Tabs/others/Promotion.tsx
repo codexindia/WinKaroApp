@@ -4,8 +4,8 @@ import images from '../../../assets/images/images'
 import { colors } from '../../../styles/colors'
 import ButtonFull from '../../../components/ButtonFull'
 import { fonts } from '../../../styles/fonts'
+import { email } from '../../../appData'
 
-const email = 'helloWorld@gmail.com'
 
 const Promotion = () => {
   const [modalVisible, setModalVisible] = React.useState(false)

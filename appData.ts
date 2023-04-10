@@ -1,3 +1,6 @@
+export const email = 'winkaro7253@gmail.com'
+
+
 export const API = 'https://winkaro.codexindia.com/api/'
 
 export const API_URL = {
@@ -21,6 +24,7 @@ export const API_URL = {
     upload_task : API + 'tasks/submit/task',
     update_profile: API + 'profile/update_profile',
     banners : API + 'banners/get',
+    refer_history : API + 'refer/get_history'
 }
 
 
