@@ -10,7 +10,7 @@ import images from '../assets/images/images';
 import { getDefaultHeader } from './methods';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '../appData';
-const adUnitId = 'ca-app-pub-1994550698683536~1530151970';
+const adUnitId = 'ca-app-pub-1994550698683536/1530151970';
 
 
 const rewarded = RewardedAd.createForAdRequest(adUnitId);

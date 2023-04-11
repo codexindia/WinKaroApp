@@ -85,8 +85,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def reactNativeArchitectures() {
     def value = project.getProperties().get("reactNativeArchitectures")
-    // return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-    return value ? value.split(",") : ["arm64-v8a"]
+    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+    // return value ? value.split(",") : ["arm64-v8a"]
 }
 
 android {
@@ -120,9 +120,9 @@ android {
         }
         release {
             storeFile file('release-key.keystore')
-            storePassword '123456'
+            storePassword 'winKaro@123'
             keyAlias 'my-key-alias'
-            keyPassword '123456'
+            keyPassword 'winKaro@123'
         }
     }
     buildTypes {
@@ -145,8 +145,8 @@ android {
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
             // Example: versionCode 1 will generate 1001 for armeabi-v7a, 1002 for x86, etc.
-            // def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def versionCodes = ["arm64-v8a": 1]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+            // def versionCodes = ["arm64-v8a": 1]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
