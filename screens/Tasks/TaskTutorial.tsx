@@ -20,12 +20,12 @@ const video_url: any = {
 function steps(taskType: string) {
    switch (taskType) {
       case 'youtube': return <>
-         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
-         <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
-         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
-         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
-         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
-         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+         <Text style={styles.stepsStyle}>1. First Click On Start Recording</Text>
+         <Text style={styles.stepsStyle}>2. Now Press The Go Button</Text>
+         <Text style={styles.stepsStyle}>3. Then Play The Video ( Whose Thumbnail Was Given In The Task )</Text>
+         <Text style={styles.stepsStyle}>4. Now Do Like , Comment , Subscribe & Watch This Video Full . Without Any Skip ( On Normal 1x Speed )</Text>
+         <Text style={styles.stepsStyle}>5. After This Return To App And Then Click On Stop And Complete Button Wait Untill Video Uploading Successfully</Text>
+         <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet</Text>
       </>
       case 'instagram': return <>
          <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
@@ -36,13 +36,13 @@ function steps(taskType: string) {
          <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
       </>
       case 'yt_shorts': return <>
-         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
-         <Text style={styles.stepsStyle}>2. Copy search title & paste it on youtube.</Text>
-         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
-         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
-         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
-         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
-      </>
+      <Text style={styles.stepsStyle}>1. First Click On Start Recording</Text>
+      <Text style={styles.stepsStyle}>2. Now Press The Go Button</Text>
+      <Text style={styles.stepsStyle}>3. Then Play The Video ( Whose Thumbnail Was Given In The Task )</Text>
+      <Text style={styles.stepsStyle}>4. Now Do Like , Comment , Subscribe & Watch This Video Full . Without Any Skip ( On Normal 1x Speed )</Text>
+      <Text style={styles.stepsStyle}>5. After This Return To App And Then Click On Stop And Complete Button Wait Untill Video Uploading Successfully</Text>
+      <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet</Text>
+   </>
    }
 }
 
@@ -120,7 +120,7 @@ const TaskTutorial = ({ route, navigation }: any) => {
                      }}>
                         Don't show this tutorial again
                      </Text>
-                  </TouchableOpacity>  
+                  </TouchableOpacity>
                </View>
             </View>
 

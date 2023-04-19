@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-	Image, SafeAreaView, ScrollView, StatusBar, StyleSheet,
+	Dimensions, BackHandler, ToastAndroid,
+	Image, Linking, Modal, SafeAreaView, ScrollView, StatusBar, StyleSheet,
 	Text, TouchableOpacity, View
 } from 'react-native';
 import icons from '../../../assets/icons/icons';
@@ -14,8 +15,10 @@ import { API, API_URL } from '../../../appData';
 import { getDefaultHeader, storeUserData } from '../../methods';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import CustomModal from '../../../components/CustomModal';
+import images from '../../../assets/images/images';
+import ButtonFull from '../../../components/ButtonFull';
 
-
+const { width, height } = Dimensions.get('window')
 
 
 
@@ -25,6 +28,10 @@ const HomeScreen = ({ navigation }: any) => {
 	const [notificationCount, setNotificationCount] = useState(0)
 	const [profile_pic, setProfilePic] = useState<any>(null)
 	const focused = useIsFocused()
+	const [appAlert, setAppOpenAlert] = useState(true)
+	const [statusBarColor, setStatusBarColor] = useState('white')
+
+	let backCount = useMemo(() => 0, [])
 
 	async function updateUserData() {
 		const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
@@ -35,6 +42,22 @@ const HomeScreen = ({ navigation }: any) => {
 			storeUserData(res)
 		else { }
 	}
+
+	async function closeAppAlert() {
+		setAppOpenAlert(false)
+		// setStatusBarColor(colors.accent)
+		setStatusBarColor('white')
+	}
+	useEffect(() => {
+		async function setColors() {
+			setStatusBarColor('rgba(0,0,0,0.4)')
+			await changeNavigationBarColor('#999999', true);
+		}
+		setColors()
+	}, [])
+
+
+
 
 	useEffect(() => { setTimeout(async () => { await changeNavigationBarColor('#ffffff', true); }, 0); }, [])
 
@@ -53,6 +76,32 @@ const HomeScreen = ({ navigation }: any) => {
 			}, 0);
 	}, [focused])
 
+	useEffect(() => {
+		setAppOpenAlert(true)
+	}, [])
+
+	// Disable hardware back button
+	useEffect(() => {
+		let bHandler: any;
+		const backAction = () => {
+			backCount++
+			if (backCount > 1) {
+				BackHandler.exitApp()
+			} else {
+				ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+			}
+			setTimeout(() => { backCount = 0 }, 2000)
+			return true;
+		};
+		if (focused) {
+			bHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+
+		} else {
+			bHandler && bHandler.remove()
+		}
+		return () => bHandler && bHandler.remove();
+	}, [focused]);
+
 
 	// update user data each 30 seconds
 	useEffect(() => {
@@ -65,7 +114,24 @@ const HomeScreen = ({ navigation }: any) => {
 
 	return (
 		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex: 1 }}>
-			<StatusBar barStyle="dark-content" backgroundColor="white" />
+			<Modal visible={appAlert} animationType='fade' transparent={true} className='justify-center items-center'>
+				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
+					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
+						<TouchableOpacity onPress={() => Linking.openURL("https://google.com/")} activeOpacity={0.8}>
+							<Image source={images.banner} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
+						</TouchableOpacity>
+						<View style={{
+							paddingHorizontal: 13, paddingVertical: 20
+						}}>
+							<Text style={{ fontFamily: fonts.medium, fontSize: 16, color: colors.text }}>Sample Text, It will be displayed when the app will be opened.</Text>
+							<View className='pt-4'>
+								<ButtonFull title='Close' className='mt-2' onPress={closeAppAlert} />
+							</View>
+						</View>
+					</View>
+				</View>
+			</Modal>
+			<StatusBar barStyle="dark-content" backgroundColor={statusBarColor} />
 			<View style={styles.top}>
 				<TouchableOpacity activeOpacity={0.8}
 					onPress={() => navigation.navigate('Profile')}
@@ -108,7 +174,7 @@ const HomeScreen = ({ navigation }: any) => {
 				<Slider />
 				<Tasks navigation={navigation} />
 			</ScrollView>
-		</SafeAreaView>
+		</SafeAreaView >
 	)
 }
 
@@ -155,6 +221,10 @@ function Tasks({ navigation }: any) {
 			name: 'App install Tasks',
 			icons: icons.download,
 			callback: () => setModals([{ title: "Coming Soon", description: "We are working on this feature. It will be available soon. Stay tuned!", }]),
+			// callback: () => {
+			// navigation.navigate('InstallAndEarn')
+			// console.log("Hello Abinash")
+			// },
 			background: '#fff'
 		},
 		{

@@ -20,8 +20,18 @@ import Spin from './screens/Tasks/Spin';
 import ReferEarn from './screens/Tabs/Refer/ReferEarn';
 import RewardAdScreen from './screens/RewardAdScreen';
 import DailyLimit from './screens/checkDailyLimit/DailyLimit';
-import { Text, View } from 'react-native';
+import { AppState, AppStateStatus, Text, View } from 'react-native';
 import EditProfile from './screens/Tabs/Profile/EditProfile';
+import InstallAndEarn from './screens/InstallAndEarn';
+import { useEffect } from 'react';
+import OneSignal from 'react-native-onesignal';
+
+
+import {
+  ImpressionData,
+  ImpressionDataEvents,
+  InitializationEvents as InitEvent, IronSource,
+} from 'ironsource-mediation'
 
 const Stack = createNativeStackNavigator();
 
@@ -30,9 +40,84 @@ function Sample() {
     <Text className='font-bold text-[#ff0000]'>Sample</Text>
   </View>
 }
+function setImpressionDataListener() {
+  ImpressionDataEvents.onImpressionSuccess.setListener(
+    (data?: ImpressionData) => console.log(`ImpressionData: ${JSON.stringify(data)}`)
+  )
+}
 
 
 const App = () => {
+
+  async function initIronSource() {
+    try {
+      await IronSource.validateIntegration().catch((e) => console.log(e))
+      setImpressionDataListener()
+
+      await IronSource.setAdaptersDebug(true)
+      await IronSource.shouldTrackNetworkState(true)
+      await IronSource.setConsent(true)
+
+      // await IronSource.setMetaData('is_child_directed', ['false'])
+
+      // await IronSource.setSegment(createSegment())
+      const advertiserId = await IronSource.getAdvertiserId()
+
+      console.log(`AdvertiserID: ${advertiserId}`)
+      // await IronSource.setUserId('APP_USER_ID')
+
+      await IronSource.init('1999f103d', ['OFFERWALL'])
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // useEffect(() => {
+  //   // InitializationListener
+  //   InitEvent.onInitializationComplete.setListener(() =>
+  //     console.log('onInitializationComplete')
+  //   )
+
+  //   // init the SDK after all child components mounted
+  //   //   and the app becomes active
+  //   const subscription = AppState.addEventListener(
+  //     'change',
+  //     (state: AppStateStatus) => {
+  //       if (state === 'active') {
+  //         initIronSource()
+  //         subscription.remove()
+  //       }
+  //     }
+  //   )
+
+  //   return () => {
+  //     InitEvent.removeAllListeners()
+  //     subscription.remove()
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    OneSignal.setAppId('ed8f21a0-966c-4c5a-9b63-486a86bb699c');
+
+
+    //Method for handling notifications received while app in foreground
+    OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+      console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+      let notification = notificationReceivedEvent.getNotification();
+      console.log("notification: ", notification);
+      const data = notification.additionalData
+      console.log("additionalData: ", data);
+      // Complete with null means don't show a notification.
+      notificationReceivedEvent.complete(notification);
+    });
+
+    //Method for handling notifications opened
+    OneSignal.setNotificationOpenedHandler(notification => {
+      console.log("OneSignal: notification opened:", notification);
+    });
+  }, [])
+
+
   return (
     <NavigationContainer >
       <Stack.Navigator>
@@ -57,6 +142,7 @@ const App = () => {
         <Stack.Screen name="RewardAd" component={RewardAdScreen} options={{ title: 'RewardAd', headerShown: false }} />
         <Stack.Screen name="DailyLimit" component={DailyLimit} options={{ title: 'DailyLimit', headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: 'Edit Profile' }} />
+        <Stack.Screen name="InstallAndEarn" component={InstallAndEarn} options={{ title: 'Install and Earn', headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -44,11 +44,13 @@ export default function Spin({ navigation }: any) {
   }))
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       navigation.goBack()
       changeNavigationBarColor('#ffffff', true);
       return true
     })
+
+    return () => backHandler.remove()
   }, [])
 
 
