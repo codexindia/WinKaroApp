@@ -28,8 +28,14 @@ const HomeScreen = ({ navigation }: any) => {
 	const [notificationCount, setNotificationCount] = useState(0)
 	const [profile_pic, setProfilePic] = useState<any>(null)
 	const focused = useIsFocused()
-	const [appAlert, setAppOpenAlert] = useState(true)
+	const [appAlert, setAppOpenAlert] = useState(false)
 	const [statusBarColor, setStatusBarColor] = useState('white')
+	const [popupActionUrl, setPopupActionUrl] = useState('')
+	const [popupDescription, setPopupDescription] = useState('')
+	const [popupImageUrl, setPopupImageUrl] = useState('')
+
+
+
 
 	let backCount = useMemo(() => 0, [])
 
@@ -50,10 +56,32 @@ const HomeScreen = ({ navigation }: any) => {
 	}
 	useEffect(() => {
 		async function setColors() {
-			setStatusBarColor('rgba(0,0,0,0.4)')
-			await changeNavigationBarColor('#999999', true);
+			// setStatusBarColor('rgba(0,0,0,0.4)')
+			// await changeNavigationBarColor('#999999', true);
 		}
-		setColors()
+
+
+		async function loadPopup() {
+			// Load alert on app open
+			const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
+			const data = await fetch(API_URL.popup, { method: 'POST', headers })
+			const res = await data.json()
+
+			console.log(res)
+
+			if (res.data == null || data.status == 0)
+				return
+
+			if (res.status == 'true' || res.status == true && res.data.status == '1') {
+				setPopupActionUrl(res.data.action_url)
+				setPopupDescription(res.data.description)
+				setPopupImageUrl(res.data.image_url)
+				setAppOpenAlert(true)
+				setColors()
+			}
+		}
+		loadPopup()
+		// setAppOpenAlert(true)
 	}, [])
 
 
@@ -76,29 +104,19 @@ const HomeScreen = ({ navigation }: any) => {
 			}, 0);
 	}, [focused])
 
-	useEffect(() => {
-		setAppOpenAlert(true)
-	}, [])
 
 	// Disable hardware back button
 	useEffect(() => {
 		let bHandler: any;
 		const backAction = () => {
 			backCount++
-			if (backCount > 1) {
-				BackHandler.exitApp()
-			} else {
-				ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
-			}
+			if (backCount > 1) BackHandler.exitApp()
+			else ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
 			setTimeout(() => { backCount = 0 }, 2000)
 			return true;
 		};
-		if (focused) {
-			bHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-
-		} else {
-			bHandler && bHandler.remove()
-		}
+		if (focused) bHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+		else bHandler && bHandler.remove()
 		return () => bHandler && bHandler.remove();
 	}, [focused]);
 
@@ -117,14 +135,16 @@ const HomeScreen = ({ navigation }: any) => {
 			<Modal visible={appAlert} animationType='fade' transparent={true} className='justify-center items-center'>
 				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
 					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
-						<TouchableOpacity onPress={() => Linking.openURL("https://google.com/")} activeOpacity={0.8}>
-							<Image source={images.banner} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
+						<TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
+							<Image source={{ uri: popupImageUrl }} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
 						</TouchableOpacity>
 						<View style={{
 							paddingHorizontal: 13, paddingVertical: 20
 						}}>
-							<Text style={{ fontFamily: fonts.medium, fontSize: 16, color: colors.text }}>Sample Text, It will be displayed when the app will be opened.</Text>
-							<View className='pt-4'>
+							<Text style={{ fontFamily: fonts.medium, fontSize: 16, color: colors.text }}>{popupDescription}</Text>
+							<View className='pt-4' style={{
+								width: width * 0.9 - 30,
+							}}>
 								<ButtonFull title='Close' className='mt-2' onPress={closeAppAlert} />
 							</View>
 						</View>
