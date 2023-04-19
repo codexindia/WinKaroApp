@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: any) => {
 			const data = await fetch(API_URL.popup, { method: 'POST', headers })
 			const res = await data.json()
 
-			console.log(res)
+			// console.log(res)
 
 			if (res.data == null || data.status == 0)
 				return
@@ -76,6 +76,7 @@ const HomeScreen = ({ navigation }: any) => {
 				setPopupActionUrl(res.data.action_url)
 				setPopupDescription(res.data.description)
 				setPopupImageSrc(res.data.image_src)
+				console.log(res.data.image_src)
 				setAppOpenAlert(true)
 				setColors()
 			}
@@ -136,7 +137,11 @@ const HomeScreen = ({ navigation }: any) => {
 				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
 					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
 						{popupImageSrc && <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
-							<Image source={{ uri: popupImageSrc }} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
+							<Image source={{
+								uri: popupImageSrc
+							}} style={{
+								width: (width * 0.9) * 16 / 9, height: (width * 0.9) * 9 / 16, resizeMode: 'contain'
+							}} />
 						</TouchableOpacity>}
 						<View style={{
 							paddingHorizontal: 13, paddingVertical: 20
