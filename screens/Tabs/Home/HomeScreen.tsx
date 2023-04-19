@@ -135,9 +135,9 @@ const HomeScreen = ({ navigation }: any) => {
 			<Modal visible={appAlert} animationType='fade' transparent={true} className='justify-center items-center'>
 				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
 					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
-						<TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
+						{popupImageUrl && <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
 							<Image source={{ uri: popupImageUrl }} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
-						</TouchableOpacity>
+						</TouchableOpacity>}
 						<View style={{
 							paddingHorizontal: 13, paddingVertical: 20
 						}}>
