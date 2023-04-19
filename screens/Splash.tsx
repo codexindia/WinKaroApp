@@ -28,7 +28,7 @@ const Splash = ({ navigation }: any) => {
         const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
         const res = await fetched.json()
 
-        console.log(res)
+        // console.log(res)
 
         if (res.status === true || res.status === 'true') {
           await storeUserData(res)
@@ -60,7 +60,7 @@ const Splash = ({ navigation }: any) => {
     async function checkRefresh() {
       const isRefresh = await AsyncStorage.getItem('refresh')
       if (isRefresh === 'true') {
-        console.log('Refreshing')
+        // console.log('Refreshing')
         await AsyncStorage.removeItem('refresh')
         await AsyncStorage.removeItem('refresh')
         // Set navigation bar color to white

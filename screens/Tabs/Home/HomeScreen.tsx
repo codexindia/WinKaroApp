@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation }: any) => {
 	const [statusBarColor, setStatusBarColor] = useState('white')
 	const [popupActionUrl, setPopupActionUrl] = useState('')
 	const [popupDescription, setPopupDescription] = useState('')
-	const [popupImageUrl, setPopupImageUrl] = useState('')
+	const [popupImageSrc, setPopupImageSrc] = useState('')
 
 
 
@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }: any) => {
 		const headers = await getDefaultHeader(await AsyncStorage.getItem('token') as string)
 		const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
 		const res = await fetched.json()
-		console.log(res)
+		// console.log(res)
 		if (res.status === true || res.status === 'true')
 			storeUserData(res)
 		else { }
@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation }: any) => {
 			if (res.status == 'true' || res.status == true && res.data.status == '1') {
 				setPopupActionUrl(res.data.action_url)
 				setPopupDescription(res.data.description)
-				setPopupImageUrl(res.data.image_url)
+				setPopupImageSrc(res.data.image_src)
 				setAppOpenAlert(true)
 				setColors()
 			}
@@ -93,14 +93,14 @@ const HomeScreen = ({ navigation }: any) => {
 		if (focused)
 			setTimeout(async () => {
 				await updateUserData()
-				console.log('Focused')
+				// console.log('Focused')
 				const userData = await AsyncStorage.getItem('userData')
 				let data: UserData = JSON.parse(userData as string)
 				setName(data.name.split(' ')[0])
 				setBalance(data.balance)
 				setNotificationCount(data.unread_alert)
 				setProfilePic(data.profile_pic)
-				console.log(notificationCount)
+				// console.log(notificationCount)
 			}, 0);
 	}, [focused])
 
@@ -135,8 +135,8 @@ const HomeScreen = ({ navigation }: any) => {
 			<Modal visible={appAlert} animationType='fade' transparent={true} className='justify-center items-center'>
 				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
 					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
-						{popupImageUrl && <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
-							<Image source={{ uri: popupImageUrl }} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
+						{popupImageSrc && <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
+							<Image source={{ uri: popupImageSrc }} style={{ height: (width * (9 / 10) - 0) * 9 / 16, resizeMode: 'contain', }} />
 						</TouchableOpacity>}
 						<View style={{
 							paddingHorizontal: 13, paddingVertical: 20
