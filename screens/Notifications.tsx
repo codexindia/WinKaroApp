@@ -1,4 +1,4 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect } from 'react'
 import Loading from '../components/Loading'
 import { getDefaultHeader } from './methods'
@@ -81,7 +81,7 @@ const Notifications = () => {
   return (
     <View className='bg-[#ffffff] flex-1'>
       <CustomModal modals={modals} updater={setModals} />
-      <View style={{
+      <ScrollView style={{
         borderBottomColor: '#e0e0e0', borderBottomWidth: 1
       }}>
         {
@@ -105,7 +105,7 @@ const Notifications = () => {
             )
           })
         }
-      </View>
+      </ScrollView>
     </View>
   )
 }
