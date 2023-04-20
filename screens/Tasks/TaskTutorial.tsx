@@ -73,6 +73,8 @@ const TaskTutorial = ({ route, navigation }: any) => {
    const { width, height } = Dimensions.get('window')
    const [dontShowAgainChecked, setDontShowAgainChecked] = React.useState(false)
 
+   const [isLoading, setIsLoading] = React.useState(true)
+
    useEffect(() => {
       AsyncStorage.getItem('dontShowTaskTutorial').then((value) => {
          setDontShowAgainChecked(value === 'true')
@@ -92,18 +94,29 @@ const TaskTutorial = ({ route, navigation }: any) => {
             <Text style={{
                fontSize: 20, fontFamily: fonts.semiBold, color: colors.text, textAlign: 'center', marginTop: 20
             }}>Get Money Steps Tutorial</Text>
-            <Video
-               controls={true}
-               // paused={true}
-               source={{ uri: video_url[taskType] }}
-               style={{
-                  // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
-                  width: width, height: (width) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
-                  marginTop: 20,
-                  //  borderRadius: 20,
-                  backgroundColor: 'black'
-               }}
-            />
+            <View style={{
+               position: 'relative'
+            }}>
+               <Video
+                  resizeMode='cover'
+                  onLoad={() => { setIsLoading(false) }}
+                  controls={true}
+                  // paused={true}
+                  source={{ uri: video_url[taskType] }}
+                  style={{
+                     // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
+                     width: width, height: (width) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
+                     marginTop: 20,
+                     //  borderRadius: 20,
+                     backgroundColor: 'black',
+                  }}
+               />
+               <Text style={{
+                  position: 'absolute', top: '70%', left: '46%',
+                  transform: [{ translateX: -50 }, { translateY: -50 }], color: 'white',
+                  display: isLoading ? 'flex' : 'none'
+               }}>Loading Tutorial Video...</Text>
+            </View>
          </View>
          <TaskRules taskType={taskType} />
          <View style={{
