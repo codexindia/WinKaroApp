@@ -94,7 +94,7 @@ const TaskTutorial = ({ route, navigation }: any) => {
             }}>Get Money Steps Tutorial</Text>
             <Video
                controls={true}
-               paused={true}
+               // paused={true}
                source={{ uri: video_url[taskType] }}
                style={{
                   // width: width - 40, height: (width - 40) * 9 / 16, marginLeft: 'auto', marginRight: 'auto',
