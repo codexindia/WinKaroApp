@@ -99,7 +99,6 @@ const App = () => {
   useEffect(() => {
     OneSignal.setAppId('ed8f21a0-966c-4c5a-9b63-486a86bb699c');
 
-
     //Method for handling notifications received while app in foreground
     OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
       console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
@@ -115,6 +114,9 @@ const App = () => {
     OneSignal.setNotificationOpenedHandler(notification => {
       console.log("OneSignal: notification opened:", notification);
     });
+
+    // Prompt notification
+    OneSignal.promptForPushNotificationsWithUserResponse();
   }, [])
 
 
