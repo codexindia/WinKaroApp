@@ -12,9 +12,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const video_url: any = {
-   'youtube': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-   'instagram': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-   'yt_shorts': "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+   'youtube': "https://winkaro.yourexpand.in/storage/tutorials/youtube.mp4",
+   'instagram': "https://winkaro.yourexpand.in/storage/tutorials/instagram.mp4",
+   'yt_shorts': "https://winkaro.yourexpand.in/storage/tutorials/yt_shorts.mp4",
 }
 
 function steps(taskType: string) {
@@ -28,21 +28,21 @@ function steps(taskType: string) {
          <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet</Text>
       </>
       case 'instagram': return <>
-         <Text style={styles.stepsStyle}>1. Start mobile screen recording.</Text>
-         <Text style={styles.stepsStyle}>2. Copy search title & paste it on instagram.</Text>
-         <Text style={styles.stepsStyle}>3. Search for the video of the same thumbnail, now play video.</Text>
-         <Text style={styles.stepsStyle}>4. Do Like, comment and take both screenshots.</Text>
-         <Text style={styles.stepsStyle}>5. After complete watching video stop the screen recording and send it us to verify.</Text>
-         <Text style={styles.stepsStyle}>6. Click on Submit button & send these the recorded video.</Text>
+         <Text style={styles.stepsStyle}>1. First Click On Start Recording</Text>
+         <Text style={styles.stepsStyle}>2. Now Press The Go Button</Text>
+         <Text style={styles.stepsStyle}>3. Then Play The Reel ( Whose Screenshot Was Given In The Task )</Text>
+         <Text style={styles.stepsStyle}>4. Now Do Like , Comment , Save , Click On Share Button And Watch Complete Reel Once</Text>
+         <Text style={styles.stepsStyle}>5. After This Return To App And Then Click On Stop And Complete Button Wait Untill Video Uploading Successfully</Text>
+         <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet .</Text>
       </>
       case 'yt_shorts': return <>
-      <Text style={styles.stepsStyle}>1. First Click On Start Recording</Text>
-      <Text style={styles.stepsStyle}>2. Now Press The Go Button</Text>
-      <Text style={styles.stepsStyle}>3. Then Play The Video ( Whose Thumbnail Was Given In The Task )</Text>
-      <Text style={styles.stepsStyle}>4. Now Do Like , Comment , Subscribe & Watch This Video Full . Without Any Skip ( On Normal 1x Speed )</Text>
-      <Text style={styles.stepsStyle}>5. After This Return To App And Then Click On Stop And Complete Button Wait Untill Video Uploading Successfully</Text>
-      <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet</Text>
-   </>
+         <Text style={styles.stepsStyle}>1. First Click On Start Recording</Text>
+         <Text style={styles.stepsStyle}>2. Now Press The Go Button</Text>
+         <Text style={styles.stepsStyle}>3. Then Play The Short Video ( Whose Screenshot Was Given In The Task )</Text>
+         <Text style={styles.stepsStyle}>4. Now Do Like , Comment , Share ( Copy Link ) And Watch Complete Short Video Once</Text>
+         <Text style={styles.stepsStyle}>5. After This Return To App And Then Click On Stop And Complete Button Wait Untill Video Uploading Successfully</Text>
+         <Text style={styles.stepsStyle}>6. Now Your Task Is In Review , After Checking Your Money Will Be Added Into Your Wallet .</Text>
+      </>
    }
 }
 
