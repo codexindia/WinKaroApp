@@ -156,7 +156,7 @@ export function Uploading({ progress, cancel, isError }: { progress: number, can
    return <View>
 
       {
-         isError ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: 'red' }}>Network is busy, waiting for network for connection.</Text> :
+         isError ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: 'red' }}>Network is busy, waiting for network connection.</Text> :
             <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
       }
       <View style={{ width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10, }}>
