@@ -152,16 +152,15 @@ export function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
 }
 
 
-export function Uploading({ progress, cancel }: { progress: number, cancel: Function }) {
+export function Uploading({ progress, cancel, isError }: { progress: number, cancel: Function, isError: boolean }) {
    return <View>
-      <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
-      <View style={{
-         width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10,
-      }}>
-         <View style={{
-            width: progress + '%', height: 5, backgroundColor: colors.accent, borderRadius: 5,
-         }}>
-         </View>
+
+      {
+         isError ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: 'red' }}>Network is busy, waiting for network for connection.</Text> :
+            <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
+      }
+      <View style={{ width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10, }}>
+         <View style={{ width: progress + '%', height: 5, backgroundColor: colors.accent, borderRadius: 5, }}></View>
       </View>
 
       <ButtonFull styles={{

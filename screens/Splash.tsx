@@ -43,6 +43,10 @@ const Splash = ({ navigation }: any) => {
       }
       catch (err) {
         setModals([{ title: 'Network Error', message: 'Please check your internet connection and try again' }])
+        // Retry after 5 seconds
+        setTimeout(() => {
+          mainProcess()
+        }, 5000)
       }
     }
     else if (isOnboarding === 'true') {

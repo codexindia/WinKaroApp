@@ -22,7 +22,6 @@ import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
-import { Video as CVideo } from 'react-native-compressor'
 
 
 import {
@@ -58,6 +57,7 @@ export default function YouTubeTask({ route, navigation }: any) {
   const [currentRecordingTaskId, setCurrentRecordingTaskId] = useState(-1)
   const [tasks, setTasks] = useState<any>(null)
   const [uploadResponse, setUploadResponse] = useState<any>(null)
+  const [isErrorUploading, setIsErrorUploading] = useState(false)
   const xhr = new XMLHttpRequest();
   const taskType = route.params.taskType
   // const RecordScreen = require('react-native-record-screen').default
@@ -182,12 +182,9 @@ export default function YouTubeTask({ route, navigation }: any) {
       // )
 
       // console.log('Compressed', compressedVideo)
-      setIsUploading(true)
       setUploadingIndex(recordingIndex)
       setRecordingIndex(-1)
       uploadVideo()
-
-
 
 
       // RecordScreen.clean().then(data => {
@@ -195,6 +192,9 @@ export default function YouTubeTask({ route, navigation }: any) {
       // })
 
       async function uploadVideo() {
+        console.log('Uploading Video...')
+        setIsUploading(true)
+        setIsErrorUploading(false)
         const auth = await AsyncStorage.getItem('token')
         const formData = new FormData();
         formData.append('task_id', currentRecordingTaskId)
@@ -236,8 +236,19 @@ export default function YouTubeTask({ route, navigation }: any) {
         xhr.setRequestHeader('Content-Type', 'multipart/form-data')
         xhr.setRequestHeader('Accept', 'application/json')
         xhr.setRequestHeader('Authorization', `Bearer ${auth}`)
+        xhr.addEventListener('error', () => {
+          console.log('Error')
+          // Reset network request
+          xhr.abort()
+          setIsErrorUploading(true)
+          // Retry after 5 seconds
+          setTimeout(() => {
+            uploadVideo()
+          }, 5000)
+        })
         xhr.send(formData);
       }
+
     }).catch(err => {
       console.log(err);
     })
@@ -380,7 +391,7 @@ export default function YouTubeTask({ route, navigation }: any) {
                   isExpired ? null :
                     isUploading ?
                       uploadingIndex === index ?
-                        <Uploading progress={progress} cancel={() => cancelUpload()} />
+                        <Uploading progress={progress} cancel={() => cancelUpload()} isError={isErrorUploading} />
                         : <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
                           <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
                           <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Uploading another task</Text>
