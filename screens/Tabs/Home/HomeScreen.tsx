@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: any) => {
 			const data = await fetch(API_URL.popup, { method: 'POST', headers })
 			const res = await data.json()
 
-			// console.log(res)
+			console.log(res)
 
 			if (res.data == null || data.status == 0)
 				return
@@ -134,23 +134,42 @@ const HomeScreen = ({ navigation }: any) => {
 	return (
 		<SafeAreaView style={{ paddingBottom: 50, backgroundColor: 'white', flex: 1 }}>
 			<Modal visible={appAlert} animationType='fade' transparent={true} className='justify-center items-center'>
-				<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
-					<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
-						{popupImageSrc && <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
-							<Image source={{
-								uri: popupImageSrc
-							}} style={{
-								width: (width * 0.9) * 16 / 9, height: (width * 0.9) * 9 / 16, resizeMode: 'contain'
-							}} />
-						</TouchableOpacity>}
-						<View style={{
-							paddingHorizontal: 13, paddingVertical: 20
-						}}>
-							<Text style={{ fontFamily: fonts.medium, fontSize: 16, color: colors.text }}>{popupDescription}</Text>
-							<View className='pt-4' style={{
-								width: width * 0.9 - 30,
+				<View className='flex-1'>
+					<View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' }}>
+						<View style={{ width: '90%', backgroundColor: 'white', borderRadius: 20, justifyContent: 'center', alignItems: 'center', }}>
+							<TouchableOpacity style={{
+								position: 'absolute', top: -15, right: -15, zIndex: 1, borderRadius: 50,
+								backgroundColor: 'rgba(0,0,0,0.3)', padding: 5
+							}} onPress={closeAppAlert}>
+								<Image source={icons.cancel} style={{ width: 30, height: 30, resizeMode: 'contain' }} />
+							</TouchableOpacity>
+							{popupImageSrc &&
+								// <TouchableOpacity onPress={() => Linking.openURL(popupActionUrl)} activeOpacity={0.8}>
+								<View style={{
+									borderRadius: 20, overflow: 'hidden', width: width * 0.9, height: (width * 0.9) * 9 / 16, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'
+								}}>
+									<Image source={{
+										uri: popupImageSrc
+									}} style={{
+										width: (width * 0.9) * 16 / 9, height: (width * 0.9) * 9 / 16, resizeMode: 'contain',
+									}} />
+								</View>
+								// </TouchableOpacity>
+							}
+							<View style={{
+								paddingHorizontal: 13, paddingVertical: 20
 							}}>
-								<ButtonFull title='Close' className='mt-2' onPress={closeAppAlert} />
+								<Text style={{ fontFamily: fonts.medium, fontSize: 16, color: colors.text }}>{popupDescription}</Text>
+								<View className='pt-4' style={{
+									width: width * 0.9 - 30,
+								}}>
+									{
+										popupActionUrl === '#' ? null :
+											<ButtonFull title='Open' className='mt-2' onPress={() => {
+												Linking.openURL(popupActionUrl)
+											}} />
+									}
+								</View>
 							</View>
 						</View>
 					</View>

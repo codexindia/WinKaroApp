@@ -247,6 +247,14 @@ export default function YouTubeTask({ route, navigation }: any) {
           xhr.abort()
           setIsErrorUploading(true)
 
+          // timer && clearTimeout(timer)
+
+          // // Retry after 5 seconds
+          // timer = setTimeout(() => {
+          //   uploadVideo()
+          // }, 5000);
+
+
           // Ask the user to retry
           setModals([{
             title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,

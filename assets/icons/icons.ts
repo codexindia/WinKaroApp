@@ -48,5 +48,7 @@ const icons = {
     pin : require('./src/pin.png'),
     bell : require('./src/bell.png'),
     pencil : require('./src/pencil.png'),
+    support : require('./src/wp.png'),
+    cancel : require('./src/cancel.png'),
 }
 export default icons

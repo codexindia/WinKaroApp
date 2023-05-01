@@ -34,6 +34,11 @@ const Profile = ({ navigation }: any) => {
       onPress: () => { navigation.navigate('ReferEarn') }
     },
     {
+      title: "Instant Support (24 x 7)",
+      icon: icons.support,
+      onPress: () => { Linking.openURL('whatsapp://send?text=hello&phone=+918800136232') }
+    },
+    {
       title: 'Privacy policy',
       icon: icons.policy,
       onPress: () => { Linking.openURL(privacy_policy_link) }
