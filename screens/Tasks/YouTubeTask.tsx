@@ -103,7 +103,7 @@ export default function YouTubeTask({ route, navigation }: any) {
     const data = await res.json()
     // data.data.shift()
     setTasks(data.data)
-    console.log(data.data)
+    // console.log(data.data)
   }
   useEffect(() => {
     getTasks(taskType)
@@ -167,6 +167,9 @@ export default function YouTubeTask({ route, navigation }: any) {
       setRecordingIndex(-1)
     }
   }
+
+
+  let timer: any = null
 
   function stopRecording() {
     RecordScreen.stopRecording().then(async res => {
@@ -236,21 +239,39 @@ export default function YouTubeTask({ route, navigation }: any) {
         xhr.setRequestHeader('Content-Type', 'multipart/form-data')
         xhr.setRequestHeader('Accept', 'application/json')
         xhr.setRequestHeader('Authorization', `Bearer ${auth}`)
-        xhr.addEventListener('error', () => {
+        xhr.addEventListener('error', (e) => {
           console.log('Error')
+          console.log(e)
+
           // Reset network request
           xhr.abort()
           setIsErrorUploading(true)
-          // Retry after 5 seconds
-          setTimeout(() => {
-            uploadVideo()
-          }, 5000)
+
+          // Ask the user to retry
+          setModals([{
+            title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+            buttons: [{
+              text: "Retry", positive: true, onPress: () => {
+                uploadVideo()
+              }
+            },
+            {
+              text: "Cancel", positive: false, onPress: () => {
+                // Delete all the files
+                RecordScreen.clean()
+                restartApp()
+              }
+            }]
+          }])
         })
         xhr.send(formData);
       }
 
     }).catch(err => {
       console.log(err);
+      setModals([{
+        title: "Error", description: err, active: true,
+      }])
     })
   }
   function cancelRecording() {
@@ -356,9 +377,24 @@ export default function YouTubeTask({ route, navigation }: any) {
           }
           <View style={{ flexDirection: 'row', width: width - 50, alignItems: 'center', justifyContent: 'space-between', marginTop: 15, gap: 10 }}>
             <View style={{ padding: 10, paddingTop: 0, paddingBottom: 0, width: width - 100 }}>
-              <Text style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
-                {title}
-              </Text>
+              <TouchableOpacity onPress={() => {
+                setModals([...modals, {
+                  title: "Task Title", description: title, type: "info", active: true,
+                  buttons: [{
+                    text: "Ok",
+                  },
+                  {
+                    text: "Copy", positive: true, onPress: () => {
+                      copyToClipboard(title), setIsCopied(true)
+                      setTimeout(() => { setIsCopied(false) }, 5000)
+                    }
+                  }]
+                }])
+              }}>
+                <Text numberOfLines={3} style={{ fontSize: 16, fontFamily: fonts.medium, color: colors.text, }}>
+                  {title}
+                </Text>
+              </TouchableOpacity>
               <Text style={{ color: colors.text, fontFamily: fonts.regular, marginTop: 10 }}>Publisher : <Text style={{ fontFamily: fonts.medium, color: colors.accent }}>
                 {publisher}
               </Text></Text>
