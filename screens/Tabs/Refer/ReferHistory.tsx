@@ -1,6 +1,6 @@
 import {
   StyleSheet, Text,
-  View, Image, Dimensions
+  View, Image, Dimensions, ScrollView
 } from 'react-native'
 import React, { useEffect } from 'react'
 import icons from '../../../assets/icons/icons'
@@ -75,7 +75,7 @@ function ReferAccount({ data }: any) {
 
   console.log(data.get_name)
 
-  return <View className='flex-row p-5 mt-4 justify-between items-center' style={{
+  return <ScrollView className='flex-row p-5 mt-4 justify-between items-center' style={{
     backgroundColor: '#fafafa', borderRadius: 20, borderColor: '#e5e5e5', borderWidth: 0.5
   }}>
 
@@ -102,7 +102,7 @@ function ReferAccount({ data }: any) {
     <View>
       <Text style={{ fontFamily: fonts.medium, color: colors.textLight, fontSize: 12, textAlign: 'right' }}>{(new Date(time)).toLocaleDateString() + '\n'} {new Date(time).toLocaleTimeString()}</Text>
     </View>
-  </View>
+  </ScrollView>
 }
 
 
