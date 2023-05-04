@@ -2,6 +2,8 @@ export const email = 'winkaro7253@gmail.com'
 
 export const API = 'https://winkaro.yourexpand.in/api/'
 
+export const APP_VERSION_NAME = "3.0"
+
 export const API_URL = {
     register: API + 'register',
     login: API + 'login',
@@ -25,6 +27,7 @@ export const API_URL = {
     banners: API + 'banners/get',
     refer_history: API + 'refer/get_history',
     popup: API + 'notifications/get_popup',
+    get_update: API + 'app/get_update',
 }
 
 

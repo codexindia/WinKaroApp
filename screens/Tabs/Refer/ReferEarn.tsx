@@ -22,11 +22,16 @@ const ReferEarn = ({ navigation }: any) => {
   const { width } = useWindowDimensions()
   const [isCopied, setIsCopied] = React.useState(false)
   const [referCode, setReferCode] = React.useState('')
+  const [refer_pending_count, setReferPendingCount] = React.useState('')
+  const [refer_success_count, setReferSuccessCount] = React.useState('')
 
   React.useEffect(() => {
     setTimeout(async () => {
       const data: UserData = JSON.parse(await AsyncStorage.getItem('userData') as string)
       setReferCode(data.refer_code)
+      setReferPendingCount(data.refer_pending_count)
+      setReferSuccessCount(data.refer_success_count)
+      console.log(data)
     }, 0);
   }, [])
 

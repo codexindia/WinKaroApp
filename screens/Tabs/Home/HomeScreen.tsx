@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: any) => {
 			const data = await fetch(API_URL.popup, { method: 'POST', headers })
 			const res = await data.json()
 
-			console.log(res)
+			// console.log(res)
 
 			if (res.data == null || data.status == 0)
 				return

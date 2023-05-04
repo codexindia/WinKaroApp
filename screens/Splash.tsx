@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Animated, Dimensions, Easing, StatusBar, Text, View } from 'react-native';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import { API_URL } from '../appData';
+import { API_URL, APP_VERSION_NAME } from '../appData';
 import CustomModal from '../components/CustomModal';
 import { colors } from '../styles/colors';
 import { fonts } from '../styles/fonts';
@@ -30,7 +30,22 @@ const Splash = ({ navigation }: any) => {
 
         // console.log(res)
 
-        if (res.status === true || res.status === 'true') {
+
+        const updateFetch = await fetch(API_URL.get_update, { method: 'POST', headers })
+        const updateRes = await updateFetch.json()
+
+
+        console.log(updateRes)
+
+        // Check if there is any update available
+        if (APP_VERSION_NAME != updateRes.version_code) {
+          // Redirect to update screen
+          console.log('Update available')
+          navigation.replace('Update', {
+            app_link: updateRes.app_link
+          })
+          await changeNavigationBarColor('white', true);
+        } else if (res.status === true || res.status === 'true') {
           await storeUserData(res)
           navigation.replace('Home')
           // Set navigation bar color to white

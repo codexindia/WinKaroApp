@@ -32,6 +32,7 @@ import {
   ImpressionDataEvents,
   InitializationEvents as InitEvent, IronSource,
 } from 'ironsource-mediation'
+import Update from './screens/Update';
 
 const Stack = createNativeStackNavigator();
 
@@ -145,7 +146,7 @@ const App = () => {
         <Stack.Screen name="DailyLimit" component={DailyLimit} options={{ title: 'DailyLimit', headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: 'Edit Profile' }} />
         <Stack.Screen name="InstallAndEarn" component={InstallAndEarn} options={{ title: 'Install and Earn', headerShown: false }} />
-
+        <Stack.Screen name="Update" component={Update} options={{ title: 'Update Available', headerShown : false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

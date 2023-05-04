@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from 'react-native'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { colors } from '../../styles/colors'
@@ -10,23 +10,25 @@ import icons from '../../assets/icons/icons'
 const offersData = [
   {
     id: 1,
-    title: 'Claim 1000  Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
+    title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
     claimed: true,
+    // youtubeLink: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
   }, {
     id: 2,
     title: 'Join a Telegram Channel to claim 100 coins.',
     claimed: true,
   },
-  {
-    id: 3,
-    // title: 'Subscribe on YouTube ( Claim 100 coins )',
-    title: 'Claim 100 coins after subscribing to a YouTube channel.',
-    claimed: true,
-  },
+  // {
+  //   id: 3,
+  //   // title: 'Subscribe on YouTube ( Claim 100 coins )',
+  //   title: 'Claim 100 coins after subscribing to a YouTube channel.',
+  //   claimed: true,
+  // },
   {
     id: 4,
     title: 'Install an app and complete a task to claim 200 coins.',
     claimed: true,
+    youtubeLink: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
   }
 ]
 
@@ -111,20 +113,30 @@ const Offer = ({ navigation }: any) => {
           {
 
             offersData.map((item: any, index: number) => {
-              return <View className='flex-row bg-[#eeeeee] p-4 rounded-2xl justify-between' key={index}>
-                <Text className='text-[#000] w-[75%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
-                <TouchableOpacity activeOpacity={1}>
-                  <View className='p-3 px-5 w-20% rounded-xl' style={{ backgroundColor: colors.accent, opacity: item.claimed ? 0.7 : 1 }}>
-                    <Text className='text-white'>{item.claimed ? 'Claimed' : 'Claim'}</Text>
+              return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
+                <View className='flex-row justify-between'>
+                  <Text className='text-[#000] w-[70%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
+                  <TouchableOpacity activeOpacity={1} className=''>
+                    <View className='p-3 px-4 rounded-xl' style={{ backgroundColor: colors.accent, opacity: item.claimed ? 0.7 : 1 }}>
+                      <Text className='text-white'>{item.claimed ? 'Claimed' : 'Claim'}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                {
+                  item.youtubeLink &&
+                  <View className=''>
+                    <TouchableOpacity onPress={() => { Linking.openURL(item.youtubeLink) }}>
+                      <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 10, marginTop: 5 }}>
+                        <Image source={icons.youtube_icon} style={{ width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
+                        <Text style={{ fontSize: 15, fontFamily: fonts.semiBold, color: 'black' }}>Demo Video</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
+                }
               </View>
             })}
         </View>
       </View>
-
-
-
     </ScrollView>
   )
 }
