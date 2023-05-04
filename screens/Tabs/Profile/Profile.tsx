@@ -198,6 +198,13 @@ const Profile = ({ navigation }: any) => {
             </View>
             <Text style={[styles.balanceType]}>Tasks</Text>
           </View>
+          <View style={[styles.balanceBox]}>
+            <View style={[styles.flexRow, { gap: 7 }]}>
+              <Image source={icons.exchange} style={styles.balanceImage} />
+              <Text style={[styles.balance]}>{taskCount}</Text>
+            </View>
+            <Text style={[styles.balanceType]}>Referred</Text>
+          </View>
         </View>
         <View>
           <View style={{ marginTop: 0, gap: 1, paddingBottom: 20 }}>

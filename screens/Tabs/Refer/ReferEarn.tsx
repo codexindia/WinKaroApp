@@ -47,7 +47,24 @@ const ReferEarn = ({ navigation }: any) => {
         </View>
       </View>
 
-      <View style={{ padding: 20, gap: 20 }}>
+      <View style={[styles.flexRow, styles.balanceContainer]} className='mt-3'>
+        <View style={[styles.balanceBox]}>
+          <View style={[styles.flexRow, { gap: 7 }]}>
+            <Image source={icons.refer_done} style={styles.balanceImage} />
+            <Text style={[styles.balance]}>{0}</Text>
+          </View>
+          <Text style={[styles.balanceType]}>Successful</Text>
+        </View>
+        <View style={[styles.balanceBox]}>
+          <View style={[styles.flexRow, { gap: 7 }]}>
+            <Image source={icons.exchange} style={styles.balanceImage} />
+            <Text style={[styles.balance]}>{0}</Text>
+          </View>
+          <Text style={[styles.balanceType]}>Pending</Text>
+        </View>
+      </View>
+
+      <View style={{ padding: 20, paddingTop : 5, gap: 20 }}>
         <View style={[referStyles.lightCard, { gap: 10, }]}>
           <View style={{
             borderRadius: 10,
@@ -185,6 +202,40 @@ const ReferEarn = ({ navigation }: any) => {
 export default ReferEarn
 
 const styles = StyleSheet.create({
+  balanceContainer: {
+    padding: 20,
+    paddingTop: 10,
+    width: '100%',
+    gap: 15,
+  },
+  balanceBox: {
+    backgroundColor: colors.accentLight,
+    padding: 20,
+    paddingVertical: 20,
+    flex: 1,
+    // gap: 5,
+    borderRadius: 20,
+    display: 'flex',
+    // alignItems: 'center',
+    justifyContent: 'center',
+  },
+  balance: {
+    fontSize: 23,
+    fontFamily: fonts.semiBold,
+    color: colors.text,
+  },
+  balanceImage: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+  },
+  balanceType: {
+    fontSize: 16,
+    color: colors.text,
+    opacity: 0.7,
+    marginTop: 5,
+    fontFamily: fonts.regular
+  },
   counters: {
     display: 'flex',
     flexDirection: 'row',

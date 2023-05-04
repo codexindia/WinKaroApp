@@ -50,5 +50,7 @@ const icons = {
     pencil : require('./src/pencil.png'),
     support : require('./src/wp.png'),
     cancel : require('./src/cancel.png'),
+    exchange : require('./src/exchange.png'),
+    refer_done : require('./src/refer_done.png'),
 }
 export default icons
