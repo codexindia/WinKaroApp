@@ -44,7 +44,7 @@ const ReferHistory = () => {
     </View>
 
   return (
-    <View className='bg-white flex-1'>
+    <ScrollView className='bg-white flex-1'>
       <View className='p-4 pt-1'>
         {
           history.map((item: any, index: number) => {
@@ -52,7 +52,7 @@ const ReferHistory = () => {
           })
         }
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -75,13 +75,13 @@ function ReferAccount({ data }: any) {
 
   console.log(data.get_name)
 
-  return <ScrollView className='flex-row p-5 mt-4 justify-between items-center' style={{
+  return <View className='flex-row p-5 mt-4 justify-between items-center' style={{
     backgroundColor: '#fafafa', borderRadius: 20, borderColor: '#e5e5e5', borderWidth: 0.5
   }}>
 
     <View className='flex-row items-center'>
       <View>
-        <Image source={pp == null ? icons.user_icon : { uri: pp }} style={{ height: 50, aspectRatio: 1, resizeMode: 'contain', borderRadius : 100 }} />
+        <Image source={pp == null ? icons.user_icon : { uri: pp }} style={{ height: 50, aspectRatio: 1, resizeMode: 'contain', borderRadius: 100 }} />
       </View>
       <View className='pl-5 justify-center gap-1'>
         <Text style={{ fontFamily: fonts.medium, color: colors.text, fontSize: 16 }}>{name}</Text>
@@ -102,7 +102,7 @@ function ReferAccount({ data }: any) {
     <View>
       <Text style={{ fontFamily: fonts.medium, color: colors.textLight, fontSize: 12, textAlign: 'right' }}>{(new Date(time)).toLocaleDateString() + '\n'} {new Date(time).toLocaleTimeString()}</Text>
     </View>
-  </ScrollView>
+  </View>
 }
 
 
