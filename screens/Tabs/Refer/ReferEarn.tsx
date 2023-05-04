@@ -56,20 +56,20 @@ const ReferEarn = ({ navigation }: any) => {
         <View style={[styles.balanceBox]}>
           <View style={[styles.flexRow, { gap: 7 }]}>
             <Image source={icons.refer_done} style={styles.balanceImage} />
-            <Text style={[styles.balance]}>{0}</Text>
+            <Text style={[styles.balance]}>{refer_success_count}</Text>
           </View>
           <Text style={[styles.balanceType]}>Successful</Text>
         </View>
         <View style={[styles.balanceBox]}>
           <View style={[styles.flexRow, { gap: 7 }]}>
             <Image source={icons.exchange} style={styles.balanceImage} />
-            <Text style={[styles.balance]}>{0}</Text>
+            <Text style={[styles.balance]}>{refer_pending_count}</Text>
           </View>
           <Text style={[styles.balanceType]}>Pending</Text>
         </View>
       </View>
 
-      <View style={{ padding: 20, paddingTop : 5, gap: 20 }}>
+      <View style={{ padding: 20, paddingTop: 5, gap: 20 }}>
         <View style={[referStyles.lightCard, { gap: 10, }]}>
           <View style={{
             borderRadius: 10,
