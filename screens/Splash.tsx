@@ -21,59 +21,60 @@ const Splash = ({ navigation }: any) => {
   async function mainProcess() {
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
     const isOnboarding = await AsyncStorage.getItem('onboarding')
-    if (isLoggedIn === 'true') {
-      const token = await AsyncStorage.getItem('token')
-      const headers = getDefaultHeader(token as string)
-      try {
-        const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
-        const res = await fetched.json()
-
-        // console.log(res)
 
 
-        const updateFetch = await fetch(API_URL.get_update, { method: 'POST', headers })
-        const updateRes = await updateFetch.json()
+    const updateFetch = await fetch(API_URL.get_update, { method: 'POST', headers: getDefaultHeader(false) })
+    const updateRes = await updateFetch.json()
+    console.log(updateRes)
 
 
-        console.log(updateRes)
+    // Check if there is any update available
+    if (APP_VERSION_NAME != updateRes.version_code) {
+      // Redirect to update screen
+      console.log('Update available')
+      navigation.replace('Update', {
+        app_link: updateRes.app_link
+      })
+      await changeNavigationBarColor('white', true);
+    } else
+      if (isLoggedIn === 'true') {
+        const token = await AsyncStorage.getItem('token')
+        const headers = getDefaultHeader(token as string)
+        try {
+          const fetched = await fetch(API_URL.get_user, { method: 'POST', headers })
+          const res = await fetched.json()
 
-        // Check if there is any update available
-        if (APP_VERSION_NAME != updateRes.version_code) {
-          // Redirect to update screen
-          console.log('Update available')
-          navigation.replace('Update', {
-            app_link: updateRes.app_link
-          })
-          await changeNavigationBarColor('white', true);
-        } else if (res.status === true || res.status === 'true') {
-          await storeUserData(res)
-          navigation.replace('Home')
-          // Set navigation bar color to white
-          await changeNavigationBarColor('white', true);
+          // console.log(res)
+
+          if (res.status === true || res.status === 'true') {
+            await storeUserData(res)
+            navigation.replace('Home')
+            // Set navigation bar color to white
+            await changeNavigationBarColor('white', true);
+          }
+          else {
+            // Show error message
+            await unexpectedLoggedOut(navigation, setModals)
+          }
         }
-        else {
-          // Show error message
-          await unexpectedLoggedOut(navigation, setModals)
+        catch (err) {
+          setModals([{ title: 'Network Error', message: 'Please check your internet connection and try again' }])
+          // Retry after 5 seconds
+          setTimeout(() => {
+            mainProcess()
+          }, 5000)
         }
       }
-      catch (err) {
-        setModals([{ title: 'Network Error', message: 'Please check your internet connection and try again' }])
-        // Retry after 5 seconds
-        setTimeout(() => {
-          mainProcess()
-        }, 5000)
+      else if (isOnboarding === 'true') {
+        // Set navigation bar color to white
+        await changeNavigationBarColor('white', true);
+        navigation.replace('LogIn')
       }
-    }
-    else if (isOnboarding === 'true') {
-      // Set navigation bar color to white
-      await changeNavigationBarColor('white', true);
-      navigation.replace('LogIn')
-    }
-    else {
-      // Set navigation bar color to white
-      await changeNavigationBarColor('white', true);
-      navigation.replace('Onboarding')
-    }
+      else {
+        // Set navigation bar color to white
+        await changeNavigationBarColor('white', true);
+        navigation.replace('Onboarding')
+      }
   }
   useEffect(() => {
     async function checkRefresh() {
