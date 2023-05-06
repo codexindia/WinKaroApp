@@ -247,30 +247,30 @@ export default function YouTubeTask({ route, navigation }: any) {
           xhr.abort()
           setIsErrorUploading(true)
 
-          // timer && clearTimeout(timer)
+          timer && clearTimeout(timer)
 
-          // // Retry after 5 seconds
-          // timer = setTimeout(() => {
-          //   uploadVideo()
-          // }, 5000);
+          // Retry after 5 seconds
+          timer = setTimeout(() => {
+            uploadVideo()
+          }, 10000);
 
 
           // Ask the user to retry
-          setModals([{
-            title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
-            buttons: [{
-              text: "Retry", positive: true, onPress: () => {
-                uploadVideo()
-              }
-            },
-            {
-              text: "Cancel", positive: false, onPress: () => {
-                // Delete all the files
-                RecordScreen.clean()
-                restartApp()
-              }
-            }]
-          }])
+          // setModals([{
+          //   title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+          //   buttons: [{
+          //     text: "Retry", positive: true, onPress: () => {
+          //       uploadVideo()
+          //     }
+          //   },
+          //   {
+          //     text: "Cancel", positive: false, onPress: () => {
+          //       // Delete all the files
+          //       RecordScreen.clean()
+          //       restartApp()
+          //     }
+          //   }]
+          // }])
         })
         xhr.send(formData);
       }
