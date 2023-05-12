@@ -10,7 +10,7 @@ import WithdrawHistory from './WithdrawHistory'
 import { fonts } from '../../styles/fonts'
 import { getDefaultHeader } from '../methods'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { API_URL, coins_to_inr } from '../../appData'
+import { API_URL, INR_TO_COINS, coins_to_inr, inr_to_coins } from '../../appData'
 import CustomModal from '../../components/CustomModal'
 
 const data = [
@@ -86,6 +86,7 @@ function confirmBind(setModalAlert: Function, callBack: Function) {
 }
 
 
+const withdrawAmounts = [5, 10, 20, 50, 100]
 
 const Wallet = ({ navigation }: any) => {
   const [accountType, setAccountType] = React.useState("paytm");
@@ -99,6 +100,8 @@ const Wallet = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
   const [withdrawCoins, setWithdrawCoins] = useState('')
   const [withdrawHistory, setWithdrawHistory] = useState<any>(null)
+  const [selectedAmount, setSelectedAmount] = useState<any>(0)
+
 
 
   useEffect(() => {
@@ -168,7 +171,7 @@ const Wallet = ({ navigation }: any) => {
       if (isNaN(wth_coins) || !wth_coins) {
         setButtonText('Withdraw')
         setLoading(false)
-        setModalAlert([{ title: "Invalid Amount", description: "Please enter a valid amount." }])
+        setModalAlert([{ title: "Invalid Amount", description: "Please select a valid amount." }])
         return
       } else if (wth_coins > coins_bal) {
         setButtonText('Withdraw')
@@ -294,9 +297,9 @@ const Wallet = ({ navigation }: any) => {
               </Text>
           }
           {/* <Text style={[styles.label]}>Enter Amount</Text> */}
-          <View style={input.singleInputContainer}>
-            <Image source={icons.money} style={[input.inputImage, { width: 21, height: 21 }]} />
-            <TextInput
+          {/* <View style={input.singleInputContainer}> */}
+          {/* <Image source={icons.money} style={[input.inputImage, { width: 21, height: 21 }]} /> */}
+          {/* <TextInput
               // value={phoneNumber}
               // onChangeText={(text) => setPhoneNumber(text)}
               placeholderTextColor={colors.textLighter}
@@ -305,10 +308,30 @@ const Wallet = ({ navigation }: any) => {
               keyboardType="phone-pad"
               value={withdrawCoins}
               onChangeText={(text) => setWithdrawCoins(text)}
-            />
-          </View>{
+            /> */}
+
+          {/* </View> */}
+
+          <View>
+            <Text style={{ fontSize: 16, fontFamily: fonts.regular, color: colors.text }}>Select Amount to Withdraw</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            {
+              withdrawAmounts.map((item, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => { setSelectedAmount(item); setWithdrawCoins((item * INR_TO_COINS).toString()) }}>
+                    <View className='p-2 pl-3 pr-3' style={{ borderRadius: 30, backgroundColor: selectedAmount === item ? colors.accent : colors.inputBg, justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontSize: 16, color: selectedAmount === item ? 'white' : colors.text, fontFamily: fonts.semiBold }}>₹  {item}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+          </View>
+          {
             withdrawCoins ?
-              <Text style={{ fontFamily: fonts.regular, color: colors.text }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
+              // <Text style={{ fontFamily: fonts.regular, color: colors.text }}> In INR : ₹ {coins_to_inr(+withdrawCoins, coins)} </Text>
+              <Text style={{ fontFamily: fonts.regular, color: colors.text }}> {inr_to_coins(+withdrawCoins, coins)} </Text>
               : null
           }
           <ButtonFull title={buttonText} onPress={() => { withdrawAmount() }} disabled={loading} />

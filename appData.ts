@@ -36,9 +36,19 @@ export const t_and_c_link = 'https://winkaro.yourexpand.in/terms_and_conditions'
 export const privacy_policy_link = 'https://winkaro.yourexpand.in/privacy_policy'
 export const about_us_link = 'https://winkaro.yourexpand.in/about_us'
 
+
+export const INR_TO_COINS = 100
+
 export function coins_to_inr(coins: number, balance: number) {
     // Two decimal places
     if (coins > balance)
         return "Insufficient Balance (" + balance + " coins)"
-    return (coins / 100).toFixed(2)
+    return (coins / INR_TO_COINS).toFixed(2)
+}
+
+export function inr_to_coins(coins: number, balance: number) {
+    // Two decimal places
+    if (coins > balance)
+        return "Insufficient Balance"
+    return `${coins} Coins`
 }

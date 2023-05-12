@@ -151,13 +151,50 @@ export function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
    </View>
 }
 
+function getTimeInHoursMinutesSeconds(time: number) {
+   const hours = Math.floor(time / 3600)
+   const minutes = Math.floor((time % 3600) / 60)
+   const seconds = Math.floor((time % 3600) % 60)
 
-export function Uploading({ progress, cancel, isError }: { progress: number, cancel: Function, isError: boolean }) {
+   if (hours) {
+      return addZero(hours) + 'h ' + addZero(minutes) + 'm ' + addZero(seconds) + 's '
+   } else if (minutes) {
+      return addZero(minutes) + 'm ' + addZero(seconds) + 's '
+   } else {
+      return addZero(seconds) + 's '
+   }
+}
+
+
+
+export function Uploading({ progress, cancel, isError, startTime }: { progress: number, cancel: Function, isError: boolean, startTime: number }) {
+   const [remainingTime, setRemainingTime] = useState<any>('00:00:00')
+
+   function calculateRemainingTime() {
+      const now = new Date()
+      const diff = now.getTime() - startTime
+      const timePerPercent = diff / progress
+      const remainingTime = timePerPercent * (100 - progress)
+      const time = getTimeInHoursMinutesSeconds(remainingTime / 1000)
+      setRemainingTime(time)
+      // console.log(time)
+   }
+
+   useEffect(() => {
+      calculateRemainingTime()
+      const interval = setInterval(() => {
+         calculateRemainingTime()
+      }, 1000)
+      return () => clearInterval(interval)
+   }, [])
+
+
+
    return <View>
 
       {
          isError ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: 'red' }}>Network is busy, waiting for network connection.</Text> :
-            <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%</Text>
+            <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: colors.text }}>Uploading {progress}%  -  {remainingTime} left</Text>
       }
       <View style={{ width: width - 40, height: 5, backgroundColor: '#e5e5e5', borderRadius: 5, marginTop: 10, }}>
          <View style={{ width: progress + '%', height: 5, backgroundColor: colors.accent, borderRadius: 5, }}></View>

@@ -58,6 +58,7 @@ export default function YouTubeTask({ route, navigation }: any) {
   const [tasks, setTasks] = useState<any>(null)
   const [uploadResponse, setUploadResponse] = useState<any>(null)
   const [isErrorUploading, setIsErrorUploading] = useState(false)
+  const [startTime, setStartTime] = useState(0)
   const xhr = new XMLHttpRequest();
   const taskType = route.params.taskType
   // const RecordScreen = require('react-native-record-screen').default
@@ -196,6 +197,7 @@ export default function YouTubeTask({ route, navigation }: any) {
 
       async function uploadVideo() {
         console.log('Uploading Video...')
+        setStartTime(new Date().getTime())
         setIsUploading(true)
         setIsErrorUploading(false)
         const auth = await AsyncStorage.getItem('token')
@@ -250,27 +252,27 @@ export default function YouTubeTask({ route, navigation }: any) {
           timer && clearTimeout(timer)
 
           // Retry after 5 seconds
-          timer = setTimeout(() => {
-            uploadVideo()
-          }, 10000);
+          // timer = setTimeout(() => {
+          //   uploadVideo()
+          // }, 10000);
 
 
           // Ask the user to retry
-          // setModals([{
-          //   title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
-          //   buttons: [{
-          //     text: "Retry", positive: true, onPress: () => {
-          //       uploadVideo()
-          //     }
-          //   },
-          //   {
-          //     text: "Cancel", positive: false, onPress: () => {
-          //       // Delete all the files
-          //       RecordScreen.clean()
-          //       restartApp()
-          //     }
-          //   }]
-          // }])
+          setModals([{
+            title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+            buttons: [{
+              text: "Retry", positive: true, onPress: () => {
+                uploadVideo()
+              }
+            },
+            {
+              text: "Cancel", positive: false, onPress: () => {
+                // Delete all the files
+                RecordScreen.clean()
+                restartApp()
+              }
+            }]
+          }])
         })
         xhr.send(formData);
       }
@@ -435,7 +437,7 @@ export default function YouTubeTask({ route, navigation }: any) {
                   isExpired ? null :
                     isUploading ?
                       uploadingIndex === index ?
-                        <Uploading progress={progress} cancel={() => cancelUpload()} isError={isErrorUploading} />
+                        <Uploading progress={progress} cancel={() => cancelUpload()} isError={isErrorUploading} startTime={startTime} />
                         : <TouchableOpacity style={[buttons.full, { width: width - 40, backgroundColor: 'grey' }]} activeOpacity={0.8} disabled>
                           <Image source={icons.record} style={{ width: 20, height: 20, alignSelf: 'center', resizeMode: 'contain', tintColor: 'white' }} />
                           <Text style={[{ textAlign: 'center', fontSize: 15, color: 'white', fontFamily: fonts.medium },]}>Uploading another task</Text>

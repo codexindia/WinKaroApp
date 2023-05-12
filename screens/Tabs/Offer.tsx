@@ -6,17 +6,34 @@ import { fonts } from '../../styles/fonts'
 import images from '../../assets/images/images'
 import icons from '../../assets/icons/icons'
 
+type OfferData = {
+  id: number,
+  title: string,
+  claimed: boolean,
+  link?: {
+    link: string,
+    linkIcon: any,
+    linkText: string,
+  }
+}
 
-const offersData = [
+
+const offersData: OfferData[] = [
   {
     id: 1,
     title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
     claimed: true,
     // youtubeLink: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
-  }, {
+  },
+  {
     id: 2,
     title: 'Join a Telegram Channel to claim 100 coins.',
-    claimed: true,
+    claimed: false,
+    link: {
+      link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
+      linkIcon: icons.telegram,
+      linkText: 'Join Telegram Channel'
+    }
   },
   // {
   //   id: 3,
@@ -28,7 +45,6 @@ const offersData = [
     id: 4,
     title: 'Install an app and complete a task to claim 200 coins.',
     claimed: true,
-    youtubeLink: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
   }
 ]
 
@@ -112,23 +128,23 @@ const Offer = ({ navigation }: any) => {
         </View> */}
           {
 
-            offersData.map((item: any, index: number) => {
+            offersData.map((item: OfferData, index: number) => {
               return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
                 <View className='flex-row justify-between'>
                   <Text className='text-[#000] w-[70%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
-                  <TouchableOpacity activeOpacity={1} className=''>
+                  <TouchableOpacity activeOpacity={item.claimed ? 1 : 0.7} className=''>
                     <View className='p-3 px-4 rounded-xl' style={{ backgroundColor: colors.accent, opacity: item.claimed ? 0.7 : 1 }}>
                       <Text className='text-white'>{item.claimed ? 'Claimed' : 'Claim'}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
                 {
-                  item.youtubeLink &&
+                  item.link &&
                   <View className=''>
-                    <TouchableOpacity onPress={() => { Linking.openURL(item.youtubeLink) }}>
+                    <TouchableOpacity onPress={() => { Linking.openURL(item.link?.link as string) }}>
                       <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 10, marginTop: 5 }}>
-                        <Image source={icons.youtube_icon} style={{ width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
-                        <Text style={{ fontSize: 15, fontFamily: fonts.semiBold, color: 'black' }}>Demo Video</Text>
+                        <Image source={item.link.linkIcon} style={{ width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
+                        <Text style={{ fontSize: 15, fontFamily: fonts.semiBold, color: colors.accent }}>{item.link.linkText}</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
