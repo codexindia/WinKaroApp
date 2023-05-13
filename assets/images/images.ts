@@ -23,5 +23,6 @@ const images = {
     // coins_mobile : require('./src/coins_mobile.jpg'),
     // update_available : require('./src/update_available.jpg'),
     update_available_2 : require('./src/update_available_2.png'),
+    congrats : require('./src/congrats.jpg'),
 }
 export default images

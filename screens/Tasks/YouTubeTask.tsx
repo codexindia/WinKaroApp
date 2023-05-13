@@ -148,7 +148,11 @@ export default function YouTubeTask({ route, navigation }: any) {
     // let clear = await RecordScreen.clean()
     // console.log(clear)
     try {
-      let res = await RecordScreen.startRecording({ mic: false })
+      let res = await RecordScreen.startRecording({
+        mic: false,
+        bitrate: 1024 * 512, // default 236390400
+        fps: 10, // default 60
+      })
       // res = await RecordScreen.startRecording({ mic: false })
       if (res === RecordingResult.PermissionError) {
         console.log("Permission Error")
@@ -177,8 +181,7 @@ export default function YouTubeTask({ route, navigation }: any) {
       let video_url = 'file://' + res.result.outputURL
       // let compressedVideo = await CVideo.compress(video_url, {
       //   compressionMethod: 'manual',
-      //   bitrate: 1024 * 100,
-      //   maxSize: 1024 * 1024 * 1024 * 5,
+      //   bitrate: 1000,
       // },
       //   (progress) => {
       //     console.log('Compression Progress: ', Math.floor(progress * 100));

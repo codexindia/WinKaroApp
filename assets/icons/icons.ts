@@ -53,5 +53,6 @@ const icons = {
     exchange : require('./src/exchange.png'),
     refer_done : require('./src/refer_done.png'),
     telegram : require('./src/telegram.png'),
+    coin : require('./src/coin.png'),
 }
 export default icons

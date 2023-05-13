@@ -1,15 +1,22 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from 'react-native'
+import {
+  StyleSheet, Text, View, Image,
+  TextInput,
+  TouchableOpacity, Linking, Modal, Dimensions
+} from 'react-native'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { colors } from '../../styles/colors'
 import { fonts } from '../../styles/fonts'
 import images from '../../assets/images/images'
 import icons from '../../assets/icons/icons'
+import ButtonFull from '../../components/ButtonFull'
+import Loading from '../../components/Loading'
 
 type OfferData = {
   id: number,
   title: string,
   claimed: boolean,
+  action?: () => void,
   link?: {
     link: string,
     linkIcon: any,
@@ -17,40 +24,75 @@ type OfferData = {
   }
 }
 
-
-const offersData: OfferData[] = [
-  {
-    id: 1,
-    title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
-    claimed: true,
-    // youtubeLink: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
-  },
-  {
-    id: 2,
-    title: 'Join a Telegram Channel to claim 100 coins.',
-    claimed: false,
-    link: {
-      link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
-      linkIcon: icons.telegram,
-      linkText: 'Join Telegram Channel'
-    }
-  },
-  // {
-  //   id: 3,
-  //   // title: 'Subscribe on YouTube ( Claim 100 coins )',
-  //   title: 'Claim 100 coins after subscribing to a YouTube channel.',
-  //   claimed: true,
-  // },
-  {
-    id: 4,
-    title: 'Install an app and complete a task to claim 200 coins.',
-    claimed: true,
-  }
-]
-
+const { width, height } = Dimensions.get('window')
 
 
 const Offer = ({ navigation }: any) => {
+
+  const [uerNameModal, setUserNameModal] = React.useState(false)
+  const [pleaseWaitModal, setPleaseWaitModal] = React.useState({
+    visible: false,
+    text: ""
+  })
+  const [congratulationModal, setCongratulationModal] = React.useState({
+    visible: false,
+    coins: 0,
+    text: 'You have successfully claimed 100 coins.'
+  })
+
+  const offersData: OfferData[] = [
+    {
+      id: 1,
+      title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
+      claimed: true,
+    },
+    {
+      id: 2,
+      title: 'Join a Telegram Channel to claim 100 coins.',
+      claimed: false,
+      action: () => {
+        setUserNameModal(true)
+      },
+      link: {
+        link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
+        linkIcon: icons.telegram,
+        linkText: 'Join Telegram Channel'
+      }
+    },
+    // {
+    //   id: 3,
+    //   // title: 'Subscribe on YouTube ( Claim 100 coins )',
+    //   title: 'Claim 100 coins after subscribing to a YouTube channel.',
+    //   claimed: true,
+    // },
+    {
+      id: 4,
+      title: 'Install an app and complete a task to claim 200 coins.',
+      claimed: true,
+    }
+  ]
+
+  const claimTelegramOffer = () => {
+    setUserNameModal(false)
+    setPleaseWaitModal({
+      visible: true,
+      text: "We are verifying your username"
+    })
+
+
+    offersData[1].claimed = true
+    setTimeout(() => {
+      setPleaseWaitModal({ visible: false, text: "" })
+      setCongratulationModal({
+        visible: true,
+        coins: 100,
+        text: 'You have successfully claimed 100 coins.'
+      })
+    }, 1000);
+  }
+
+
+
   return (
     <ScrollView style={{
       backgroundColor: 'white',
@@ -70,6 +112,85 @@ const Offer = ({ navigation }: any) => {
           }} />
         </View>
       </View>
+
+      <Modal animationType="fade" transparent={true} visible={uerNameModal}>
+        <View className='flex-1 bg-[#00000033] justify-center items-center'>
+          <View className='w-[90%] bg-white p-7 rounded-2xl'>
+            <Text className='text-center text-[#000] text-lg' style={{ fontFamily: fonts.medium }}>
+              Enter your telegram username
+            </Text>
+            <View className='justify-between items-center mt-7'>
+              <TextInput
+                placeholder='Enter your telegram username'
+                style={{
+                  borderWidth: 1,
+                  fontFamily: fonts.medium,
+                }}
+                className='w-[100%] p-3 rounded-xl border-[#ccc] pl-4 text-base'
+              />
+              <View className='w-[100%] mt-4'>
+                <ButtonFull title="Claim" onPress={claimTelegramOffer} />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/*Please Wait Modal */}
+      <Modal animationType="fade" transparent={true} visible={pleaseWaitModal.visible}>
+        <View className='flex-1 bg-[#00000033] justify-center items-center'>
+          <View className='w-[90%] bg-white p-7 rounded-2xl'>
+            <Text className='text-center text-[#000] text-lg' style={{ fontFamily: fonts.medium }}>
+              Please Wait
+            </Text>
+            <View className='mt-5'>
+              <Image source={icons.loading}
+                style={{ resizeMode: 'contain', }}
+                className='w-20 h-20 rounded-full opacity-70 mx-auto'
+              />
+            </View>
+            <Text className='text-center text-[#000] text-lg mt-5' style={{ fontFamily: fonts.medium }}>
+              {pleaseWaitModal.text}
+            </Text>
+          </View>
+        </View>
+      </Modal>
+
+      {/*Congratulation Modal */}
+      <Modal animationType="fade" transparent={true} visible={congratulationModal.visible || true}>
+        <View className='flex-1 bg-[#00000044] justify-center items-center'>
+          <View className='bg-white rounded-2xl overflow-hidden' style={{ width: width * 0.85 }}>
+            <Image source={images.congrats}
+              style={{ resizeMode: 'contain', width: '100%', height: 561 / 1000 * width * 0.85 }}
+              className=' mx-auto'
+            />
+            <View className='flex-row justify-center items-center mt-5'>
+              <View className='bg-[#00000010] flex-row justify-center items-center rounded-xl p-3 px-4'>
+                <Image source={icons.coin}
+                  style={{ resizeMode: 'contain', width: 30, height: 30, }}
+                />
+                <Text className='text-center text-[#000] text-3xl ml-3' style={{ fontFamily: fonts.bold }}>
+                  {congratulationModal.coins || 100}
+                </Text>
+              </View>
+            </View>
+
+            <View className='p-10'>
+              <Text className='text-center text-[#000] text-base mb-5' style={{ fontFamily: fonts.medium }}>
+                {congratulationModal.text}
+              </Text>
+              <ButtonFull title="Ok" onPress={() => {
+                setCongratulationModal({
+                  visible: false,
+                  coins: 0,
+                  text: 'You have successfully claimed 100 coins.'
+                })
+              }} />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
 
       <View style={{ marginTop: 30 }}>
         {/* <Text style={{ fontSize: 18, fontFamily: fonts.semiBold, textAlign: 'center', color: colors.text }}>Offers to Claim</Text> */}
@@ -132,7 +253,7 @@ const Offer = ({ navigation }: any) => {
               return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
                 <View className='flex-row justify-between'>
                   <Text className='text-[#000] w-[70%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
-                  <TouchableOpacity activeOpacity={item.claimed ? 1 : 0.7} className=''>
+                  <TouchableOpacity activeOpacity={item.claimed ? 1 : 0.7} onPress={item.action}>
                     <View className='p-3 px-4 rounded-xl' style={{ backgroundColor: colors.accent, opacity: item.claimed ? 0.7 : 1 }}>
                       <Text className='text-white'>{item.claimed ? 'Claimed' : 'Claim'}</Text>
                     </View>
