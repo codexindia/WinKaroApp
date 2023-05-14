@@ -1,9 +1,9 @@
 import {
   StyleSheet, Text, View, Image,
   TextInput,
-  TouchableOpacity, Linking, Modal, Dimensions
+  TouchableOpacity, Linking, Modal, Dimensions, Alert
 } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView } from 'react-native'
 import { colors } from '../../styles/colors'
 import { fonts } from '../../styles/fonts'
@@ -11,12 +11,18 @@ import images from '../../assets/images/images'
 import icons from '../../assets/icons/icons'
 import ButtonFull from '../../components/ButtonFull'
 import Loading from '../../components/Loading'
+import { API, API_URL } from '../../appData'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getDefaultHeader } from '../methods'
+import { useIsFocused } from '@react-navigation/native'
 
 type OfferData = {
   id: number,
   title: string,
   claimed: boolean,
   action?: () => void,
+  name: string,
+  status?: string,
   link?: {
     link: string,
     linkIcon: any,
@@ -30,29 +36,27 @@ const { width, height } = Dimensions.get('window')
 const Offer = ({ navigation }: any) => {
 
   const [uerNameModal, setUserNameModal] = React.useState(false)
-  const [pleaseWaitModal, setPleaseWaitModal] = React.useState({
-    visible: false,
-    text: ""
-  })
-  const [congratulationModal, setCongratulationModal] = React.useState({
-    visible: false,
-    coins: 0,
-    text: 'You have successfully claimed 100 coins.'
-  })
+  const [pleaseWaitModal, setPleaseWaitModal] = React.useState({ visible: false, text: "" })
+  const [congratulationModal, setCongratulationModal] = React.useState({ visible: false, coins: 0, text: '' })
+  const focused = useIsFocused()
 
   const offersData: OfferData[] = [
     {
       id: 1,
       title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
       claimed: true,
+      name: 'yt_task_milestone',
+      status: 'claim'
     },
     {
       id: 2,
       title: 'Join a Telegram Channel to claim 100 coins.',
       claimed: false,
+      name: 'telegram_task',
       action: () => {
         setUserNameModal(true)
       },
+      status: 'claim',
       link: {
         link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
         linkIcon: icons.telegram,
@@ -69,8 +73,52 @@ const Offer = ({ navigation }: any) => {
       id: 4,
       title: 'Install an app and complete a task to claim 200 coins.',
       claimed: true,
+      name: 'app_install_task',
+      status: 'claim',
     }
   ]
+
+  const [loadTaskData, setLoadTaskData] = React.useState(false)
+  const [offersStatus, setOffersStatus] = React.useState(offersData)
+
+  async function getOfferStatus() {
+    const token = await AsyncStorage.getItem('token')
+    const headers = getDefaultHeader(token)
+
+    try {
+      const response = await fetch(API_URL.offer_status, {
+        method: 'POST',
+        headers: headers,
+      })
+      const data = await response.json()
+      console.log(data)
+
+      // Set offers status
+      if (data.status === 'true' || data.status === true) {
+        const status = data.data
+        const offersStatus = [...offersData]
+        status.forEach((item: any) => {
+          const index = offersStatus.findIndex((offer) => offer.name === item.name)
+          if (index !== -1) {
+            offersStatus[index].status = item.status
+          }
+        })
+        setOffersStatus(offersStatus)
+        setLoadTaskData(true)
+      }
+    } catch (err) {
+      Alert.alert('There is some error while fetching offers status. Please check your internet connection. And try again later.')
+    }
+  }
+
+  useEffect(() => {
+    if (focused) {
+      setLoadTaskData(false)
+      getOfferStatus()
+    }
+  }, [focused])
+
+
 
   const claimTelegramOffer = () => {
     setUserNameModal(false)
@@ -157,7 +205,7 @@ const Offer = ({ navigation }: any) => {
       </Modal>
 
       {/*Congratulation Modal */}
-      <Modal animationType="fade" transparent={true} visible={congratulationModal.visible || true}>
+      <Modal animationType="fade" transparent={true} visible={congratulationModal.visible}>
         <View className='flex-1 bg-[#00000044] justify-center items-center'>
           <View className='bg-white rounded-2xl overflow-hidden' style={{ width: width * 0.85 }}>
             <Image source={images.congrats}
@@ -248,35 +296,63 @@ const Offer = ({ navigation }: any) => {
           </View>
         </View> */}
           {
+            loadTaskData ?
+              offersStatus.map((item: OfferData, index: number) => {
+                const isActiveBtnClaim = isActiveClaimButton(item.status!)
+                console.log(isActiveBtnClaim)
 
-            offersData.map((item: OfferData, index: number) => {
-              return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
-                <View className='flex-row justify-between'>
-                  <Text className='text-[#000] w-[70%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
-                  <TouchableOpacity activeOpacity={item.claimed ? 1 : 0.7} onPress={item.action}>
-                    <View className='p-3 px-4 rounded-xl' style={{ backgroundColor: colors.accent, opacity: item.claimed ? 0.7 : 1 }}>
-                      <Text className='text-white'>{item.claimed ? 'Claimed' : 'Claim'}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                {
-                  item.link &&
-                  <View className=''>
-                    <TouchableOpacity onPress={() => { Linking.openURL(item.link?.link as string) }}>
-                      <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 10, marginTop: 5 }}>
-                        <Image source={item.link.linkIcon} style={{ width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
-                        <Text style={{ fontSize: 15, fontFamily: fonts.semiBold, color: colors.accent }}>{item.link.linkText}</Text>
+                return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
+                  <View className='flex-row justify-between'>
+                    <Text className='text-[#000] w-[70%]' style={{ fontFamily: fonts.medium, }}>{item.title}</Text>
+                    <TouchableOpacity activeOpacity={!isActiveBtnClaim ? 1 : 0.7} onPress={item.action} disabled={!isActiveBtnClaim}>
+                      <View className='p-3 px-4 rounded-xl' style={{ backgroundColor: colors.accent, opacity: !isActiveBtnClaim ? 0.7 : 1 }}>
+                        <Text className='text-white'>{
+                          getTaskStatusButtonText(item.status!)
+                        }</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
-                }
+                  {
+                    item.link &&
+                    <View className=''>
+                      <TouchableOpacity onPress={() => { Linking.openURL(item.link?.link as string) }}>
+                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 10, marginTop: 5 }}>
+                          <Image source={item.link.linkIcon} style={{ width: 20, aspectRatio: 1, resizeMode: 'contain', }} />
+                          <Text style={{ fontSize: 15, fontFamily: fonts.semiBold, color: colors.accent }}>{item.link.linkText}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  }
+                </View>
+              }) :
+              <View className='pt-20'>
+                <Loading />
+                <Text className='text-center text-[#000] text-lg mt-5'>
+                  Loading...
+                </Text>
               </View>
-            })}
+          }
         </View>
       </View>
     </ScrollView>
   )
 }
+
+function getTaskStatusButtonText(status: string) {
+  if (status === 'complete') return 'Claimed'
+  if (status === 'processing') return 'Processing'
+  if (status === 'reject') return 'Rejected'
+  if (status === 'claim') return 'Claim'
+}
+
+function isActiveClaimButton(status: string) {
+  if (status === 'claim') return true
+  if (status === 'complete') return false
+  if (status === 'processing') return false
+  if (status === 'reject') return false
+  return true
+}
+
 
 export default Offer
 

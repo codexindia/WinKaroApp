@@ -22,7 +22,8 @@ import { API_URL } from '../../appData'
 import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
-
+// import {Video as CVideo} from 'react-native-video'
+import { Video as CVideo } from 'react-native-compressor'
 
 import {
   GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
@@ -148,11 +149,7 @@ export default function YouTubeTask({ route, navigation }: any) {
     // let clear = await RecordScreen.clean()
     // console.log(clear)
     try {
-      let res = await RecordScreen.startRecording({
-        mic: false,
-        bitrate: 1024 * 512, // default 236390400
-        fps: 10, // default 60
-      })
+      let res = await RecordScreen.startRecording({ mic: false, })
       // res = await RecordScreen.startRecording({ mic: false })
       if (res === RecordingResult.PermissionError) {
         console.log("Permission Error")

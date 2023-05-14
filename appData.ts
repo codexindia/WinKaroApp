@@ -28,6 +28,7 @@ export const API_URL = {
     refer_history: API + 'refer/get_history',
     popup: API + 'notifications/get_popup',
     get_update: API + 'app/get_update',
+    offer_status : API + 'offers/check_status',
 }
 
 
