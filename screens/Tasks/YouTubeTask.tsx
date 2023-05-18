@@ -23,13 +23,30 @@ import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
 // import {Video as CVideo} from 'react-native-video'
-import { Video as CVideo } from 'react-native-compressor'
+// import { Video as CVideo } from 'react-native-compressor'
+import VideoProcessing from 'react-native-video-processing';
+import RNFS from 'react-native-fs';
 
 import {
   GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
   TaskAmount, SwipeUp, WatchTutorial, Uploading, WatchHelp
 } from './Components'
 
+
+const compressVideo = async (inputPath, outputPath) => {
+  try {
+    const videoInfo = await VideoProcessing.getVideoInfo(inputPath);
+    const compressedVideo = await VideoProcessing.compress({
+      source: inputPath,
+      quality: 'low', // Adjust the quality as per your requirements
+      bitrateMultiplier: 0.8, // Adjust the bitrate as per your requirements
+      outputPath,
+    });
+    console.log('Compressed video path:', compressedVideo);
+  } catch (error) {
+    console.error('Failed to compress video:', error);
+  }
+};
 
 const { height, width } = Dimensions.get('window')
 
