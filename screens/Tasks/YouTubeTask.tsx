@@ -24,7 +24,7 @@ import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
 // import {Video as CVideo} from 'react-native-video'
 // import { Video as CVideo } from 'react-native-compressor'
-import VideoProcessing from 'react-native-video-processing';
+// import VideoProcessing from 'react-native-video-processing';
 import RNFS from 'react-native-fs';
 
 import {
@@ -33,20 +33,20 @@ import {
 } from './Components'
 
 
-const compressVideo = async (inputPath, outputPath) => {
-  try {
-    const videoInfo = await VideoProcessing.getVideoInfo(inputPath);
-    const compressedVideo = await VideoProcessing.compress({
-      source: inputPath,
-      quality: 'low', // Adjust the quality as per your requirements
-      bitrateMultiplier: 0.8, // Adjust the bitrate as per your requirements
-      outputPath,
-    });
-    console.log('Compressed video path:', compressedVideo);
-  } catch (error) {
-    console.error('Failed to compress video:', error);
-  }
-};
+// const compressVideo = async (inputPath, outputPath) => {
+//   try {
+//     const videoInfo = await VideoProcessing.getVideoInfo(inputPath);
+//     const compressedVideo = await VideoProcessing.compress({
+//       source: inputPath,
+//       quality: 'low', // Adjust the quality as per your requirements
+//       bitrateMultiplier: 0.8, // Adjust the bitrate as per your requirements
+//       outputPath,
+//     });
+//     console.log('Compressed video path:', compressedVideo);
+//   } catch (error) {
+//     console.error('Failed to compress video:', error);
+//   }
+// };
 
 const { height, width } = Dimensions.get('window')
 
@@ -275,21 +275,21 @@ export default function YouTubeTask({ route, navigation }: any) {
 
 
           // Ask the user to retry
-          setModals([{
-            title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
-            buttons: [{
-              text: "Retry", positive: true, onPress: () => {
-                uploadVideo()
-              }
-            },
-            {
-              text: "Cancel", positive: false, onPress: () => {
-                // Delete all the files
-                RecordScreen.clean()
-                restartApp()
-              }
-            }]
-          }])
+          // setModals([{
+          //   title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+          //   buttons: [{
+          //     text: "Retry", positive: true, onPress: () => {
+          //       uploadVideo()
+          //     }
+          //   },
+          //   {
+          //     text: "Cancel", positive: false, onPress: () => {
+          //       // Delete all the files
+          //       RecordScreen.clean()
+          //       restartApp()
+          //     }
+          //   }]
+          // }])
         })
         xhr.send(formData);
       }
