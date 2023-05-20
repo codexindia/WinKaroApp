@@ -392,10 +392,41 @@ export default function YouTubeTask({ route, navigation }: any) {
                   console.log(error.response.status, 'Failed to upload the chunk.');
 
                   unlink(file.path);
+                  // Show failed to upload the chunk
+                  setModals([{
+                    title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+                    buttons: [{
+                      text: "Retry", positive: true, onPress: () => {
+                        uploadVideo()
+                      }
+                    },
+                    {
+                      text: "Cancel", positive: false, onPress: () => {
+                        // Delete all the files
+                        RecordScreen.clean()
+                        restartApp()
+                      }
+                    }]
+                  }])
                 } else if (error.response.status === 422) {
                   console.log('Validation Error', error.response.data);
-
+                  // Show the validation error
                   unlink(file.path);
+                  setModals([{
+                    title: "Error", description: error.response.data.message, type: "error", active: true,
+                    buttons: [{
+                      text: "Retry", positive: true, onPress: () => {
+                        uploadVideo()
+                      }
+                    },
+                    {
+                      text: "Cancel", positive: false, onPress: () => {
+                        // Delete all the files
+                        RecordScreen.clean()
+                        restartApp()
+                      }
+                    }]
+                  }])
                 } else {
                   console.log('Re-uploading the chunk...');
                   setTimeout(() => {
@@ -408,9 +439,6 @@ export default function YouTubeTask({ route, navigation }: any) {
                   retry();
                 }, 1000);
               }
-              setTimeout(() => {
-                retry()
-              }, 1000);
             });
         }
       }

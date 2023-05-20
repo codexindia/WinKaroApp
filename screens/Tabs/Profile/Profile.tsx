@@ -9,7 +9,7 @@ import CustomModal from '../../../components/CustomModal'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useIsFocused } from '@react-navigation/native'
 import { getDefaultHeader, storeUserData } from '../../methods'
-import { API, API_URL, about_us_link, playStoreLink, privacy_policy_link, t_and_c_link } from '../../../appData'
+import { API, API_URL, APP_VERSION_NAME, about_us_link, playStoreLink, privacy_policy_link, t_and_c_link } from '../../../appData'
 
 
 
@@ -224,6 +224,7 @@ const Profile = ({ navigation }: any) => {
               })
             }
           </View>
+          <Text style={[{ textAlign: 'center', color: colors.gray, fontFamily: fonts.medium, fontSize: 13, marginBottom: 30 }]}>Version {APP_VERSION_NAME}</Text>
         </View>
       </ScrollView>
     </SafeAreaView >
