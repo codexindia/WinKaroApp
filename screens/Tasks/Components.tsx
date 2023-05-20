@@ -151,10 +151,17 @@ export function SwipeUp({ bottomSwipeIcon, topSwipeIcon, isVisible }: any) {
    </View>
 }
 
+function isNaNInfinity(num: number) {
+   return num === Infinity || isNaN(num) || num === undefined || num === null
+}
+
 function getTimeInHoursMinutesSeconds(time: number) {
    const hours = Math.floor(time / 3600)
    const minutes = Math.floor((time % 3600) / 60)
    const seconds = Math.floor((time % 3600) % 60)
+
+   if (isNaNInfinity(hours) || isNaNInfinity(minutes) || isNaNInfinity(seconds))
+      return '--:--:--'
 
    if (hours) {
       return addZero(hours) + 'h ' + addZero(minutes) + 'm ' + addZero(seconds) + 's '
@@ -169,6 +176,9 @@ function getTimeInHoursMinutesSeconds(time: number) {
 
 export function Uploading({ progress, cancel, isError, startTime }: { progress: number, cancel: Function, isError: boolean, startTime: number }) {
    const [remainingTime, setRemainingTime] = useState<any>('00:00:00')
+
+   // set 2 digits after decimal
+   progress = Math.floor(progress * 100) / 100
 
    function calculateRemainingTime() {
       const now = new Date()

@@ -23,13 +23,32 @@ import Loading from '../../components/Loading'
 import { Clipboard } from 'react-native'
 import RNRestart from 'react-native-restart';
 // import {Video as CVideo} from 'react-native-video'
-import { Video as CVideo } from 'react-native-compressor'
-
+// import { Video as CVideo } from 'react-native-compressor'
+// import VideoProcessing from 'react-native-video-processing';
+import { stat } from 'react-native-fs';
 import {
   GoBtn, TaskRejectedUI, TaskStatusUI, copyToClipboard,
   TaskAmount, SwipeUp, WatchTutorial, Uploading, WatchHelp
 } from './Components'
+import Chunk from './Chunk'
+import Axios from 'axios';
+import ChunkUpload from 'react-native-chunk-upload';
 
+
+// const compressVideo = async (inputPath, outputPath) => {
+//   try {
+//     const videoInfo = await VideoProcessing.getVideoInfo(inputPath);
+//     const compressedVideo = await VideoProcessing.compress({
+//       source: inputPath,
+//       quality: 'low', // Adjust the quality as per your requirements
+//       bitrateMultiplier: 0.8, // Adjust the bitrate as per your requirements
+//       outputPath,
+//     });
+//     console.log('Compressed video path:', compressedVideo);
+//   } catch (error) {
+//     console.error('Failed to compress video:', error);
+//   }
+// };
 
 const { height, width } = Dimensions.get('window')
 
@@ -176,19 +195,13 @@ export default function YouTubeTask({ route, navigation }: any) {
   function stopRecording() {
     RecordScreen.stopRecording().then(async res => {
       let video_url = 'file://' + res.result.outputURL
-      // let compressedVideo = await CVideo.compress(video_url, {
-      //   compressionMethod: 'manual',
-      //   bitrate: 1000,
-      // },
-      //   (progress) => {
-      //     console.log('Compression Progress: ', Math.floor(progress * 100));
-      //   }
-      // )
+
 
       // console.log('Compressed', compressedVideo)
       setUploadingIndex(recordingIndex)
       setRecordingIndex(-1)
-      uploadVideo()
+      // uploadVideo()
+      uploadV2()
 
 
       // RecordScreen.clean().then(data => {
@@ -258,24 +271,136 @@ export default function YouTubeTask({ route, navigation }: any) {
 
 
           // Ask the user to retry
-          setModals([{
-            title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
-            buttons: [{
-              text: "Retry", positive: true, onPress: () => {
-                uploadVideo()
-              }
-            },
-            {
-              text: "Cancel", positive: false, onPress: () => {
-                // Delete all the files
-                RecordScreen.clean()
-                restartApp()
-              }
-            }]
-          }])
+          // setModals([{
+          //   title: "Error", description: "There was an error uploading your video. Please try again.", type: "error", active: true,
+          //   buttons: [{
+          //     text: "Retry", positive: true, onPress: () => {
+          //       uploadVideo()
+          //     }
+          //   },
+          //   {
+          //     text: "Cancel", positive: false, onPress: () => {
+          //       // Delete all the files
+          //       RecordScreen.clean()
+          //       restartApp()
+          //     }
+          //   }]
+          // }])
         })
         xhr.send(formData);
       }
+
+      async function uploadV2() {
+        console.log('Uploading Video...')
+        setStartTime(new Date().getTime())
+        setIsUploading(true)
+        setIsErrorUploading(false)
+
+        const token = await AsyncStorage.getItem('token')
+        const file = await stat(video_url);
+        const fileName = video_url.split('/').pop();
+
+        console.log(file.originalFilepath)
+
+        const chunk = new ChunkUpload({
+          path: video_url, // Path to the file
+          size: 1_048_577, // Chunk size (must be multiples of 3)
+          fileName: fileName as string, // Original file name
+          fileSize: file.size, // Original file size
+
+          // Errors
+          // onFetchBlobError: (e) => console.log(e),
+          // onWriteFileError: (e) => console.log(e),
+        });
+
+        chunk.digIn(upload.bind(chunk));
+
+        function upload(file: any, next: any, retry: any, unlink: any) {
+          const body = new FormData();
+
+          body.append('video', file.blob);
+          body.append('task_id', currentRecordingTaskId);
+
+          Axios.post(API_URL.upload_task_v2, body, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Accept": 'application/json',
+              "secret": 'hellothisisocdexindia',
+              'Authorization': `Bearer ${token}`,
+
+              // 💥 Choose one of the following methods:
+
+              // 1️⃣ If you're using the wester-chunk-upload php library...
+              ...file.headers,
+
+              // 2️⃣ Customize the headers
+              "x-chunk-number": file.headers["x-chunk-number"],
+              "x-chunk-total-number": file.headers["x-chunk-total-number"],
+              "x-chunk-size": file.headers["x-chunk-size"],
+              "x-file-name": file.headers["x-file-name"],
+              "x-file-size": file.headers["x-file-size"],
+              "x-file-identity": file.headers["x-file-identity"]
+            }
+          })
+            .then(response => {
+              switch (response.status) {
+                // ✅ done
+                case 200:
+                  console.log(response.data);
+                  setIsUploading(false)
+                  setUploadResponse(response.data)
+                  setModals([{
+                    title: "Success", description: "Your video has been uploaded successfully.", type: "success", active: true,
+                    buttons: [{
+                      text: "Ok", positive: true, onPress: async () => {
+                        // navigation.goBack(),
+                        restartApp()
+                      }
+                    },]
+                  }])
+
+                  break;
+                // 🕗 still uploading...
+                case 201:
+                  console.log(`${response.data.progress}% uploaded...`);
+                  // Show the progress
+                  setProgress(response.data.progress)
+
+                  next();
+                  break;
+              }
+            })
+            .catch(error => {
+              console.log(error)
+              if (error.response) {
+                if ([400, 404, 415, 500, 501].includes(error.response.status)) {
+                  console.log(error.response.status, 'Failed to upload the chunk.');
+
+                  unlink(file.path);
+                } else if (error.response.status === 422) {
+                  console.log('Validation Error', error.response.data);
+
+                  unlink(file.path);
+                } else {
+                  console.log('Re-uploading the chunk...');
+
+                  retry();
+                }
+              } else {
+                console.log('Re-uploading the chunk...');
+
+                retry();
+              }
+              setTimeout(() => {
+                retry()
+              }, 2000);
+            });
+        }
+      }
+
+
+
+
 
     }).catch(err => {
       console.log(err);
@@ -495,4 +620,10 @@ const test = {
   "message": "user retrieve successfully",
   "status": true,
   "unread_alert": 0
+}
+
+
+
+function generateRandomString(length = 32) {
+  return [...Array(length)].map(() => (~~(Math.random() * 36)).toString(36)).join('');
 }
