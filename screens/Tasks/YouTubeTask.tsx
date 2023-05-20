@@ -358,6 +358,7 @@ export default function YouTubeTask({ route, navigation }: any) {
             }
           })
             .then(response => {
+              setIsErrorUploading(false)
               switch (response.status) {
                 // ✅ done
                 case 200:
@@ -387,6 +388,7 @@ export default function YouTubeTask({ route, navigation }: any) {
             })
             .catch(error => {
               console.log(error)
+              setIsErrorUploading(true)
               if (error.response) {
                 if ([400, 404, 415, 500, 501].includes(error.response.status)) {
                   console.log(error.response.status, 'Failed to upload the chunk.');
