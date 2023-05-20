@@ -50,6 +50,21 @@ import ChunkUpload from 'react-native-chunk-upload';
 //   }
 // };
 
+// const compressVideo = async (inputPath, outputPath) => {
+//   try {
+//     const videoInfo = await VideoProcessing.getVideoInfo(inputPath);
+//     const compressedVideo = await VideoProcessing.compress({
+//       source: inputPath,
+//       quality: 'low', // Adjust the quality as per your requirements
+//       bitrateMultiplier: 0.8, // Adjust the bitrate as per your requirements
+//       outputPath,
+//     });
+//     console.log('Compressed video path:', compressedVideo);
+//   } catch (error) {
+//     console.error('Failed to compress video:', error);
+//   }
+// };
+
 const { height, width } = Dimensions.get('window')
 
 const API_LINKS: any = {
