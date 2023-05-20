@@ -398,17 +398,19 @@ export default function YouTubeTask({ route, navigation }: any) {
                   unlink(file.path);
                 } else {
                   console.log('Re-uploading the chunk...');
-
-                  retry();
+                  setTimeout(() => {
+                    retry();
+                  }, 1000);
                 }
               } else {
                 console.log('Re-uploading the chunk...');
-
-                retry();
+                setTimeout(() => {
+                  retry();
+                }, 1000);
               }
               setTimeout(() => {
                 retry()
-              }, 2000);
+              }, 1000);
             });
         }
       }
