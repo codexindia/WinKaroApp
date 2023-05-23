@@ -60,7 +60,7 @@ const Offer = ({ navigation }: any) => {
       },
       status: 'claim',
       link: {
-        link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
+        link: 'https://telegram.me/Win_karo',
         linkIcon: icons.telegram,
         linkText: 'Telegram Channel Link'
       }
