@@ -81,8 +81,7 @@ const HomeScreen = ({ navigation }: any) => {
 				setColors()
 			}
 		}
-		// loadPopup()
-		// setAppOpenAlert(true)
+		loadPopup()
 	}, [])
 
 

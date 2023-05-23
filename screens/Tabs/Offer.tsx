@@ -15,6 +15,7 @@ import { API, API_URL } from '../../appData'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getDefaultHeader } from '../methods'
 import { useIsFocused } from '@react-navigation/native'
+import CustomModal from '../../components/CustomModal'
 
 type OfferData = {
   id: number,
@@ -36,7 +37,7 @@ const { width, height } = Dimensions.get('window')
 const Offer = ({ navigation }: any) => {
 
   const [uerNameModal, setUserNameModal] = React.useState(false)
-  const [pleaseWaitModal, setPleaseWaitModal] = React.useState({ visible: false, text: "" })
+  const [pleaseWaitModal, setPleaseWaitModal] = React.useState<{ visible: boolean, text?: string }>({ visible: false, text: "" })
   const [congratulationModal, setCongratulationModal] = React.useState({ visible: false, coins: 0, text: '' })
   const focused = useIsFocused()
 
@@ -46,7 +47,8 @@ const Offer = ({ navigation }: any) => {
       title: 'Claim 1000 Coins after completing 10 YouTube valid tasks continuously without any one task gap.',
       claimed: true,
       name: 'yt_task_milestone',
-      status: 'claim'
+      status: 'claim',
+      action: ytTaskMilestone,
     },
     {
       id: 2,
@@ -60,7 +62,7 @@ const Offer = ({ navigation }: any) => {
       link: {
         link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
         linkIcon: icons.telegram,
-        linkText: 'Join Telegram Channel'
+        linkText: 'Telegram Channel Link'
       }
     },
     // {
@@ -75,11 +77,18 @@ const Offer = ({ navigation }: any) => {
       claimed: true,
       name: 'app_install_task',
       status: 'claim',
+      link: {
+        link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
+        linkIcon: icons.youtube_icon,
+        linkText: 'Demo Video'
+      }
     }
   ]
 
   const [loadTaskData, setLoadTaskData] = React.useState(false)
   const [offersStatus, setOffersStatus] = React.useState(offersData)
+  const [modals, setModals] = React.useState<any>([])
+  const [telegramUserName, setTelegramUserName] = React.useState('')
 
   async function getOfferStatus() {
     const token = await AsyncStorage.getItem('token')
@@ -120,31 +129,94 @@ const Offer = ({ navigation }: any) => {
 
 
 
-  const claimTelegramOffer = () => {
+  const claimTelegramOffer = async (userName: string | null) => {
+    userName = userName?.trim() || ''
+    if (!userName) return Alert.alert('Warning', 'Please enter your telegram username to claim this offer.')
+
+    const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+
     setUserNameModal(false)
-    setPleaseWaitModal({
-      visible: true,
-      text: "We are verifying your username"
-    })
+    setPleaseWaitModal({ visible: true, text: "Please wait..." })
 
+    offersData[1].status = 'processing'
 
-    offersData[1].claimed = true
-    setTimeout(() => {
-      setPleaseWaitModal({ visible: false, text: "" })
-      setCongratulationModal({
-        visible: true,
-        coins: 100,
-        text: 'You have successfully claimed 100 coins.'
+    try {
+      const data = await fetch(API_URL.telegram_task, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          telegram_username: userName
+        })
       })
-    }, 1000);
+
+      const response = await data.json()
+      console.log(response)
+
+      setPleaseWaitModal({ visible: false })
+
+      if (response.status === 'true' || response.status === true) {
+        offersData[1].status = 'processing'
+        setModals([{ title: 'Please Wait', description: 'This offer will take some time to be checked. Please kindly wait for some time. The credit will be added to your account soon.', }])
+      } else {
+        offersData[1].status = 'complete'
+        setModals([{ title: 'Already Claimed', description: response.message, }])
+      }
+      setOffersStatus([...offersData])
+    } catch (err) {
+      setModals([{ title: 'There is some error while claiming coins.', description: 'Please check your internet connection. And try again later.', }])
+    }
   }
 
+  async function ytTaskMilestone() {
+    const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+
+    setPleaseWaitModal({
+      visible: true,
+      text: "Please wait..."
+    })
+
+    try {
+      const data = await fetch(API_URL.yt_task_milestone, {
+        method: 'POST',
+        headers: headers,
+      })
+      const response = await data.json()
+      console.log(response)
+
+      setPleaseWaitModal({ visible: false, text: "" })
+      if (response.status === 'true' || response.status === true) {
+        setCongratulationModal(
+          {
+            visible: true,
+            coins: response.reward_coins,
+            text: `You have successfully claimed ${response.reward_coins} coins.`
+          }
+        )
+      } else {
+        setModals([
+          {
+            title: response.message,
+            description: 'Maybe you did noy complete 10 YouTube tasks continuously without any one task gap. Try again.',
+          }
+        ])
+      }
+
+    } catch (err) {
+      setModals([
+        {
+          title: 'There is some error while claiming coins.',
+          description: 'Please check your internet connection. And try again later.',
+        }
+      ])
+    }
+  }
 
 
   return (
     <ScrollView style={{
       backgroundColor: 'white',
     }}>
+      <CustomModal modals={modals} updater={setModals} />
       <View>
         <View style={styles.top}>
           <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 15, paddingVertical: 5 }}>
@@ -173,11 +245,19 @@ const Offer = ({ navigation }: any) => {
                 style={{
                   borderWidth: 1,
                   fontFamily: fonts.medium,
+                  color: colors.text,
                 }}
                 className='w-[100%] p-3 rounded-xl border-[#ccc] pl-4 text-base'
+                value={telegramUserName}
+                onChangeText={(text) => { setTelegramUserName(text) }}
               />
-              <View className='w-[100%] mt-4'>
-                <ButtonFull title="Claim" onPress={claimTelegramOffer} />
+              <View className='w-[105%] flex-row justify-between items-center gap-[4%] mt-2'>
+                <View className='w-[47%]'>
+                  <ButtonFull styles={{ backgroundColor: '#ddd' }} textStyles={{ color: colors.text }} title="Cancel" onPress={() => { setUserNameModal(false) }} />
+                </View>
+                <View className='w-[47%]'>
+                  <ButtonFull title="Claim" onPress={() => { claimTelegramOffer(telegramUserName) }} />
+                </View>
               </View>
             </View>
           </View>
@@ -218,7 +298,7 @@ const Offer = ({ navigation }: any) => {
                   style={{ resizeMode: 'contain', width: 30, height: 30, }}
                 />
                 <Text className='text-center text-[#000] text-3xl ml-3' style={{ fontFamily: fonts.bold }}>
-                  {congratulationModal.coins || 100}
+                  {congratulationModal.coins || ''}
                 </Text>
               </View>
             </View>
@@ -299,7 +379,6 @@ const Offer = ({ navigation }: any) => {
             loadTaskData ?
               offersStatus.map((item: OfferData, index: number) => {
                 const isActiveBtnClaim = isActiveClaimButton(item.status!)
-                console.log(isActiveBtnClaim)
 
                 return <View className='bg-[#eeeeee] p-4 rounded-2xl ' key={index}>
                   <View className='flex-row justify-between'>

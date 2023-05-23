@@ -30,6 +30,9 @@ export const API_URL = {
     popup: API + 'notifications/get_popup',
     get_update: API + 'app/get_update',
     offer_status : API + 'offers/check_status',
+    yt_task_milestone : API + 'offers/claim/yt_task_milestone',
+    telegram_task : API + 'offers/claim/telegram_task',
+
 }
 
 
