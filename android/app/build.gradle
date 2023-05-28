@@ -99,8 +99,8 @@ android {
         applicationId "com.winkaro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "3.0"
+        versionCode 6
+        versionName "4.0"
     }
 
     splits {

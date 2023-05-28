@@ -14,7 +14,7 @@ import Loading from '../../components/Loading'
 import { API, API_URL } from '../../appData'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getDefaultHeader } from '../methods'
-import { useIsFocused } from '@react-navigation/native'
+import { Link, useIsFocused } from '@react-navigation/native'
 import CustomModal from '../../components/CustomModal'
 
 type OfferData = {
@@ -77,8 +77,17 @@ const Offer = ({ navigation }: any) => {
       claimed: true,
       name: 'app_install_task',
       status: 'claim',
+      action: () => {
+        // Redirect to app install task
+        setAppInstallModal(true);
+        console.log(appRedirectLink);
+        function redirect() {
+          Linking.openURL(appRedirectLink)
+        }
+        setTimeout(redirect, 100)
+      },
       link: {
-        link: 'https://www.youtube.com/watch?v=7X3L1dXf9KQ',
+        link: '',
         linkIcon: icons.youtube_icon,
         linkText: 'Demo Video'
       }
@@ -88,7 +97,11 @@ const Offer = ({ navigation }: any) => {
   const [loadTaskData, setLoadTaskData] = React.useState(false)
   const [offersStatus, setOffersStatus] = React.useState(offersData)
   const [modals, setModals] = React.useState<any>([])
+  const [appInstallModal, setAppInstallModal] = React.useState(false)
   const [telegramUserName, setTelegramUserName] = React.useState('')
+  const [appInstallLink, setAppInstallLink] = React.useState('')
+  // const [appRedirectLink, setAppRedirectLink] = React.useState('')
+  let appRedirectLink = ''
 
   async function getOfferStatus() {
     const token = await AsyncStorage.getItem('token')
@@ -113,7 +126,19 @@ const Offer = ({ navigation }: any) => {
           }
         })
         setOffersStatus(offersStatus)
-        setLoadTaskData(true)
+        return fetch(API_URL.app_install_task, { method: 'POST', headers: headers, }).then(data => data.json()).then(data => {
+          const response = data
+          console.log(data)
+          if (response.status === true || response.status === 'true') {
+            offersData[2].link = { link: response.data.video_link, linkIcon: icons.youtube_icon, linkText: 'Demo Video' }
+            setOffersStatus([...offersData])
+            // setAppRedirectLink(() => response.data.app_link)
+            appRedirectLink = response.data.app_link
+          } else {
+            Alert.alert('There is some error while fetching app install link. Please check your internet connection. And try again later.')
+          }
+          setLoadTaskData(true)
+        })
       }
     } catch (err) {
       Alert.alert('There is some error while fetching offers status. Please check your internet connection. And try again later.')
@@ -162,6 +187,47 @@ const Offer = ({ navigation }: any) => {
         setModals([{ title: 'Already Claimed', description: response.message, }])
       }
       setOffersStatus([...offersData])
+    } catch (err) {
+      setModals([{ title: 'There is some error while claiming coins.', description: 'Please check your internet connection. And try again later.', }])
+    }
+  }
+  async function submitAppInstallLink(link: string | null) {
+    link = link?.trim() || ''
+    if (!link) return Alert.alert('Warning', 'Please enter the app install link to claim this offer.')
+
+    const headers = getDefaultHeader(await AsyncStorage.getItem('token'))
+
+    setAppInstallModal(false)
+    setPleaseWaitModal({ visible: true, text: "Please wait..." })
+
+    offersData[2].status = 'processing'
+
+    try {
+      const data = await fetch(API_URL.app_install_task_claim, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          reward_link: link
+        })
+      })
+
+      const response = await data.json()
+      console.log(response)
+
+      setPleaseWaitModal({ visible: false })
+
+      if (response.status === 'true' || response.status === true) {
+        offersData[2].status = 'processing'
+        setModals([{ title: 'Please Wait', description: 'This offer will take some time to be checked. Please kindly wait for some time. The credit will be added to your account soon.', }])
+      }
+      else {
+        offersData[2].status = 'complete'
+        setModals([{ title: 'Already Claimed', description: response.message, }])
+      }
+      setOffersStatus([...offersData])
+      // Refresh offers
+      setLoadTaskData(false)
+      getOfferStatus()
     } catch (err) {
       setModals([{ title: 'There is some error while claiming coins.', description: 'Please check your internet connection. And try again later.', }])
     }
@@ -257,6 +323,37 @@ const Offer = ({ navigation }: any) => {
                 </View>
                 <View className='w-[47%]'>
                   <ButtonFull title="Claim" onPress={() => { claimTelegramOffer(telegramUserName) }} />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} visible={appInstallModal}>
+        <View className='flex-1 bg-[#00000033] justify-center items-center'>
+          <View className='w-[90%] bg-white p-7 rounded-2xl'>
+            <Text className='text-center text-[#000] text-lg' style={{ fontFamily: fonts.medium }}>
+              Paste the Application Link here
+            </Text>
+            <View className='justify-between items-center mt-7'>
+              <TextInput
+                placeholder='Paste the Application Link here'
+                style={{
+                  borderWidth: 1,
+                  fontFamily: fonts.medium,
+                  color: colors.text,
+                }}
+                className='w-[100%] p-3 rounded-xl border-[#ccc] pl-4 text-base'
+                value={appInstallLink}
+                onChangeText={(text) => { setAppInstallLink(text) }}
+              />
+              <View className='w-[105%] flex-row justify-between items-center gap-[4%] mt-2'>
+                <View className='w-[47%]'>
+                  <ButtonFull styles={{ backgroundColor: '#ddd' }} textStyles={{ color: colors.text }} title="Cancel" onPress={() => { setAppInstallModal(false) }} />
+                </View>
+                <View className='w-[47%]'>
+                  <ButtonFull title="Claim" onPress={() => { submitAppInstallLink(appInstallLink) }} />
                 </View>
               </View>
             </View>

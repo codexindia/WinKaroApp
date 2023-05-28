@@ -32,7 +32,8 @@ export const API_URL = {
     offer_status : API + 'offers/check_status',
     yt_task_milestone : API + 'offers/claim/yt_task_milestone',
     telegram_task : API + 'offers/claim/telegram_task',
-
+    app_install_task_claim : API + 'offers/claim/app_install_task',
+    app_install_task : API + 'offers/get/app_install_task',
 }
 
 
